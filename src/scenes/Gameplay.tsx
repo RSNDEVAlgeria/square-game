@@ -6,12 +6,16 @@
 import { useState, useRef, useCallback } from 'react';
 import { Pause, Trash2, DollarSign, Star, Utensils } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { PowerUpsPanel } from '@/components/PowerUpsPanel';
+import { ParticleEffects } from '@/components/ParticleEffects';
+import { useHaptic } from '@/hooks/useHaptic';
 import {
   FOOD_ITEMS,
   CUSTOMER_POSITIONS,
   THEME
 } from '@/constants/gameConfig';
 import type { Customer, FloatingText, ServeResult } from '@/types/game';
+import type { ActivePowerUp, ParticleEffect } from '@/types/enhancedGameplay';
 
 interface GameplayProps {
   // Game state
@@ -23,6 +27,10 @@ interface GameplayProps {
   customers: Customer[];
   plateItems: string[];
   floatingTexts: FloatingText[];
+  inventory: Record<string, number>;
+  activePowerUps?: ActivePowerUp[];
+  particles?: ParticleEffect[];
+
 
   // Actions
   onPause: () => void;
@@ -30,6 +38,7 @@ interface GameplayProps {
   onClearPlate: () => void;
   onServeCustomer: (customerId: string) => ServeResult;
   onAddFloatingText: (x: number, y: number, text: string, color: string) => void;
+  onActivatePowerUp?: (powerUpType: string) => void;
 
   // Sound
   onPlaySound: (sound: 'click' | 'success' | 'error' | 'plateClear' | 'customerArrive') => void;
@@ -51,16 +60,21 @@ export function Gameplay({
   customers,
   plateItems,
   floatingTexts,
+  inventory,
+  activePowerUps = [],
+  particles = [],
   onPause,
   onAddToPlate,
   onClearPlate,
   onServeCustomer,
   onAddFloatingText,
+  onActivatePowerUp,
   onPlaySound
 }: GameplayProps) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const trashRef = useRef<HTMLButtonElement>(null);
   const [isTouching, setIsTouching] = useState(false);
+  const { hapticFeedback } = useHaptic();
 
   const staminaPercent = (stamina / maxStamina) * 100;
   const staminaColor = getPatienceColor(staminaPercent / 100);
@@ -69,6 +83,7 @@ export function Gameplay({
   const handleFoodClick = useCallback((foodId: string, event: React.MouseEvent | React.TouchEvent) => {
     onAddToPlate(foodId);
     onPlaySound('click');
+    hapticFeedback('light');
 
     // Get click position for feedback
     let clientX, clientY;
@@ -103,6 +118,7 @@ export function Gameplay({
     if (plateItems.length > 0) {
       onClearPlate();
       onPlaySound('plateClear');
+      hapticFeedback('medium');
 
       const rect = trashRef.current?.getBoundingClientRect();
       const parentRect = canvasRef.current?.getBoundingClientRect();
@@ -126,8 +142,10 @@ export function Gameplay({
 
     if (result.quality === 'wrong') {
       onPlaySound('error');
+      hapticFeedback('error');
     } else {
       onPlaySound('success');
+      hapticFeedback(result.quality === 'perfect' ? 'success' : 'medium');
       if (result.comboBonus > 0) {
         onPlaySound('success'); // Double sound for combo
       }
@@ -173,6 +191,7 @@ export function Gameplay({
           const pos = CUSTOMER_POSITIONS[index];
           const patienceRatio = customer.patience / customer.maxPatience;
           const patienceColor = getPatienceColor(patienceRatio);
+          const isSpecial = customer.isSpecial;
 
           return (
             <div
@@ -186,8 +205,16 @@ export function Gameplay({
                 height: 100,
               }}
             >
+              {/* Special Customer Indicator */}
+              {isSpecial && (
+                <div className="absolute -top-16 left-1/2 -translate-x-1/2 animate-bounce">
+                  <div className="text-2xl drop-shadow-lg">✨</div>
+                </div>
+              )}
+
               {/* Order Bubbles - Original */}
-              <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex gap-1 bg-white/90 p-1.5 rounded-full shadow-sm backdrop-blur-sm border border-orange-100">
+              <div className={`absolute -top-10 left-1/2 -translate-x-1/2 flex gap-1 p-1.5 rounded-full shadow-sm backdrop-blur-sm border ${isSpecial ? 'bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-300' : 'bg-white/90 border-orange-100'
+                }`}>
                 {customer.order.map((itemId, i) => {
                   const item = FOOD_ITEMS.find(f => f.id === itemId);
                   return item ? (
@@ -244,7 +271,21 @@ export function Gameplay({
             {text.text}
           </div>
         ))}
+
+        {/* Particle Effects */}
+        <ParticleEffects particles={particles} />
       </div>
+
+      {/* Power-Ups Panel */}
+      {onActivatePowerUp && (
+        <PowerUpsPanel
+          money={money}
+          inventory={inventory}
+          activePowerUps={activePowerUps}
+          onActivate={onActivatePowerUp}
+          onPlaySound={onPlaySound}
+        />
+      )}
 
       {/* --- HUD INTERFACE (NEW) --- */}
       {/* Top Bar */}
@@ -427,6 +468,6 @@ export function Gameplay({
             100% { opacity: 1; transform: scale(1); }
         }
       `}</style>
-    </div>
+    </div >
   );
 }

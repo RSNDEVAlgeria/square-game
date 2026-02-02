@@ -47,6 +47,9 @@ export interface Customer {
   position: number;          // Position in queue (0-4)
   isLeaving: boolean;
   arrivalTime: number;       // Timestamp when customer arrived
+  isSpecial?: boolean;       // Is this a special customer?
+  specialType?: string;      // Type of special customer (vip, critic, influencer)
+  tipMultiplier?: number;    // Special tip multiplier
 }
 
 // ===== GAME STATE =====
@@ -54,32 +57,37 @@ export interface GameState {
   // Core game data
   currentScene: GameScene;
   selectedWaiter: Waiter | null;
-  
+
   // Game progress
   score: number;
   money: number;
   customersServed: number;
-  
+
   // Stamina system
   stamina: number;
   maxStamina: number;
-  
+
   // Game flow
   isPaused: boolean;
   isGameOver: boolean;
   gameTime: number;          // Total game time in ms
-  
+
   // Difficulty scaling
   difficulty: number;        // 1.0 = base difficulty
   customerPatienceBase: number;
-  
+
   // Audio
   soundEnabled: boolean;
-  
+
   // Combo system (enhancement)
   combo: number;
   comboTimer: number;
   lastServeTime: number;
+
+  // Meta-progression (Shop)
+  upgrades: Record<string, number>;
+  totalMoneyEarned: number;
+  inventory: Record<string, number>;
 }
 
 // ===== PLATE STATE =====
@@ -97,38 +105,47 @@ export interface FloatingText {
   createdAt: number;
 }
 
+import type { PowerUpType } from './enhancedGameplay';
+
+// ===== POWER-UP STATE =====
+export interface ActivePowerUp {
+  type: PowerUpType;
+  expiresAt: number;
+}
+
+
 // ===== GAME CONFIGURATION =====
 export interface GameConfig {
   // Canvas
   CANVAS_WIDTH: number;
   CANVAS_HEIGHT: number;
-  
+
   // Game Balance
   INITIAL_STAMINA: number;
   STAMINA_DRAIN_PER_ACTION: number;
   STAMINA_RECOVERY_CORRECT: number;
   STAMINA_RECOVERY_WRONG: number;
-  
+
   // Customer spawning
   CUSTOMER_SPAWN_INTERVAL_BASE: number;
   CUSTOMER_SPAWN_INTERVAL_MIN: number;
   MAX_CUSTOMERS: number;
-  
+
   // Patience
   CUSTOMER_PATIENCE_BASE: number;
   CUSTOMER_PATIENCE_MIN: number;
   DIFFICULTY_INCREASE_RATE: number;
-  
+
   // Economy
   BASE_PAYMENT: number;
   TIP_MULTIPLIER: number;
   PERFECT_TIMING_BONUS: number;
   GOOD_TIMING_BONUS: number;
-  
+
   // Combo system (enhancement)
   COMBO_TIMEOUT: number;
   COMBO_MULTIPLIER_BASE: number;
-  
+
   // Order complexity
   MIN_ORDER_ITEMS: number;
   MAX_ORDER_ITEMS: number;
@@ -147,12 +164,16 @@ export interface ServeResult {
 }
 
 // ===== AUDIO SOUNDS =====
-export type GameSound = 
-  | 'click' 
-  | 'success' 
-  | 'error' 
-  | 'customerArrive' 
-  | 'combo' 
-  | 'gameOver' 
-  | 'plateClear' 
-  | 'staminaLow';
+export type GameSound =
+  | 'click'
+  | 'success'
+  | 'error'
+  | 'customerArrive'
+  | 'combo'
+  | 'gameOver'
+  | 'plateClear'
+  | 'staminaLow'
+  | 'powerup'
+  | 'special'
+  | 'achievement'
+  | 'coin';

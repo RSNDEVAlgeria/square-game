@@ -4,16 +4,17 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Coffee, Play } from 'lucide-react';
+import { Coffee, Play, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { THEME } from '@/constants/gameConfig';
 
 interface MainMenuProps {
   onPlay: () => void;
+  onShop: () => void;
   onExit: () => void;
 }
 
-export function MainMenu({ onPlay, onExit }: MainMenuProps) {
+export function MainMenu({ onPlay, onShop, onExit }: MainMenuProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -100,7 +101,23 @@ export function MainMenu({ onPlay, onExit }: MainMenuProps) {
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             <div className="relative flex items-center justify-center gap-2">
               <Play className="w-6 h-6 fill-current" />
-              <span>OPEN SHOP</span>
+              <span>START GAME</span>
+            </div>
+          </Button>
+
+          <Button
+            onClick={onShop}
+            className="w-full h-14 text-lg font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] group relative overflow-hidden"
+            style={{
+              background: `linear-gradient(to right, ${THEME.coral}, #FF6B9D)`,
+              color: 'white',
+              border: `2px solid rgba(255,255,255,0.3)`
+            }}
+          >
+            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+            <div className="relative flex items-center justify-center gap-2">
+              <ShoppingBag className="w-5 h-5" />
+              <span>SHOP</span>
             </div>
           </Button>
 

@@ -278,6 +278,7 @@ export const THEME = {
   warning: '#FF9800',
   danger: '#F44336',
 
+
   // Text
   textDark: '#2C1810',
   textMedium: '#5D4037',
@@ -298,3 +299,284 @@ export const SERVICE_THRESHOLDS = {
   good: 0.4,     // >40% patience remaining
   average: 0     // Anything else (but correct)
 };
+
+// ===== POWER-UPS =====
+export const POWER_UPS = [
+  {
+    id: 'speed_boost',
+    type: 'speed_boost' as const,
+    name: 'Speed Boost',
+    description: 'Customers wait 50% longer',
+    emoji: '⚡',
+    duration: 15000, // 15 seconds
+    cost: 50,
+    color: '#FFD700',
+    active: false
+  },
+  {
+    id: 'patience_freeze',
+    type: 'patience_freeze' as const,
+    name: 'Patience Freeze',
+    description: 'Freeze all customer patience',
+    emoji: '❄️',
+    duration: 10000, // 10 seconds
+    cost: 75,
+    color: '#4FC3F7',
+    active: false
+  },
+  {
+    id: 'double_tips',
+    type: 'double_tips' as const,
+    name: 'Double Tips',
+    description: 'Earn 2x tips for 20 seconds',
+    emoji: '💰',
+    duration: 20000, // 20 seconds
+    cost: 60,
+    color: '#4CAF50',
+    active: false
+  },
+  {
+    id: 'stamina_boost',
+    type: 'stamina_boost' as const,
+    name: 'Stamina Boost',
+    description: 'Restore 50% stamina instantly',
+    emoji: '💪',
+    duration: 0, // Instant effect
+    cost: 40,
+    color: '#FF5722',
+    active: false
+  }
+];
+
+// ===== SPECIAL CUSTOMERS =====
+export const SPECIAL_CUSTOMERS = [
+  {
+    id: 'vip',
+    name: 'VIP Customer',
+    emoji: '👑',
+    description: 'Pays triple tips!',
+    orderMultiplier: 1.5,
+    tipMultiplier: 3.0,
+    patienceMultiplier: 1.2,
+    spawnChance: 0.05, // 5% chance
+    color: '#FFD700'
+  },
+  {
+    id: 'critic',
+    name: 'Food Critic',
+    emoji: '🎩',
+    description: 'Huge bonus for perfect service!',
+    orderMultiplier: 2.0,
+    tipMultiplier: 5.0,
+    patienceMultiplier: 0.7,
+    spawnChance: 0.03, // 3% chance
+    color: '#9C27B0'
+  },
+  {
+    id: 'influencer',
+    name: 'Influencer',
+    emoji: '📱',
+    description: 'Brings more customers!',
+    orderMultiplier: 1.0,
+    tipMultiplier: 2.0,
+    patienceMultiplier: 0.9,
+    spawnChance: 0.08, // 8% chance
+    color: '#E91E63'
+  }
+];
+
+// ===== ACHIEVEMENTS =====
+export const ACHIEVEMENTS = [
+  {
+    id: 'first_serve' as const,
+    name: 'First Steps',
+    description: 'Serve your first customer',
+    emoji: '🎯',
+    unlocked: false,
+    progress: 0,
+    target: 1,
+    reward: 20
+  },
+  {
+    id: 'speed_demon' as const,
+    name: 'Speed Demon',
+    description: 'Serve 10 customers in under 2 minutes',
+    emoji: '⚡',
+    unlocked: false,
+    progress: 0,
+    target: 10,
+    reward: 100
+  },
+  {
+    id: 'perfect_streak' as const,
+    name: 'Perfect Streak',
+    description: 'Get 5 perfect serves in a row',
+    emoji: '⭐',
+    unlocked: false,
+    progress: 0,
+    target: 5,
+    reward: 150
+  },
+  {
+    id: 'combo_master' as const,
+    name: 'Combo Master',
+    description: 'Reach a 10x combo',
+    emoji: '🔥',
+    unlocked: false,
+    progress: 0,
+    target: 10,
+    reward: 200
+  },
+  {
+    id: 'big_spender' as const,
+    name: 'Big Spender',
+    description: 'Earn $500 in a single game',
+    emoji: '💎',
+    unlocked: false,
+    progress: 0,
+    target: 500,
+    reward: 250
+  }
+];
+
+// ===== SHOP UPGRADES =====
+export const SHOP_UPGRADES = [
+  {
+    id: 'vip_spawn' as const,
+    name: 'VIP Magnet',
+    description: 'Increase VIP customer spawn chance',
+    emoji: '👑',
+    category: 'special_customers' as const,
+    baseCost: 100,
+    costMultiplier: 1.5,
+    maxLevel: 10,
+    currentLevel: 0,
+    effect: {
+      type: 'spawn_chance',
+      baseValue: 0.05, // 5% base
+      valuePerLevel: 0.02 // +2% per level
+    },
+    color: '#FFD700'
+  },
+  {
+    id: 'critic_spawn' as const,
+    name: 'Critic Appeal',
+    description: 'Increase Food Critic spawn chance',
+    emoji: '🎩',
+    category: 'special_customers' as const,
+    baseCost: 150,
+    costMultiplier: 1.6,
+    maxLevel: 10,
+    currentLevel: 0,
+    effect: {
+      type: 'spawn_chance',
+      baseValue: 0.03, // 3% base
+      valuePerLevel: 0.015 // +1.5% per level
+    },
+    color: '#9C27B0'
+  },
+  {
+    id: 'influencer_spawn' as const,
+    name: 'Social Boost',
+    description: 'Increase Influencer spawn chance',
+    emoji: '📱',
+    category: 'special_customers' as const,
+    baseCost: 80,
+    costMultiplier: 1.4,
+    maxLevel: 10,
+    currentLevel: 0,
+    effect: {
+      type: 'spawn_chance',
+      baseValue: 0.08, // 8% base
+      valuePerLevel: 0.03 // +3% per level
+    },
+    color: '#E91E63'
+  },
+  {
+    id: 'max_stamina' as const,
+    name: 'Endurance Training',
+    description: 'Increase maximum stamina',
+    emoji: '💪',
+    category: 'gameplay' as const,
+    baseCost: 120,
+    costMultiplier: 1.5,
+    maxLevel: 15,
+    currentLevel: 0,
+    effect: {
+      type: 'max_stamina',
+      baseValue: 100,
+      valuePerLevel: 10 // +10 stamina per level
+    },
+    color: '#FF5722'
+  },
+  {
+    id: 'stamina_recovery' as const,
+    name: 'Quick Recovery',
+    description: 'Recover more stamina per correct serve',
+    emoji: '⚡',
+    category: 'gameplay' as const,
+    baseCost: 100,
+    costMultiplier: 1.5,
+    maxLevel: 10,
+    currentLevel: 0,
+    effect: {
+      type: 'stamina_recovery',
+      baseValue: 8,
+      valuePerLevel: 2 // +2 recovery per level
+    },
+    color: '#FFC107'
+  },
+  {
+    id: 'base_tips' as const,
+    name: 'Charm School',
+    description: 'Increase base tip amounts',
+    emoji: '💰',
+    category: 'economy' as const,
+    baseCost: 150,
+    costMultiplier: 1.6,
+    maxLevel: 10,
+    currentLevel: 0,
+    effect: {
+      type: 'tip_multiplier',
+      baseValue: 1.0,
+      valuePerLevel: 0.1 // +10% tips per level
+    },
+    color: '#4CAF50'
+  },
+  {
+    id: 'customer_patience' as const,
+    name: 'Patience Plus',
+    description: 'Customers wait longer before leaving',
+    emoji: '⏰',
+    category: 'gameplay' as const,
+    baseCost: 130,
+    costMultiplier: 1.5,
+    maxLevel: 10,
+    currentLevel: 0,
+    effect: {
+      type: 'patience_multiplier',
+      baseValue: 1.0,
+      valuePerLevel: 0.08 // +8% patience per level
+    },
+    color: '#2196F3'
+  },
+  {
+    id: 'powerup_discount' as const,
+    name: 'Power Saver',
+    description: 'Reduce power-up costs',
+    emoji: '🏷️',
+    category: 'economy' as const,
+    baseCost: 200,
+    costMultiplier: 1.7,
+    maxLevel: 5,
+    currentLevel: 0,
+    effect: {
+      type: 'powerup_discount',
+      baseValue: 0,
+      valuePerLevel: 0.1 // -10% cost per level
+    },
+    color: '#FF9800'
+  }
+];
+
+

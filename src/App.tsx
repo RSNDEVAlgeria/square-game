@@ -3,13 +3,14 @@
  * Café management game rebuilt with React
  */
 
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useGameState } from '@/hooks/useGameState';
 import { useAudio } from '@/hooks/useAudio';
 import { MainMenu } from '@/scenes/MainMenu';
 import { WaiterSelection } from '@/scenes/WaiterSelection';
 import { Gameplay } from '@/scenes/Gameplay';
 import { GameOver } from '@/scenes/GameOver';
+import { Shop } from '@/components/Shop';
 import { PauseOverlay, SettingsOverlay } from '@/components/Overlays';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -30,8 +31,14 @@ function App() {
     clearPlate,
     serveCustomer,
     addFloatingText,
-    toggleSound
+    toggleSound,
+    purchaseUpgrade,
+    purchasePowerUp,
+    activatePowerUp,
+    activePowerUps
   } = useGameState();
+
+  const [isShopOpen, setIsShopOpen] = useState(false);
 
   // Audio management
   const { playSound, initAudio } = useAudio(gameState.soundEnabled);
@@ -41,10 +48,10 @@ function App() {
     const handleFirstInteraction = () => {
       initAudio();
     };
-    
+
     document.addEventListener('click', handleFirstInteraction, { once: true });
     document.addEventListener('touchstart', handleFirstInteraction, { once: true });
-    
+
     return () => {
       document.removeEventListener('click', handleFirstInteraction);
       document.removeEventListener('touchstart', handleFirstInteraction);
@@ -52,11 +59,21 @@ function App() {
   }, [initAudio]);
 
   // ===== EVENT HANDLERS =====
-  
+
   const handlePlay = useCallback(() => {
     playSound('click');
     switchScene('waiter-selection');
   }, [playSound, switchScene]);
+
+  const handleOpenShop = useCallback(() => {
+    playSound('click');
+    setIsShopOpen(true);
+  }, [playSound]);
+
+  const handleCloseShop = useCallback(() => {
+    playSound('click');
+    setIsShopOpen(false);
+  }, [playSound]);
 
 
 
@@ -125,17 +142,18 @@ function App() {
   return (
     <div className="w-full h-screen flex items-center justify-center overflow-hidden bg-gray-900">
       {/* Game Container - Mobile-optimized portrait */}
-      <div 
+      <div
         className="relative w-full h-full max-w-md mx-auto overflow-hidden shadow-2xl"
-        style={{ 
+        style={{
           maxHeight: '900px',
           aspectRatio: '9/16'
         }}
       >
         {/* Main Menu Scene */}
         {gameState.currentScene === 'main-menu' && (
-          <MainMenu 
+          <MainMenu
             onPlay={handlePlay}
+            onShop={handleOpenShop}
             onExit={handleExit}
           />
         )}
@@ -160,11 +178,14 @@ function App() {
             customers={customers}
             plateItems={plate.items}
             floatingTexts={floatingTexts}
+            inventory={gameState.inventory}
+            activePowerUps={activePowerUps}
             onPause={handlePause}
             onAddToPlate={handleAddToPlate}
             onClearPlate={handleClearPlate}
             onServeCustomer={handleServeCustomer}
             onAddFloatingText={handleAddFloatingText}
+            onActivatePowerUp={activatePowerUp}
             onPlaySound={playSound}
           />
         )}
@@ -193,7 +214,19 @@ function App() {
           isOpen={false} // Controlled by state if needed
           soundEnabled={gameState.soundEnabled}
           onToggleSound={toggleSound}
-          onClose={() => {}}
+          onClose={() => { }}
+        />
+
+        {/* Shop Modal */}
+        <Shop
+          isOpen={isShopOpen}
+          onClose={handleCloseShop}
+          money={gameState.money}
+          totalMoneyEarned={gameState.totalMoneyEarned}
+          upgradeLevels={gameState.upgrades}
+          onPurchaseUpgrade={purchaseUpgrade}
+          onPurchasePowerUp={purchasePowerUp}
+          onPlaySound={playSound}
         />
       </div>
 
