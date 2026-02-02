@@ -39,6 +39,7 @@ function App() {
   } = useGameState();
 
   const [isShopOpen, setIsShopOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   // Audio management
   const { playSound, initAudio } = useAudio(gameState.soundEnabled);
@@ -74,6 +75,17 @@ function App() {
     playSound('click');
     setIsShopOpen(false);
   }, [playSound]);
+
+  const handleOpenSettings = useCallback(() => {
+    playSound('click');
+    setIsSettingsOpen(true);
+  }, [playSound]);
+
+  const handleCloseSettings = useCallback(() => {
+    playSound('click');
+    setIsSettingsOpen(false);
+  }, [playSound]);
+
 
 
 
@@ -154,6 +166,7 @@ function App() {
           <MainMenu
             onPlay={handlePlay}
             onShop={handleOpenShop}
+            onSettings={handleOpenSettings}
             onExit={handleExit}
           />
         )}
@@ -211,10 +224,10 @@ function App() {
 
         {/* Settings Overlay - shown on main menu */}
         <SettingsOverlay
-          isOpen={false} // Controlled by state if needed
+          isOpen={isSettingsOpen}
           soundEnabled={gameState.soundEnabled}
           onToggleSound={toggleSound}
-          onClose={() => { }}
+          onClose={handleCloseSettings}
         />
 
         {/* Shop Modal */}

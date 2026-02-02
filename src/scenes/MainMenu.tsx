@@ -11,10 +11,11 @@ import { THEME } from '@/constants/gameConfig';
 interface MainMenuProps {
   onPlay: () => void;
   onShop: () => void;
+  onSettings: () => void;
   onExit: () => void;
 }
 
-export function MainMenu({ onPlay, onShop, onExit }: MainMenuProps) {
+export function MainMenu({ onPlay, onShop, onSettings, onExit }: MainMenuProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -122,9 +123,21 @@ export function MainMenu({ onPlay, onShop, onExit }: MainMenuProps) {
           </Button>
 
           <Button
+            onClick={onSettings}
+            variant="outline"
+            className="w-full h-12 text-md font-bold rounded-2xl border-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.98]"
+            style={{
+              borderColor: `${THEME.woodLight}40`,
+              color: THEME.textMedium
+            }}
+          >
+            Settings
+          </Button>
+
+          <Button
             onClick={onExit}
             variant="ghost"
-            className="w-full h-12 text-md font-medium text-amber-900/60 hover:text-amber-900 hover:bg-amber-900/5"
+            className="w-full h-10 text-xs font-medium text-amber-900/40 hover:text-amber-900 hover:bg-amber-900/5"
           >
             Exit Game
           </Button>

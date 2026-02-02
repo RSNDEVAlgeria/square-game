@@ -88,6 +88,7 @@ export interface GameState {
   upgrades: Record<string, number>;
   totalMoneyEarned: number;
   inventory: Record<string, number>;
+  achievements: Record<string, boolean>; // id -> unlocked
 }
 
 // ===== PLATE STATE =====
@@ -177,3 +178,14 @@ export type GameSound =
   | 'special'
   | 'achievement'
   | 'coin';
+
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  emoji: string;
+  unlocked: boolean;
+  progress: number;
+  target: number;
+  reward: number;
+}

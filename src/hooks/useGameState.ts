@@ -21,8 +21,10 @@ import {
   CUSTOMER_TYPES,
   SERVICE_THRESHOLDS,
   SHOP_UPGRADES,
-  POWER_UPS
+  POWER_UPS,
+  ACHIEVEMENTS
 } from '@/constants/gameConfig';
+import { toast } from 'sonner';
 
 // Initial game state factory
 const createInitialState = (): GameState => {
@@ -31,6 +33,8 @@ const createInitialState = (): GameState => {
   const savedTotalMoney = localStorage.getItem('square_coffee_total_money');
   const savedPermanentMoney = localStorage.getItem('square_coffee_money');
   const savedInventory = localStorage.getItem('square_coffee_inventory');
+  const savedAchievements = localStorage.getItem('square_coffee_achievements');
+
 
   return {
     currentScene: 'main-menu',
@@ -51,7 +55,8 @@ const createInitialState = (): GameState => {
     lastServeTime: 0,
     upgrades: savedUpgrades ? JSON.parse(savedUpgrades) : {},
     totalMoneyEarned: savedTotalMoney ? parseInt(savedTotalMoney) : 0,
-    inventory: savedInventory ? JSON.parse(savedInventory) : {}
+    inventory: savedInventory ? JSON.parse(savedInventory) : {},
+    achievements: savedAchievements ? JSON.parse(savedAchievements) : {}
   };
 };
 
@@ -65,7 +70,8 @@ export function useGameState() {
     localStorage.setItem('square_coffee_total_money', gameState.totalMoneyEarned.toString());
     localStorage.setItem('square_coffee_money', gameState.money.toString());
     localStorage.setItem('square_coffee_inventory', JSON.stringify(gameState.inventory));
-  }, [gameState.upgrades, gameState.totalMoneyEarned, gameState.money, gameState.inventory]);
+    localStorage.setItem('square_coffee_achievements', JSON.stringify(gameState.achievements));
+  }, [gameState.upgrades, gameState.totalMoneyEarned, gameState.money, gameState.inventory, gameState.achievements]);
 
   // Plate state
   const [plate, setPlate] = useState<PlateState>({ items: [] });
@@ -107,6 +113,31 @@ export function useGameState() {
     }));
   }, [gameState.upgrades]);
 
+  // Keep track of session-specific achievement progress
+  const perfectStreakRef = useRef(0);
+  const gameStartTimeRef = useRef(Date.now());
+
+  const unlockAchievement = useCallback((achievementId: string) => {
+    const achievement = ACHIEVEMENTS.find(a => a.id === achievementId);
+    if (!achievement || gameState.achievements[achievementId]) return;
+
+    setGameState(prev => ({
+      ...prev,
+      money: prev.money + achievement.reward,
+      achievements: {
+        ...prev.achievements,
+        [achievementId]: true
+      }
+    }));
+
+    toast.success(`Achievement Unlocked: ${achievement.name}`, {
+      description: `${achievement.description} +$${achievement.reward}`,
+      icon: achievement.emoji,
+      duration: 5000,
+    });
+  }, [gameState.achievements]);
+
+
   // ===== GAME CONTROL =====
   const startGame = useCallback(() => {
     const waiter = gameState.selectedWaiter;
@@ -128,15 +159,18 @@ export function useGameState() {
       upgrades: prev.upgrades,
       money: prev.money,
       totalMoneyEarned: prev.totalMoneyEarned,
-      inventory: prev.inventory
+      inventory: prev.inventory,
+      achievements: prev.achievements
     }));
     setPlate({ items: [] });
     setCustomers([]);
     setFloatingTexts([]);
     setActivePowerUps([]);
+    perfectStreakRef.current = 0;
+    gameStartTimeRef.current = Date.now();
     lastTimeRef.current = Date.now();
     nextSpawnTimeRef.current = CONFIG.CUSTOMER_SPAWN_INTERVAL_BASE;
-  }, [gameState.selectedWaiter, gameState.soundEnabled, gameState.upgrades, gameState.money, gameState.totalMoneyEarned, gameState.inventory]);
+  }, [gameState.selectedWaiter, gameState.soundEnabled, gameState.upgrades, gameState.money, gameState.totalMoneyEarned, gameState.inventory, gameState.achievements]);
 
   const pauseGame = useCallback(() => {
     setGameState(prev => ({ ...prev, isPaused: true }));
@@ -492,6 +526,35 @@ export function useGameState() {
     setCustomers(prev => prev.filter(c => c.id !== customerId));
     clearPlate();
 
+    // Check achievements
+    if (quality === 'perfect') {
+      perfectStreakRef.current += 1;
+      if (perfectStreakRef.current >= 5) {
+        unlockAchievement('perfect_streak');
+      }
+    } else {
+      perfectStreakRef.current = 0;
+    }
+
+    if (newCombo >= 10) {
+      unlockAchievement('combo_master');
+    }
+
+    if (gameState.customersServed + 1 >= 1) {
+      unlockAchievement('first_serve');
+    }
+
+    if (gameState.customersServed + 1 >= 10) {
+      const gameDuration = (Date.now() - gameStartTimeRef.current) / 1000;
+      if (gameDuration <= 120) {
+        unlockAchievement('speed_demon');
+      }
+    }
+
+    if (gameState.money + totalEarned >= 500) {
+      unlockAchievement('big_spender');
+    }
+
     return {
       quality,
       payment,
@@ -500,7 +563,7 @@ export function useGameState() {
       message: comboBonus > 0 ? `${message} +${comboBonus} Combo!` : message,
       color
     };
-  }, [customers, plate.items, checkOrder, gameState.selectedWaiter, gameState.combo, gameState.lastServeTime, gameState.upgrades, activePowerUps, clearPlate]);
+  }, [customers, plate.items, checkOrder, gameState.selectedWaiter, gameState.combo, gameState.lastServeTime, gameState.upgrades, activePowerUps, clearPlate, gameState.customersServed, gameState.money, unlockAchievement]);
 
   // ===== FLOATING TEXT =====
   const addFloatingText = useCallback((x: number, y: number, text: string, color: string) => {

@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { ShoppingBag, X, TrendingUp, Users, Zap, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SHOP_UPGRADES, POWER_UPS } from '@/constants/gameConfig';
-import type { ShopUpgrade } from '@/types/shop';
 
 interface ShopProps {
     isOpen: boolean;
@@ -137,8 +136,8 @@ export function Shop({
                     <button
                         onClick={() => setActiveTab('upgrades')}
                         className={`flex-1 py-4 font-semibold transition-all relative ${activeTab === 'upgrades'
-                                ? 'text-purple-600'
-                                : 'text-slate-500 hover:text-slate-700'
+                            ? 'text-purple-600'
+                            : 'text-slate-500 hover:text-slate-700'
                             }`}
                     >
                         <TrendingUp className="w-4 h-4 inline mr-2" />
@@ -150,8 +149,8 @@ export function Shop({
                     <button
                         onClick={() => setActiveTab('powerups')}
                         className={`flex-1 py-4 font-semibold transition-all relative ${activeTab === 'powerups'
-                                ? 'text-purple-600'
-                                : 'text-slate-500 hover:text-slate-700'
+                            ? 'text-purple-600'
+                            : 'text-slate-500 hover:text-slate-700'
                             }`}
                     >
                         <Zap className="w-4 h-4 inline mr-2" />
@@ -173,8 +172,8 @@ export function Shop({
                                         key={category}
                                         onClick={() => setActiveCategory(category)}
                                         className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm whitespace-nowrap transition-all ${activeCategory === category
-                                                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                            ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                                             }`}
                                     >
                                         {getCategoryIcon(category)}
@@ -255,10 +254,10 @@ export function Shop({
                                                         onClick={() => handlePurchaseUpgrade(upgrade.id)}
                                                         disabled={!canAfford || isMaxed}
                                                         className={`w-full mt-3 rounded-xl font-bold text-sm ${isMaxed
-                                                                ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
-                                                                : canAfford
-                                                                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg'
-                                                                    : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                                                            ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                                                            : canAfford
+                                                                ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg'
+                                                                : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                                                             }`}
                                                     >
                                                         {isMaxed ? '✓ Maxed Out' : `Upgrade - $${cost}`}
@@ -299,8 +298,8 @@ export function Shop({
                                                     onClick={() => handlePurchasePowerUp(powerUp.id)}
                                                     disabled={!canAfford}
                                                     className={`w-full mt-3 rounded-xl font-bold ${canAfford
-                                                            ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg'
-                                                            : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                                                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg'
+                                                        : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                                                         }`}
                                                 >
                                                     Buy - ${powerUp.cost}
