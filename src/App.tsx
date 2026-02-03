@@ -192,6 +192,7 @@ function App() {
             plateItems={plate.items}
             floatingTexts={floatingTexts}
             inventory={gameState.inventory}
+            upgradeLevels={gameState.upgrades}
             activePowerUps={activePowerUps}
             onPause={handlePause}
             onAddToPlate={handleAddToPlate}

@@ -6,39 +6,50 @@
 import { useState } from 'react';
 import { Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { POWER_UPS } from '@/constants/gameConfig';
-import type { PowerUp, ActivePowerUp } from '@/types/enhancedGameplay';
+import { SHOP_UPGRADES, POWER_UPS } from '@/constants/gameConfig';
+import type { ActivePowerUp } from '@/types/game';
 
 interface PowerUpsPanelProps {
     money: number;
     inventory: Record<string, number>;
     activePowerUps: ActivePowerUp[];
+    upgradeLevels: Record<string, number>;
     onActivate: (powerUpType: string) => void;
     onPlaySound: (sound: 'click' | 'success' | 'error') => void;
 }
 
-export function PowerUpsPanel({ money, inventory, activePowerUps, onActivate, onPlaySound }: PowerUpsPanelProps) {
+export function PowerUpsPanel({ money, inventory, activePowerUps, upgradeLevels, onActivate, onPlaySound }: PowerUpsPanelProps) {
     const [isExpanded, setIsExpanded] = useState(false);
+
+    const getPowerUpCost = (powerUpType: string) => {
+        const powerUp = POWER_UPS.find(p => p.type === powerUpType);
+        if (!powerUp) return 0;
+
+        const discountLevel = upgradeLevels['powerup_discount'] || 0;
+        const discountUpgrade = SHOP_UPGRADES.find(u => u.id === 'powerup_discount');
+        const discountMultiplier = 1 - (discountUpgrade?.effect.valuePerLevel || 0) * discountLevel;
+        return Math.floor(powerUp.cost * discountMultiplier);
+    };
 
     const isPowerUpActive = (type: string) => {
         return activePowerUps.some(p => p.type === type);
     };
 
     const hasInventory = (type: string) => (inventory[type] || 0) > 0;
-    const canAfford = (cost: number) => money >= cost;
+    const canAfford = (type: string) => money >= getPowerUpCost(type);
 
-    const handleActivate = (powerUp: PowerUp) => {
-        if (!hasInventory(powerUp.type) && !canAfford(powerUp.cost)) {
+    const handleActivate = (powerUpType: string) => {
+        if (!hasInventory(powerUpType) && !canAfford(powerUpType)) {
             onPlaySound('error');
             return;
         }
 
-        if (isPowerUpActive(powerUp.type)) {
+        if (isPowerUpActive(powerUpType)) {
             onPlaySound('error');
             return;
         }
         onPlaySound('success');
-        onActivate(powerUp.type);
+        onActivate(powerUpType);
         setIsExpanded(false);
     };
 
@@ -73,14 +84,15 @@ export function PowerUpsPanel({ money, inventory, activePowerUps, onActivate, on
                         {POWER_UPS.map((powerUp) => {
                             const isActive = isPowerUpActive(powerUp.type);
                             const hasOwned = hasInventory(powerUp.type);
-                            const affordable = canAfford(powerUp.cost) || hasOwned;
+                            const affordable = canAfford(powerUp.type) || hasOwned;
                             const count = inventory[powerUp.type] || 0;
                             const timeLeft = getTimeRemaining(powerUp.type);
+                            const currentCost = getPowerUpCost(powerUp.type);
 
                             return (
                                 <button
                                     key={powerUp.id}
-                                    onClick={() => handleActivate(powerUp)}
+                                    onClick={() => handleActivate(powerUp.type)}
                                     disabled={isActive || !affordable}
                                     className={`w-full p-3 rounded-2xl border-2 transition-all text-left relative ${isActive
                                         ? 'bg-gradient-to-r from-green-50 to-green-100 border-green-300 cursor-not-allowed'
@@ -106,7 +118,7 @@ export function PowerUpsPanel({ money, inventory, activePowerUps, onActivate, on
                                                 <h4 className="font-bold text-slate-700 text-sm">{powerUp.name}</h4>
                                                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${hasOwned ? 'bg-purple-100 text-purple-700' : affordable ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                                                     }`}>
-                                                    {hasOwned ? 'Owned' : `$${powerUp.cost}`}
+                                                    {hasOwned ? 'Owned' : `$${currentCost}`}
                                                 </span>
                                             </div>
 

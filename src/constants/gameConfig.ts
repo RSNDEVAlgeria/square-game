@@ -309,7 +309,7 @@ export const POWER_UPS = [
     description: 'Customers wait 50% longer',
     emoji: '⚡',
     duration: 15000, // 15 seconds
-    cost: 50,
+    cost: 150,
     color: '#FFD700',
     active: false
   },
@@ -320,7 +320,7 @@ export const POWER_UPS = [
     description: 'Freeze all customer patience',
     emoji: '❄️',
     duration: 10000, // 10 seconds
-    cost: 75,
+    cost: 250,
     color: '#4FC3F7',
     active: false
   },
@@ -331,7 +331,7 @@ export const POWER_UPS = [
     description: 'Earn 2x tips for 20 seconds',
     emoji: '💰',
     duration: 20000, // 20 seconds
-    cost: 60,
+    cost: 200,
     color: '#4CAF50',
     active: false
   },
@@ -342,7 +342,7 @@ export const POWER_UPS = [
     description: 'Restore 50% stamina instantly',
     emoji: '💪',
     duration: 0, // Instant effect
-    cost: 40,
+    cost: 120,
     color: '#FF5722',
     active: false
   }
@@ -447,8 +447,8 @@ export const SHOP_UPGRADES = [
     description: 'Increase VIP customer spawn chance',
     emoji: '👑',
     category: 'special_customers' as const,
-    baseCost: 100,
-    costMultiplier: 1.5,
+    baseCost: 500,
+    costMultiplier: 1.6,
     maxLevel: 10,
     currentLevel: 0,
     effect: {
@@ -464,8 +464,8 @@ export const SHOP_UPGRADES = [
     description: 'Increase Food Critic spawn chance',
     emoji: '🎩',
     category: 'special_customers' as const,
-    baseCost: 150,
-    costMultiplier: 1.6,
+    baseCost: 750,
+    costMultiplier: 1.7,
     maxLevel: 10,
     currentLevel: 0,
     effect: {
@@ -481,8 +481,8 @@ export const SHOP_UPGRADES = [
     description: 'Increase Influencer spawn chance',
     emoji: '📱',
     category: 'special_customers' as const,
-    baseCost: 80,
-    costMultiplier: 1.4,
+    baseCost: 400,
+    costMultiplier: 1.5,
     maxLevel: 10,
     currentLevel: 0,
     effect: {
@@ -498,8 +498,8 @@ export const SHOP_UPGRADES = [
     description: 'Increase maximum stamina',
     emoji: '💪',
     category: 'gameplay' as const,
-    baseCost: 120,
-    costMultiplier: 1.5,
+    baseCost: 600,
+    costMultiplier: 1.6,
     maxLevel: 15,
     currentLevel: 0,
     effect: {
@@ -515,8 +515,8 @@ export const SHOP_UPGRADES = [
     description: 'Recover more stamina per correct serve',
     emoji: '⚡',
     category: 'gameplay' as const,
-    baseCost: 100,
-    costMultiplier: 1.5,
+    baseCost: 500,
+    costMultiplier: 1.6,
     maxLevel: 10,
     currentLevel: 0,
     effect: {
@@ -532,8 +532,8 @@ export const SHOP_UPGRADES = [
     description: 'Increase base tip amounts',
     emoji: '💰',
     category: 'economy' as const,
-    baseCost: 150,
-    costMultiplier: 1.6,
+    baseCost: 1000,
+    costMultiplier: 1.8,
     maxLevel: 10,
     currentLevel: 0,
     effect: {
@@ -549,8 +549,8 @@ export const SHOP_UPGRADES = [
     description: 'Customers wait longer before leaving',
     emoji: '⏰',
     category: 'gameplay' as const,
-    baseCost: 130,
-    costMultiplier: 1.5,
+    baseCost: 650,
+    costMultiplier: 1.6,
     maxLevel: 10,
     currentLevel: 0,
     effect: {
@@ -566,8 +566,8 @@ export const SHOP_UPGRADES = [
     description: 'Reduce power-up costs',
     emoji: '🏷️',
     category: 'economy' as const,
-    baseCost: 200,
-    costMultiplier: 1.7,
+    baseCost: 1500,
+    costMultiplier: 2.0,
     maxLevel: 5,
     currentLevel: 0,
     effect: {

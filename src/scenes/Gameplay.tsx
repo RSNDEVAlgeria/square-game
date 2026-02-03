@@ -28,6 +28,7 @@ interface GameplayProps {
   plateItems: string[];
   floatingTexts: FloatingText[];
   inventory: Record<string, number>;
+  upgradeLevels: Record<string, number>;
   activePowerUps?: ActivePowerUp[];
   particles?: ParticleEffect[];
 
@@ -61,6 +62,7 @@ export function Gameplay({
   plateItems,
   floatingTexts,
   inventory,
+  upgradeLevels,
   activePowerUps = [],
   particles = [],
   onPause,
@@ -282,6 +284,7 @@ export function Gameplay({
           money={money}
           inventory={inventory}
           activePowerUps={activePowerUps}
+          upgradeLevels={upgradeLevels}
           onActivate={onActivatePowerUp}
           onPlaySound={onPlaySound}
         />

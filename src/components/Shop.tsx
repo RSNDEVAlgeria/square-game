@@ -47,6 +47,13 @@ export function Shop({
         return upgrade.effect.baseValue + (upgrade.effect.valuePerLevel * currentLevel);
     };
 
+    const getPowerUpCost = (powerUp: typeof POWER_UPS[0]) => {
+        const discountLevel = upgradeLevels['powerup_discount'] || 0;
+        const discountUpgrade = SHOP_UPGRADES.find(u => u.id === 'powerup_discount');
+        const discountMultiplier = 1 - (discountUpgrade?.effect.valuePerLevel || 0) * discountLevel;
+        return Math.floor(powerUp.cost * discountMultiplier);
+    };
+
     const canAffordUpgrade = (upgrade: typeof SHOP_UPGRADES[0]) => {
         const currentLevel = upgradeLevels[upgrade.id] || 0;
         if (currentLevel >= upgrade.maxLevel) return false;
@@ -54,7 +61,7 @@ export function Shop({
     };
 
     const canAffordPowerUp = (powerUp: typeof POWER_UPS[0]) => {
-        return money >= powerUp.cost;
+        return money >= getPowerUpCost(powerUp);
     };
 
     const handlePurchaseUpgrade = (upgradeId: string) => {
@@ -302,7 +309,7 @@ export function Shop({
                                                         : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                                                         }`}
                                                 >
-                                                    Buy - ${powerUp.cost}
+                                                    Buy - ${getPowerUpCost(powerUp)}
                                                 </Button>
                                             </div>
                                         </div>
