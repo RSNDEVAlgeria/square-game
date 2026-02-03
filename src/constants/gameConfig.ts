@@ -17,15 +17,15 @@ export const CONFIG: GameConfig = {
   STAMINA_RECOVERY_CORRECT: 8,     // Increased from original for better feel
   STAMINA_RECOVERY_WRONG: -10,     // Penalty for wrong orders
 
-  // Customer spawning (ms)
+  // Customer spawning (ms) - Harder difficulty
   CUSTOMER_SPAWN_INTERVAL_BASE: 3500,
-  CUSTOMER_SPAWN_INTERVAL_MIN: 1500,
+  CUSTOMER_SPAWN_INTERVAL_MIN: 1200,  // Reduced from 1500 for harder gameplay
   MAX_CUSTOMERS: 5,
 
-  // Patience (ms)
-  CUSTOMER_PATIENCE_BASE: 20000,
-  CUSTOMER_PATIENCE_MIN: 6000,
-  DIFFICULTY_INCREASE_RATE: 0.98,  // 2% decrease per customer
+  // Patience (ms) - Harder difficulty
+  CUSTOMER_PATIENCE_BASE: 18000,      // Reduced from 20000
+  CUSTOMER_PATIENCE_MIN: 4000,        // Reduced from 6000 for harder gameplay
+  DIFFICULTY_INCREASE_RATE: 0.95,     // Increased from 0.98 (5% decrease per customer instead of 2%)
 
   // Economy
   BASE_PAYMENT: 5,
@@ -109,13 +109,6 @@ export const FOOD_ITEMS: FoodItem[] = [
     name: 'Coffee',
     emoji: '☕',
     color: '#6F4E37',
-    category: 'drink'
-  },
-  {
-    id: 'cappuccino',
-    name: 'Cappuccino',
-    emoji: '🧋',
-    color: '#A67C52',
     category: 'drink'
   },
   {
