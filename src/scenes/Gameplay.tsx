@@ -246,9 +246,9 @@ export function Gameplay({
                 {customer.type.emoji}
               </div>
 
-              {/* Patience Bar - Original */}
+              {/* Patience Bar - Closer to customer */}
               <div
-                className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-10 h-1.5 rounded-full overflow-hidden bg-gray-200/50"
+                className="absolute bottom-1 left-1/2 -translate-x-1/2 w-12 h-2 rounded-full overflow-hidden bg-gray-200/50 shadow-sm"
               >
                 <div
                   className="h-full transition-all duration-200"

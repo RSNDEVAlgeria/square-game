@@ -99,20 +99,6 @@ export const WAITERS: Waiter[] = [
       speedBonus: 'Balanced',
       staminaBonus: '+25%'
     }
-  },
-  {
-    id: 4,
-    name: 'Leo',
-    emoji: '🧒',
-    color: 'from-amber-400 to-amber-600',
-    speed: 1.05,  // Slight speed boost
-    stamina: 0.8,
-    tipBonus: 1.45,  // High risk, high reward
-    description: 'Lucky charm with unpredictable bonuses',
-    stats: {
-      speedBonus: '+5%',
-      staminaBonus: '-20%'
-    }
   }
 ];
 
