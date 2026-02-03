@@ -420,21 +420,21 @@ export function Gameplay({
           </div>
         </div>
 
-        {/* Ingredients Menu (Redesigned Bottom Sheet) - New */}
+        {/* Ingredients Menu (Redesigned Bottom Sheet) - Moved up for mobile */}
         <div
-          className="w-full bg-white/95 backdrop-blur-2xl rounded-t-[3rem] shadow-[0_-10px_60px_-15px_rgba(0,0,0,0.15)] border-t border-white/60 p-6 pb-8 relative overflow-hidden"
+          className="w-full bg-white/95 backdrop-blur-2xl rounded-t-[3rem] shadow-[0_-10px_60px_-15px_rgba(0,0,0,0.15)] border-t border-white/60 p-4 pb-4 relative overflow-hidden"
         >
           {/* Glass glare effect */}
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-50" />
 
-          <div className="flex flex-col gap-5 max-w-md mx-auto">
+          <div className="flex flex-col gap-3 max-w-md mx-auto">
             {/* Grab Handle */}
             <div className="flex items-center justify-center opacity-30">
               <div className="h-1.5 w-16 rounded-full bg-slate-400" />
             </div>
 
             {/* Ingredients Grid */}
-            <div className="grid grid-cols-4 sm:grid-cols-5 gap-y-4 gap-x-3 justify-items-center">
+            <div className="grid grid-cols-4 sm:grid-cols-5 gap-y-3 gap-x-3 justify-items-center">
               {FOOD_ITEMS.map((item) => (
                 <button
                   key={item.id}
