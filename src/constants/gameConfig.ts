@@ -235,13 +235,13 @@ export const FOOD_POSITIONS: Record<string, { x: number; y: number }> = {
 };
 
 // ===== CUSTOMER POSITIONS (5 slots in front of counter) =====
-// Moved to top (Y: 120)
+// Moved to top (Y: 120) - Increased spacing to prevent overlap
 export const CUSTOMER_POSITIONS: { x: number; y: number }[] = [
-  { x: 60, y: 240 },
-  { x: 130, y: 240 },
-  { x: 200, y: 240 },
-  { x: 270, y: 240 },
-  { x: 340, y: 240 }
+  { x: 42, y: 240 },
+  { x: 126, y: 240 },
+  { x: 210, y: 240 },
+  { x: 294, y: 240 },
+  { x: 378, y: 240 }
 ];
 
 // ===== COUNTER ELEMENTS POSITIONS =====

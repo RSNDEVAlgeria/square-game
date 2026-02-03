@@ -76,6 +76,7 @@ export function Gameplay({
   const canvasRef = useRef<HTMLDivElement>(null);
   const trashRef = useRef<HTMLButtonElement>(null);
   const [isTouching, setIsTouching] = useState(false);
+  const touchHandledRef = useRef(false);
   const { hapticFeedback } = useHaptic();
 
   const staminaPercent = (stamina / maxStamina) * 100;
@@ -199,12 +200,16 @@ export function Gameplay({
             <div
               key={customer.id}
               onClick={() => handleCustomerClick(customer, index)}
-              className="absolute cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95 z-20"
+              onTouchStart={(e) => {
+                e.preventDefault();
+                handleCustomerClick(customer, index);
+              }}
+              className="absolute cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 z-20"
               style={{
-                left: pos.x - 30,
-                top: pos.y,
-                width: 60,
-                height: 100,
+                left: pos.x - 35,
+                top: pos.y - 5,
+                width: 70,
+                height: 110,
               }}
             >
               {/* Special Customer Indicator */}
@@ -431,12 +436,28 @@ export function Gameplay({
               {FOOD_ITEMS.map((item) => (
                 <button
                   key={item.id}
-                  onClick={(e) => handleFoodClick(item.id, e)}
+                  onClick={(e) => {
+                    // Prevent double-firing on mobile (touch + click)
+                    if (touchHandledRef.current) {
+                      touchHandledRef.current = false;
+                      return;
+                    }
+                    handleFoodClick(item.id, e);
+                  }}
                   onTouchStart={(e) => {
+                    e.preventDefault();
+                    touchHandledRef.current = true;
                     setIsTouching(true);
                     handleFoodClick(item.id, e);
                   }}
-                  onTouchEnd={() => setIsTouching(false)}
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    setIsTouching(false);
+                    // Reset after a short delay to allow click events on desktop
+                    setTimeout(() => {
+                      touchHandledRef.current = false;
+                    }, 300);
+                  }}
                   className="group relative flex flex-col items-center gap-2 w-full transition-transform active:scale-90"
                 >
                   <div
