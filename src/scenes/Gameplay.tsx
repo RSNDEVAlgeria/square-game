@@ -235,28 +235,30 @@ export function Gameplay({
                 })}
               </div>
 
-              {/* Customer Emoji - Original */}
-              <div
-                className="text-5xl text-center transition-transform duration-200 drop-shadow-md mt-2"
-                style={{
-                  filter: patienceRatio < 0.25 ? 'grayscale(0.5)' : 'none',
-                  transform: `scale(${0.9 + (patienceRatio * 0.1)})`
-                }}
-              >
-                {customer.type.emoji}
-              </div>
-
-              {/* Patience Bar - Directly under customer */}
-              <div
-                className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-12 h-2 rounded-full overflow-hidden bg-gray-200/50 shadow-sm"
-              >
+              {/* Customer Emoji with Patience Bar */}
+              <div className="flex flex-col items-center gap-1">
                 <div
-                  className="h-full transition-all duration-200"
+                  className="text-5xl text-center transition-transform duration-200 drop-shadow-md"
                   style={{
-                    width: `${patienceRatio * 100}%`,
-                    background: patienceColor
+                    filter: patienceRatio < 0.25 ? 'grayscale(0.5)' : 'none',
+                    transform: `scale(${0.9 + (patienceRatio * 0.1)})`
                   }}
-                />
+                >
+                  {customer.type.emoji}
+                </div>
+
+                {/* Patience Bar - Directly under customer */}
+                <div
+                  className="w-12 h-2 rounded-full overflow-hidden bg-gray-200/50 shadow-sm"
+                >
+                  <div
+                    className="h-full transition-all duration-200"
+                    style={{
+                      width: `${patienceRatio * 100}%`,
+                      background: patienceColor
+                    }}
+                  />
+                </div>
               </div>
             </div>
           );
