@@ -360,8 +360,8 @@ export function Gameplay({
         </div>
       </div>
 
-      {/* --- BOTTOM CONTROLS (NEW) --- */}
-      <div className="absolute bottom-0 left-0 right-0 z-30 flex flex-col items-center">
+      {/* --- BOTTOM CONTROLS - Positioned under customers --- */}
+      <div className="absolute top-[380px] left-0 right-0 z-30 flex flex-col items-center">
 
         {/* Prep Station (Floating Card) - New */}
         <div className="mb-2 relative">
