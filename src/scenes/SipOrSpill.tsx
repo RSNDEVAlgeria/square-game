@@ -363,7 +363,7 @@ export function SipOrSpill({ onBack }: SipOrSpillProps) {
         : (isCouplesMode ? 'from-purple-400 to-pink-400' : 'from-green-400 to-emerald-400');
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-center p-6 relative"
+        <div className="w-full h-full flex flex-col items-center justify-start pt-28 p-6 relative overflow-y-auto no-scrollbar"
             style={{
                 background: isCouplesMode
                     ? 'linear-gradient(135deg, #FFF5F7 0%, #FFE4E9 100%)'
@@ -444,8 +444,8 @@ export function SipOrSpill({ onBack }: SipOrSpillProps) {
                     onClick={handleSkip}
                     disabled={skipsRemaining === 0}
                     className={`py-3 rounded-2xl font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition-all ${skipsRemaining > 0
-                            ? 'bg-amber-100 text-amber-800 border-2 border-amber-300 hover:bg-amber-200'
-                            : 'bg-gray-200 text-gray-400 border-2 border-gray-300 cursor-not-allowed'
+                        ? 'bg-amber-100 text-amber-800 border-2 border-amber-300 hover:bg-amber-200'
+                        : 'bg-gray-200 text-gray-400 border-2 border-gray-300 cursor-not-allowed'
                         }`}
                 >
                     <SkipForward size={16} />

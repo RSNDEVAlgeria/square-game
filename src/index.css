@@ -240,8 +240,21 @@
   .overflow-y-auto {
     scroll-snap-type: y proximity;
   }
-  
-  .overflow-y-auto > div > * {
+
+  .overflow-y-auto>div>* {
     scroll-snap-align: start;
   }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
