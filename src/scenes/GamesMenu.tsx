@@ -54,6 +54,33 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
                 className="absolute bottom-[15%] right-[10%] text-4xl opacity-10 z-0"
             >🌿</motion.div>
 
+            {/* RSN-dev Watermark */}
+            <a
+                href="https://rsndev.netlify.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-4 left-4 z-50 flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity no-underline group"
+            >
+                <img
+                    src="/rsn-logo.png"
+                    alt="RSN DEV"
+                    className="w-10 h-10 object-contain drop-shadow-sm"
+                    onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.parentElement!.querySelector('.fallback-logo')!.classList.remove('hidden');
+                    }}
+                />
+                {/* Fallback if logo missing */}
+                <div className="fallback-logo hidden w-10 h-10 bg-[#1B4D3E] rounded-full flex items-center justify-center text-amber-100 font-bold text-xs ring-2 ring-amber-100/50">
+                    RSN
+                </div>
+
+                <div className="flex flex-col">
+                    <span className="text-[10px] font-bold text-[#1B4D3E] uppercase tracking-wider leading-tight">Made by</span>
+                    <span className="text-xs font-black text-[#1B4D3E] group-hover:text-[#2E8B57] transition-colors leading-tight">RSN-dev</span>
+                </div>
+            </a>
+
             <header className="text-center mt-12 mb-10 z-10">
                 <motion.div
                     initial={{ scale: 0 }}
