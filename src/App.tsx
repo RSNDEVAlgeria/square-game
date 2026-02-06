@@ -6,10 +6,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useGameState } from '@/hooks/useGameState';
 import { useAudio } from '@/hooks/useAudio';
+import { GamesMenu } from '@/scenes/GamesMenu';
 import { MainMenu } from '@/scenes/MainMenu';
 import { WaiterSelection } from '@/scenes/WaiterSelection';
 import { Gameplay } from '@/scenes/Gameplay';
 import { GameOver } from '@/scenes/GameOver';
+import { XO } from '@/scenes/XO';
+import { Sudoku } from '@/scenes/Sudoku';
 import { Shop } from '@/components/Shop';
 import { PauseOverlay, SettingsOverlay } from '@/components/Overlays';
 import { Toaster } from '@/components/ui/sonner';
@@ -40,6 +43,7 @@ function App() {
 
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [currentView, setCurrentView] = useState<'games-menu' | 'cooking' | 'xo' | 'sudoku'>('games-menu');
 
   // Audio management
   const { playSound, initAudio } = useAudio(gameState.soundEnabled);
@@ -88,15 +92,6 @@ function App() {
 
 
 
-
-  const handleExit = useCallback(() => {
-    playSound('click');
-    if (confirm('Exit Square Coffee?')) {
-      window.close();
-      // Fallback since window.close() may not work
-      alert('Thanks for playing Square Coffee! ☕');
-    }
-  }, [playSound]);
 
   const handleWaiterSelect = useCallback((waiterId: number) => {
     playSound('click');
@@ -150,6 +145,22 @@ function App() {
     addFloatingText(x, y, text, color);
   }, [addFloatingText]);
 
+  const handleGameNavigate = useCallback((gameId: string) => {
+    playSound('click');
+    if (gameId === 'cooking') {
+      setCurrentView('cooking');
+    } else if (gameId === 'xo') {
+      setCurrentView('xo');
+    } else if (gameId === 'sudoku') {
+      setCurrentView('sudoku');
+    }
+  }, [playSound]);
+
+  const handleBackToGamesMenu = useCallback(() => {
+    playSound('click');
+    setCurrentView('games-menu');
+  }, [playSound]);
+
   // ===== RENDER =====
   return (
     <div className="w-full h-screen flex items-center justify-center overflow-hidden bg-gray-900">
@@ -161,91 +172,111 @@ function App() {
           aspectRatio: '9/16'
         }}
       >
-        {/* Main Menu Scene */}
-        {gameState.currentScene === 'main-menu' && (
-          <MainMenu
-            onPlay={handlePlay}
-            onShop={handleOpenShop}
-            onSettings={handleOpenSettings}
-            onExit={handleExit}
-          />
+        {/* Games Menu - Initial Landing Page */}
+        {currentView === 'games-menu' && (
+          <GamesMenu onNavigate={handleGameNavigate} />
         )}
 
-        {/* Waiter Selection Scene */}
-        {gameState.currentScene === 'waiter-selection' && (
-          <WaiterSelection
-            onSelect={handleWaiterSelect}
-            onStart={handleStartGame}
-            selectedWaiter={gameState.selectedWaiter}
-          />
+        {/* XO Game */}
+        {currentView === 'xo' && (
+          <XO onBack={handleBackToGamesMenu} />
         )}
 
-        {/* Gameplay Scene */}
-        {gameState.currentScene === 'gameplay' && (
-          <Gameplay
-            score={gameState.score}
-            money={gameState.money}
-            stamina={gameState.stamina}
-            maxStamina={gameState.maxStamina}
-            combo={gameState.combo}
-            customers={customers}
-            plateItems={plate.items}
-            floatingTexts={floatingTexts}
-            inventory={gameState.inventory}
-            upgradeLevels={gameState.upgrades}
-            activePowerUps={activePowerUps}
-            onPause={handlePause}
-            onAddToPlate={handleAddToPlate}
-            onClearPlate={handleClearPlate}
-            onServeCustomer={handleServeCustomer}
-            onAddFloatingText={handleAddFloatingText}
-            onActivatePowerUp={activatePowerUp}
-            onPlaySound={playSound}
-          />
+        {/* Sudoku Game */}
+        {currentView === 'sudoku' && (
+          <Sudoku onBack={handleBackToGamesMenu} />
         )}
 
-        {/* Game Over Scene */}
-        {gameState.currentScene === 'game-over' && (
-          <GameOver
-            score={gameState.score}
-            money={gameState.money}
-            customersServed={gameState.customersServed}
-            onPlayAgain={handlePlayAgain}
-            onMainMenu={handleMainMenu}
-          />
+        {/* Cooking Game Scenes - Only show when currentView is 'cooking' */}
+        {currentView === 'cooking' && (
+          <>
+            {/* Main Menu Scene */}
+            {gameState.currentScene === 'main-menu' && (
+              <MainMenu
+                onPlay={handlePlay}
+                onShop={handleOpenShop}
+                onSettings={handleOpenSettings}
+                onBack={handleBackToGamesMenu}
+              />
+            )}
+
+            {/* Waiter Selection Scene */}
+            {gameState.currentScene === 'waiter-selection' && (
+              <WaiterSelection
+                onSelect={handleWaiterSelect}
+                onStart={handleStartGame}
+                selectedWaiter={gameState.selectedWaiter}
+              />
+            )}
+
+            {/* Gameplay Scene */}
+            {gameState.currentScene === 'gameplay' && (
+              <Gameplay
+                score={gameState.score}
+                money={gameState.money}
+                stamina={gameState.stamina}
+                maxStamina={gameState.maxStamina}
+                combo={gameState.combo}
+                customers={customers}
+                plateItems={plate.items}
+                floatingTexts={floatingTexts}
+                inventory={gameState.inventory}
+                upgradeLevels={gameState.upgrades}
+                activePowerUps={activePowerUps}
+                onPause={handlePause}
+                onAddToPlate={handleAddToPlate}
+                onClearPlate={handleClearPlate}
+                onServeCustomer={handleServeCustomer}
+                onAddFloatingText={handleAddFloatingText}
+                onActivatePowerUp={activatePowerUp}
+                onPlaySound={playSound}
+              />
+            )}
+
+            {/* Game Over Scene */}
+            {gameState.currentScene === 'game-over' && (
+              <GameOver
+                score={gameState.score}
+                money={gameState.money}
+                customersServed={gameState.customersServed}
+                onPlayAgain={handlePlayAgain}
+                onMainMenu={handleMainMenu}
+              />
+            )}
+
+            {/* Pause Overlay */}
+            <PauseOverlay
+              isOpen={gameState.isPaused && !gameState.isGameOver && gameState.currentScene === 'gameplay'}
+              onResume={handleResume}
+              onRestart={handleRestart}
+              onMainMenu={handleMainMenu}
+            />
+
+            {/* Settings Overlay - shown on main menu */}
+            <SettingsOverlay
+              isOpen={isSettingsOpen}
+              soundEnabled={gameState.soundEnabled}
+              onToggleSound={toggleSound}
+              onClose={handleCloseSettings}
+            />
+
+            {/* Shop Modal */}
+            <Shop
+              isOpen={isShopOpen}
+              onClose={handleCloseShop}
+              money={gameState.money}
+              totalMoneyEarned={gameState.totalMoneyEarned}
+              upgradeLevels={gameState.upgrades}
+              onPurchaseUpgrade={purchaseUpgrade}
+              onPurchasePowerUp={purchasePowerUp}
+              onPlaySound={playSound}
+            />
+          </>
         )}
 
-        {/* Pause Overlay */}
-        <PauseOverlay
-          isOpen={gameState.isPaused && !gameState.isGameOver && gameState.currentScene === 'gameplay'}
-          onResume={handleResume}
-          onRestart={handleRestart}
-          onMainMenu={handleMainMenu}
-        />
-
-        {/* Settings Overlay - shown on main menu */}
-        <SettingsOverlay
-          isOpen={isSettingsOpen}
-          soundEnabled={gameState.soundEnabled}
-          onToggleSound={toggleSound}
-          onClose={handleCloseSettings}
-        />
-
-        {/* Shop Modal */}
-        <Shop
-          isOpen={isShopOpen}
-          onClose={handleCloseShop}
-          money={gameState.money}
-          totalMoneyEarned={gameState.totalMoneyEarned}
-          upgradeLevels={gameState.upgrades}
-          onPurchaseUpgrade={purchaseUpgrade}
-          onPurchasePowerUp={purchasePowerUp}
-          onPlaySound={playSound}
-        />
+        {/* Toast notifications */}
+        <Toaster />
       </div>
-
-      {/* Toast notifications */}
-      <Toaster />
     </div>
   );
 }

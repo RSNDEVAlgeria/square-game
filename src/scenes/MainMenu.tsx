@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Coffee, Play, ShoppingBag } from 'lucide-react';
+import { Coffee, Play, ShoppingBag, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { THEME } from '@/constants/gameConfig';
 
@@ -12,10 +12,10 @@ interface MainMenuProps {
   onPlay: () => void;
   onShop: () => void;
   onSettings: () => void;
-  onExit: () => void;
+  onBack: () => void;
 }
 
-export function MainMenu({ onPlay, onShop, onSettings, onExit }: MainMenuProps) {
+export function MainMenu({ onPlay, onShop, onSettings, onBack }: MainMenuProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -135,11 +135,12 @@ export function MainMenu({ onPlay, onShop, onSettings, onExit }: MainMenuProps) 
           </Button>
 
           <Button
-            onClick={onExit}
+            onClick={onBack}
             variant="ghost"
-            className="w-full h-10 text-xs font-medium text-amber-900/40 hover:text-amber-900 hover:bg-amber-900/5"
+            className="w-full h-10 text-xs font-medium text-amber-900/40 hover:text-amber-900 hover:bg-amber-900/5 gap-2"
           >
-            Exit Game
+            <ArrowLeft size={14} />
+            Back to Games
           </Button>
         </div>
       </div>
