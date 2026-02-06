@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { Utensils, Grid3X3, Swords, Coffee, Star, ChevronRight } from 'lucide-react';
+import { Utensils, Grid3X3, Swords, Coffee, Star, ChevronRight, Heart } from 'lucide-react';
 
 interface GamesMenuProps {
     onNavigate: (gameId: string) => void;
@@ -19,6 +19,14 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
             icon: <Utensils size={32} />,
             color: 'linear-gradient(135deg, #1B4D3E, #2E8B57)',
             badge: 'Popular'
+        },
+        {
+            id: 'sip-or-spill',
+            title: 'Sip or Spill ☕',
+            desc: 'Truth or Dare for Coffee Lovers',
+            icon: <Heart size={32} />,
+            color: 'linear-gradient(135deg, #D4698B, #E85D75)',
+            badge: 'Social'
         },
         {
             id: 'sudoku',
@@ -106,40 +114,59 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
                 </div>
             </header>
 
-            <div className="w-full flex flex-col gap-4 z-10 flex-1">
-                {menuItems.map((item, index) => (
-                    <motion.div
-                        key={item.id}
-                        initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.15 }}
-                        whileHover={{ scale: 1.03, x: 5 }}
-                        whileTap={{ scale: 0.97 }}
-                        className="bg-white rounded-3xl p-4 flex items-center gap-4 shadow-md cursor-pointer border border-[#D2B48C]/20 relative"
-                        onClick={() => onNavigate(item.id)}
-                    >
-                        <div
-                            className="w-16 h-16 rounded-2xl flex items-center justify-center text-white flex-shrink-0"
-                            style={{ background: item.color }}
-                        >
-                            {item.icon}
-                        </div>
-                        <div className="flex-1">
-                            <div className="flex flex-col items-start gap-0.5">
-                                <span className="text-[0.65rem] font-extrabold text-[#4B3621] uppercase">
-                                    {item.badge}
-                                </span>
-                                <h3 className="m-0 text-[#2C1810] text-xl font-bold">
-                                    {item.title}
-                                </h3>
-                            </div>
-                            <p className="mt-1 mb-0 text-[#8B735B] text-sm">
-                                {item.desc}
-                            </p>
-                        </div>
-                        <ChevronRight className="text-[#D2B48C] opacity-50" size={20} />
-                    </motion.div>
-                ))}
+            {/* Scrollable Games Container */}
+            <div className="w-full flex-1 relative z-10 overflow-hidden">
+                {/* Scroll Indicator - Top */}
+                <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-[#FAF9F6] to-transparent pointer-events-none z-20 opacity-60" />
+
+                {/* Scrollable Games List */}
+                <div
+                    className="w-full h-full overflow-y-auto overflow-x-hidden px-1 py-2 scroll-smooth"
+                    style={{
+                        scrollbarWidth: 'thin',
+                        scrollbarColor: '#D2B48C #F5F5DC',
+                        WebkitOverflowScrolling: 'touch'
+                    }}
+                >
+                    <div className="flex flex-col gap-4 pb-4">
+                        {menuItems.map((item, index) => (
+                            <motion.div
+                                key={item.id}
+                                initial={{ opacity: 0, x: -30 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.15 }}
+                                whileHover={{ scale: 1.03, x: 5 }}
+                                whileTap={{ scale: 0.97 }}
+                                className="bg-white rounded-3xl p-4 flex items-center gap-4 shadow-md cursor-pointer border border-[#D2B48C]/20 relative hover:shadow-xl transition-shadow"
+                                onClick={() => onNavigate(item.id)}
+                            >
+                                <div
+                                    className="w-16 h-16 rounded-2xl flex items-center justify-center text-white flex-shrink-0"
+                                    style={{ background: item.color }}
+                                >
+                                    {item.icon}
+                                </div>
+                                <div className="flex-1">
+                                    <div className="flex flex-col items-start gap-0.5">
+                                        <span className="text-[0.65rem] font-extrabold text-[#4B3621] uppercase">
+                                            {item.badge}
+                                        </span>
+                                        <h3 className="m-0 text-[#2C1810] text-xl font-bold">
+                                            {item.title}
+                                        </h3>
+                                    </div>
+                                    <p className="mt-1 mb-0 text-[#8B735B] text-sm">
+                                        {item.desc}
+                                    </p>
+                                </div>
+                                <ChevronRight className="text-[#D2B48C] opacity-50" size={20} />
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Scroll Indicator - Bottom */}
+                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#FAF9F6] to-transparent pointer-events-none z-20 opacity-60" />
             </div>
 
             <footer className="mt-auto w-full text-center pb-8 pt-4">

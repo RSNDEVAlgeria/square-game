@@ -13,6 +13,7 @@ import { Gameplay } from '@/scenes/Gameplay';
 import { GameOver } from '@/scenes/GameOver';
 import { XO } from '@/scenes/XO';
 import { Sudoku } from '@/scenes/Sudoku';
+import { SipOrSpill } from '@/scenes/SipOrSpill';
 import { Shop } from '@/components/Shop';
 import { PauseOverlay, SettingsOverlay } from '@/components/Overlays';
 import { Toaster } from '@/components/ui/sonner';
@@ -43,7 +44,7 @@ function App() {
 
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<'games-menu' | 'cooking' | 'xo' | 'sudoku'>('games-menu');
+  const [currentView, setCurrentView] = useState<'games-menu' | 'cooking' | 'xo' | 'sudoku' | 'sip-or-spill'>('games-menu');
 
   // Audio management
   const { playSound, initAudio } = useAudio(gameState.soundEnabled);
@@ -153,6 +154,8 @@ function App() {
       setCurrentView('xo');
     } else if (gameId === 'sudoku') {
       setCurrentView('sudoku');
+    } else if (gameId === 'sip-or-spill') {
+      setCurrentView('sip-or-spill');
     }
   }, [playSound]);
 
@@ -185,6 +188,11 @@ function App() {
         {/* Sudoku Game */}
         {currentView === 'sudoku' && (
           <Sudoku onBack={handleBackToGamesMenu} />
+        )}
+
+        {/* Sip or Spill Game */}
+        {currentView === 'sip-or-spill' && (
+          <SipOrSpill onBack={handleBackToGamesMenu} />
         )}
 
         {/* Cooking Game Scenes - Only show when currentView is 'cooking' */}

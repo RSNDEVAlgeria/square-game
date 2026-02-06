@@ -209,3 +209,39 @@
   -webkit-user-select: none;
   -webkit-touch-callout: none;
 }
+
+/* Custom scrollbar styling for games menu */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #F5F5DC;
+  border-radius: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #D2B48C, #C19A6B);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #C19A6B, #8B5A2B);
+}
+
+/* Smooth scroll snap for better UX */
+@supports (scroll-snap-type: y proximity) {
+  .overflow-y-auto {
+    scroll-snap-type: y proximity;
+  }
+  
+  .overflow-y-auto > div > * {
+    scroll-snap-align: start;
+  }
+}
