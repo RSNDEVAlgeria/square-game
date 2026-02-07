@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { Utensils, Grid3X3, Swords, Coffee, Star, ChevronRight, Heart } from 'lucide-react';
+import { Utensils, Grid3X3, Swords, Coffee, Star, ChevronRight, Heart, Crown } from 'lucide-react';
 
 interface GamesMenuProps {
     onNavigate: (gameId: string) => void;
@@ -43,6 +43,14 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
             icon: <Swords size={32} />,
             color: 'linear-gradient(135deg, #C19A6B, #8B5A2B)',
             badge: 'Quick'
+        },
+        {
+            id: 'chess',
+            title: 'Chess',
+            desc: 'Vs Friends or Vs AI',
+            icon: <Crown size={32} />,
+            color: 'linear-gradient(135deg, #2C1810, #4B3621)',
+            badge: 'Classic'
         }
     ];
 
