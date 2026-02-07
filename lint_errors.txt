@@ -1,0 +1,326 @@
+﻿
+> my-app@0.0.0 lint
+> eslint .
+
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\Overlays.tsx
+   26:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\Overlays.tsx:26:7
+  24 |       setTimeout(() => setIsVisible(true), 50);
+  25 |     } else {
+> 26 |       setIsVisible(false);
+     |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  27 |     }
+  28 |   }, [isOpen]);
+  29 |          react-hooks/set-state-in-effect
+  134:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\Overlays.tsx:134:7
+  132 |       setTimeout(() => setIsVisible(true), 50);
+  133 |     } else {
+> 134 |       setIsVisible(false);
+      |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  135 |     }
+  136 |   }, [isOpen]);
+  137 |  react-hooks/set-state-in-effect
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\ParticleEffects.tsx
+  41:22  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\ParticleEffects.tsx:41:22
+  39 |
+  40 |     const emoji = PARTICLE_EMOJIS[particle.type];
+> 41 |     const randomX = (Math.random() - 0.5) * 100;
+     |                      ^^^^^^^^^^^^^ Cannot call impure function
+  42 |     const randomRotate = (Math.random() - 0.5) * 360;
+  43 |
+  44 |     return (                    react-hooks/purity
+  42:27  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\ParticleEffects.tsx:42:27
+  40 |     const emoji = PARTICLE_EMOJIS[particle.type];
+  41 |     const randomX = (Math.random() - 0.5) * 100;
+> 42 |     const randomRotate = (Math.random() - 0.5) * 360;
+     |                           ^^^^^^^^^^^^^ Cannot call impure function
+  43 |
+  44 |     return (
+  45 |         <div  react-hooks/purity
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\PowerUpsPanel.tsx
+   59:47  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\PowerUpsPanel.tsx:59:47
+  57 |         const active = activePowerUps.find(p => p.type === type);
+  58 |         if (!active) return 0;
+> 59 |         return Math.max(0, active.expiresAt - Date.now());
+     |                                               ^^^^^^^^^^ Cannot call impure function
+  60 |     };
+  61 |
+  62 |     return (                                                                                                                                                   react-hooks/purity
+  157:73  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\PowerUpsPanel.tsx:157:73
+  155 |                         const powerUp = POWER_UPS.find(p => p.type === active.type);
+  156 |                         if (!powerUp) return null;
+> 157 |                         const timeLeft = Math.max(0, active.expiresAt - Date.now());
+      |                                                                         ^^^^^^^^^^ Cannot call impure function
+  158 |
+  159 |                         return (
+  160 |                             <div  react-hooks/purity
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\Shop.tsx
+  19:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\siporspill\GameSession.tsx
+   4:60  error    'Sparkles' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+  20:12  error    'isFlipped' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+  29:13  error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/ban-ts-comment
+  39:9   error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/ban-ts-comment
+  44:19  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-explicit-any
+  48:13  error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/ban-ts-comment
+  92:9   error    Error: Cannot access variable before it is declared
+
+`handleNextCard` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\siporspill\GameSession.tsx:92:9
+  90 |     // Initial load
+  91 |     useEffect(() => {
+> 92 |         handleNextCard();
+     |         ^^^^^^^^^^^^^^ `handleNextCard` accessed before it is declared
+  93 |     }, []);
+  94 |
+  95 |     const handleNextCard = () => {
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\siporspill\GameSession.tsx:95:5
+   93 |     }, []);
+   94 |
+>  95 |     const handleNextCard = () => {
+      |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  96 |         setIsFlipped(false);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  97 |         setTimeout(() => {
+      ÔÇª
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 106 |         }, 200);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 107 |     };
+      | ^^^^^^^ `handleNextCard` is declared here
+  108 |
+  109 |     const handleSkip = () => {
+  110 |         if (skipsRemaining > 0) {  react-hooks/immutability
+  93:8   warning  React Hook useEffect has a missing dependency: 'handleNextCard'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           react-hooks/exhaustive-deps
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\ui\badge.tsx
+  46:17  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\ui\button-group.tsx
+  82:3  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\ui\button.tsx
+  62:18  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\ui\form.tsx
+  159:3  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\ui\navigation-menu.tsx
+  167:3  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\ui\sidebar.tsx
+  611:26  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\ui\sidebar.tsx:611:26
+  609 |   // Random width between 50 to 90%.
+  610 |   const width = React.useMemo(() => {
+> 611 |     return `${Math.floor(Math.random() * 40) + 50}%`
+      |                          ^^^^^^^^^^^^^ Cannot call impure function
+  612 |   }, [])
+  613 |
+  614 |   return (  react-hooks/purity
+  725:3   error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-refresh/only-export-components
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\components\ui\toggle.tsx
+  45:18  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\hooks\useAudio.ts
+   82:9  error  Unexpected lexical declaration in case block  no-case-declarations
+  102:9  error  Unexpected lexical declaration in case block  no-case-declarations
+  142:9  error  Unexpected lexical declaration in case block  no-case-declarations
+  162:9  error  Unexpected lexical declaration in case block  no-case-declarations
+  181:9  error  Unexpected lexical declaration in case block  no-case-declarations
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\hooks\useGameState.ts
+   90:38  error    Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\hooks\useGameState.ts:90:38
+  88 |   // Game loop refs
+  89 |   const gameLoopRef = useRef<number | null>(null);
+> 90 |   const lastTimeRef = useRef<number>(Date.now());
+     |                                      ^^^^^^^^^^ Cannot call impure function
+  91 |   const nextSpawnTimeRef = useRef<number>(CONFIG.CUSTOMER_SPAWN_INTERVAL_BASE);
+  92 |
+  93 |   // ===== SCENE MANAGEMENT =====                                                       react-hooks/purity
+  118:35  error    Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\hooks\useGameState.ts:118:35
+  116 |   // Keep track of session-specific achievement progress
+  117 |   const perfectStreakRef = useRef(0);
+> 118 |   const gameStartTimeRef = useRef(Date.now());
+      |                                   ^^^^^^^^^^ Cannot call impure function
+  119 |
+  120 |   const unlockAchievement = useCallback((achievementId: string) => {
+  121 |     const achievement = ACHIEVEMENTS.find(a => a.id === achievementId);  react-hooks/purity
+  173:6   warning  React Hook useCallback has unnecessary dependencies: 'gameState.achievements', 'gameState.inventory', 'gameState.money', 'gameState.soundEnabled', and 'gameState.totalMoneyEarned'. Either exclude them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react-hooks/exhaustive-deps
+  295:23  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     @typescript-eslint/no-explicit-any
+  398:6   warning  React Hook useCallback has an unnecessary dependency: 'gameState.difficulty'. Either exclude it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               react-hooks/exhaustive-deps
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\scenes\GameOver.tsx
+  25:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\scenes\GameOver.tsx:25:5
+  23 |
+  24 |   useEffect(() => {
+> 25 |     setIsVisible(true);
+     |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  26 |     
+  27 |     // Animate numbers counting up
+  28 |     const scoreInterval = setInterval(() => {  react-hooks/set-state-in-effect
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\scenes\Gameplay.tsx
+   86:39  error    Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. The inferred dependencies did not match the manually specified dependencies, which could cause the value to change more or less frequently than expected. The inferred dependency was `hapticFeedback`, but the source dependencies were [onAddToPlate, onPlaySound, onAddFloatingText]. Inferred different dependency than source.
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\scenes\Gameplay.tsx:86:39
+   84 |
+   85 |   // Handle food item click
+>  86 |   const handleFoodClick = useCallback((foodId: string, event: React.MouseEvent | React.TouchEvent) => {
+      |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  87 |     onAddToPlate(foodId);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^
+>  88 |     onPlaySound('click');
+      ÔÇª
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 116 |     }
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 117 |   }, [onAddToPlate, onPlaySound, onAddFloatingText]);
+      | ^^^^ Could not preserve existing manual memoization
+  118 |
+  119 |   // Handle trash click
+  120 |   const handleTrashClick = useCallback(() => {                                                                                                                            react-hooks/preserve-manual-memoization
+  117:6   warning  React Hook useCallback has a missing dependency: 'hapticFeedback'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       react-hooks/exhaustive-deps
+  120:40  error    Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. The inferred dependencies did not match the manually specified dependencies, which could cause the value to change more or less frequently than expected. The inferred dependency was `hapticFeedback`, but the source dependencies were [onClearPlate, onPlaySound, onAddFloatingText, plateItems.length]. Inferred different dependency than source.
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\scenes\Gameplay.tsx:120:40
+  118 |
+  119 |   // Handle trash click
+> 120 |   const handleTrashClick = useCallback(() => {
+      |                                        ^^^^^^^
+> 121 |     if (plateItems.length > 0) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 122 |       onClearPlate();
+      ÔÇª
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 137 |     }
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 138 |   }, [onClearPlate, onPlaySound, onAddFloatingText, plateItems.length]);
+      | ^^^^ Could not preserve existing manual memoization
+  139 |
+  140 |   // Handle customer click (serve)
+  141 |   const handleCustomerClick = useCallback((customer: Customer, index: number) => {                                                                                                                                    react-hooks/preserve-manual-memoization
+  138:6   warning  React Hook useCallback has a missing dependency: 'hapticFeedback'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       react-hooks/exhaustive-deps
+  141:43  error    Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. The inferred dependencies did not match the manually specified dependencies, which could cause the value to change more or less frequently than expected. The inferred dependency was `hapticFeedback`, but the source dependencies were [plateItems.length, onServeCustomer, onPlaySound, onAddFloatingText]. Inferred different dependency than source.
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\scenes\Gameplay.tsx:141:43
+  139 |
+  140 |   // Handle customer click (serve)
+> 141 |   const handleCustomerClick = useCallback((customer: Customer, index: number) => {
+      |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 142 |     if (plateItems.length === 0) return;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 143 |
+      ÔÇª
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 158 |     onAddFloatingText(pos.x, pos.y - 50, result.message, result.color);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 159 |   }, [plateItems.length, onServeCustomer, onPlaySound, onAddFloatingText]);
+      | ^^^^ Could not preserve existing manual memoization
+  160 |
+  161 |   // Mouse/Touch tracking for drag effect
+  162 |   const handleMove = useCallback(() => {  react-hooks/preserve-manual-memoization
+  159:6   warning  React Hook useCallback has a missing dependency: 'hapticFeedback'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       react-hooks/exhaustive-deps
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\scenes\SipOrSpill.tsx
+  219:71  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\scenes\XO.tsx
+  69:21  error    Error: Cannot access variable before it is declared
+
+`handleClick` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\scenes\XO.tsx:69:21
+  67 |                 const move = getBestMove(board);
+  68 |                 if (move !== undefined) {
+> 69 |                     handleClick(move, true);
+     |                     ^^^^^^^^^^^ `handleClick` accessed before it is declared
+  70 |                 }
+  71 |             }, 600);
+  72 |             return () => clearTimeout(timer);
+
+C:\Users\Ets BENNEDDIF\Desktop\code\square-game\src\scenes\XO.tsx:76:5
+   74 |     }, [isXNext, winner, board, gameMode]);
+   75 |
+>  76 |     const handleClick = (i: number, isAuto = false) => {
+      |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  77 |         if (winner || board[i]) return;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  78 |         // In AI mode, prevent player from clicking during bot's turn
+      ÔÇª
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  98 |         }
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  99 |     };
+      | ^^^^^^^ `handleClick` is declared here
+  100 |
+  101 |     const reset = () => {
+  102 |         setBoard(Array(9).fill(null));  react-hooks/immutability
+  74:8   warning  React Hook useEffect has missing dependencies: 'getBestMove' and 'handleClick'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/exhaustive-deps
+
+Ô£û 43 problems (36 errors, 7 warnings)
+
