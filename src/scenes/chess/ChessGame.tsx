@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { Chessboard, ChessboardProvider } from 'react-chessboard';
-import { ArrowLeft, RotateCcw, Copy, RefreshCw, Settings, Trophy, ScrollText, X } from 'lucide-react';
+import { ArrowLeft, RotateCcw, Copy, RefreshCw, Trophy, ScrollText, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Square } from 'chess.js';
 import { useChessGame } from './useChessGame';
@@ -103,13 +103,16 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
 
   const squareStyles: Record<string, React.CSSProperties> = {};
   if (game.lastMove) {
-    squareStyles[game.lastMove.from] = { backgroundColor: 'rgba(155, 199, 0, 0.5)' };
-    squareStyles[game.lastMove.to] = { backgroundColor: 'rgba(155, 199, 0, 0.5)' }; // Use theme?
+    squareStyles[game.lastMove.from] = { backgroundColor: 'rgba(210, 180, 140, 0.6)' }; // Coffee stain style
+    squareStyles[game.lastMove.to] = { backgroundColor: 'rgba(210, 180, 140, 0.6)' };
   }
   if (selectedSquare) {
-    squareStyles[selectedSquare] = { backgroundColor: 'rgba(105, 185, 105, 0.6)' };
+    squareStyles[selectedSquare] = { backgroundColor: 'rgba(105, 60, 40, 0.5)' }; // Dark coffee selection
     legalTargets.forEach((sq) => {
-      squareStyles[sq] = { backgroundColor: 'rgba(105, 185, 105, 0.4)' };
+      squareStyles[sq] = {
+        background: 'radial-gradient(circle, rgba(105, 60, 40, 0.3) 19%, transparent 20%)',
+        borderRadius: '50%'
+      }; // Dot indicator
     });
   }
 
