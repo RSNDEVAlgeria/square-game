@@ -37,12 +37,21 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
   const [flipEachTurn, setFlipEachTurn] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const historyRef = React.useRef<HTMLDivElement>(null);
+
   const game = useChessGame({
     mode,
     playerSide,
     difficulty,
     persist: true,
   });
+
+  // Auto-scroll history
+  useEffect(() => {
+    if (historyRef.current) {
+      historyRef.current.scrollTop = historyRef.current.scrollHeight;
+    }
+  }, [game.historySan, isSidebarOpen]);
 
   const ai = useChessAI({
     difficulty: difficulty ?? 2,
@@ -387,7 +396,7 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/40 z-30 backdrop-blur-sm"
+              className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
               onClick={() => setIsSidebarOpen(false)}
             />
 
@@ -397,7 +406,7 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="absolute top-0 right-0 bottom-0 w-80 max-w-[90vw] z-40 bg-[#FAF9F6] shadow-2xl border-l border-[#D2B48C] flex flex-col"
+              className="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] z-50 bg-[#FAF9F6] shadow-2xl border-l border-[#D2B48C] flex flex-col"
               style={{ background: 'url("https://www.transparenttextures.com/patterns/paper-fibers.png"), linear-gradient(to bottom, #FAF9F6, #EFEBE9)' }}
             >
               {/* Panel Header */}
@@ -427,31 +436,31 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
               </div>
 
               {/* Move History Table */}
-              <div className="flex-1 overflow-hidden flex flex-col">
-                <div className="grid grid-cols-3 bg-[#D7CCC8]/30 text-[#5D4037] text-xs font-bold py-2 px-3 border-b border-[#D2B48C]/30 uppercase tracking-wider">
+              <div className="flex-1 overflow-hidden flex flex-col relative">
+                <div className="grid grid-cols-3 bg-[#D7CCC8]/30 text-[#5D4037] text-xs font-bold py-2 px-3 border-b border-[#D2B48C]/30 uppercase tracking-wider shrink-0 z-10 backdrop-blur-sm">
                   <div className="text-center opacity-60">#</div>
                   <div>White</div>
                   <div>Black</div>
                 </div>
-                <div className="flex-1 overflow-y-auto p-2 space-y-0.5 scrollbar-thin scrollbar-thumb-[#D2B48C] scrollbar-track-transparent">
+                <div className="flex-1 overflow-y-auto p-2 space-y-0.5 scrollbar-thin scrollbar-thumb-[#D2B48C] scrollbar-track-transparent bg-white/30" ref={historyRef}>
                   {Array.from({ length: Math.ceil(game.historySan.length / 2) }).map((_, i) => (
-                    <div key={i} className={`grid grid-cols-3 text-sm py-1.5 px-3 rounded-lg border border-transparent ${i % 2 === 1 ? 'bg-[#5D4037]/5' : ''} hover:border-[#D2B48C]/30`}>
-                      <div className="text-[#A1887F] text-center font-mono text-xs pt-0.5">{i + 1}.</div>
-                      <div className="font-bold text-[#3E2723]" style={{ fontFamily: 'monospace' }}>{game.historySan[i * 2]}</div>
-                      <div className="font-bold text-[#3E2723]" style={{ fontFamily: 'monospace' }}>{game.historySan[i * 2 + 1] || ''}</div>
+                    <div key={i} className={`grid grid-cols-3 text-sm py-1.5 px-3 rounded-lg border border-transparent ${i % 2 === 1 ? 'bg-[#5D4037]/5' : ''} hover:border-[#D2B48C]/30 transition-colors`}>
+                      <div className="text-[#A1887F] text-center font-mono text-xs pt-0.5 opacity-70">{i + 1}.</div>
+                      <div className="font-bold text-[#3E2723] font-mono">{game.historySan[i * 2]}</div>
+                      <div className="font-bold text-[#3E2723] font-mono">{game.historySan[i * 2 + 1] || ''}</div>
                     </div>
                   ))}
                   {game.historySan.length === 0 && (
                     <div className="flex flex-col items-center justify-center h-40 text-[#A1887F] opacity-60">
-                      <span className="text-4xl mb-2">☕</span>
-                      <span className="text-sm font-medium">Awaiting order...</span>
+                      <ScrollText size={32} className="mb-2 opacity-50" />
+                      <span className="text-sm font-medium">No orders yet...</span>
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Controls Panel */}
-              <div className="p-5 border-t border-[#D2B48C]/30 bg-[#FAF9F6]/80 flex flex-col gap-3">
+              <div className="p-5 border-t border-[#D2B48C]/30 bg-[#FAF9F6]/80 flex flex-col gap-3 backdrop-blur-sm">
                 <div className="grid grid-cols-2 gap-2">
                   <Button
                     size="sm"
@@ -494,8 +503,9 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
                   </label>
                 )}
 
-                <div className="text-center mt-2">
-                  <span className="text-[10px] text-[#A1887F] uppercase tracking-widest opacity-50">Square Café • Est 2024</span>
+                <div className="text-center mt-2 border-t border-[#D2B48C]/20 pt-2">
+                  <div className="text-[10px] text-[#A1887F] uppercase tracking-[0.2em] opacity-60 font-bold mb-1">Square Café</div>
+                  <div className="text-[9px] text-[#D2B48C] font-mono">Thank you for playing!</div>
                 </div>
               </div>
             </motion.div>

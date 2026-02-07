@@ -34,74 +34,83 @@ export interface UseChessGameOptions {
 
 export function useChessGame(options: UseChessGameOptions) {
   const { mode, playerSide = 'white', difficulty = 2, persist = true } = options;
-  const storageKey = CHESS_STORAGE_KEYS[mode];
+  const storageKey = CHESS_STORAGE_KEYS ? CHESS_STORAGE_KEYS[mode] : `chess_${mode}`; // Safer access
 
+  // We use a ref to hold the mutable chess instance, ensuring history is preserved.
+  const chessRef = useMemo(() => new Chess(), []);
+
+  // We use fen state to trigger re-renders
   const [fen, setFen] = useState(DEFAULT_FEN);
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(null);
 
-  const chess = useMemo(() => new Chess(fen), [fen]);
+  // Helper to update state from the chess instance
+  const updateState = useCallback(() => {
+    setFen(chessRef.fen());
+    const hist = chessRef.history({ verbose: true });
+    const last = hist[hist.length - 1];
+    setLastMove(last ? { from: last.from, to: last.to } : null);
+  }, [chessRef]);
 
-  const turn = chess.turn() === 'w' ? 'white' : 'black';
-  const historySan = useMemo(() => chess.history(), [fen]);
-  const status = getGameStatus(chess);
+  const turn = chessRef.turn() === 'w' ? 'white' : 'black';
+  const historySan = chessRef.history(); // This will be re-evaluated on every render
+  const status = getGameStatus(chessRef);
   const isGameOver = status !== 'playing' && status !== 'check';
 
   const legalMoves = useCallback(
-    (square: string) => chess.moves({ square: square as never, verbose: true }).map((m) => m.to),
-    [chess]
+    (square: string) => {
+      return chessRef.moves({ square: square as never, verbose: true }).map((m) => m.to);
+    },
+    [chessRef, fen] // Depend on fen to refresh when board updates
   );
 
   const makeMove = useCallback(
     (from: string, to: string, promotion?: 'q' | 'r' | 'b' | 'n') => {
-      const move = chess.move({ from, to, promotion });
-      if (move) {
-        const newFen = chess.fen();
-        setFen(newFen);
-        setLastMove({ from, to });
-        return true;
+      try {
+        const move = chessRef.move({ from, to, promotion });
+        if (move) {
+          updateState();
+          return true;
+        }
+      } catch (e) {
+        return false;
       }
       return false;
     },
-    [chess]
+    [chessRef, updateState]
   );
 
   const undo = useCallback(() => {
-    const move = chess.undo();
+    const move = chessRef.undo();
     if (move) {
-      const newFen = chess.fen();
-      setFen(newFen);
-      const prev = chess.history({ verbose: true });
-      const last = prev[prev.length - 1];
-      setLastMove(last ? { from: last.from, to: last.to } : null);
+      updateState();
       return true;
     }
     return false;
-  }, [chess]);
+  }, [chessRef, updateState]);
 
   const reset = useCallback(() => {
-    setFen(DEFAULT_FEN);
-    setLastMove(null);
-  }, []);
+    chessRef.reset();
+    updateState();
+  }, [chessRef, updateState]);
 
   const loadFromFen = useCallback((newFen: string) => {
     try {
-      const c = new Chess(newFen);
-      setFen(c.fen());
-      setLastMove(null);
+      chessRef.load(newFen);
+      updateState();
     } catch {
       // ignore invalid FEN
     }
-  }, []);
+  }, [chessRef, updateState]);
 
-  const pgn = useMemo(() => chess.pgn(), [fen]);
+  const pgn = chessRef.pgn();
 
-  // Persist to localStorage when position changes (debounced or on change)
+  // Persist to localStorage when position changes
   useEffect(() => {
     if (!persist || !storageKey) return;
     const state: ChessPersistedState = {
-      fen: chess.fen(),
-      pgn: chess.pgn(),
-      history: chess.history(),
+      fen: chessRef.fen(),
+      pgn: chessRef.pgn(), // This is crucial for history
+      history: chessRef.history(), // Optional, but PGN is the source of truth
       mode,
       savedAt: Date.now(),
     };
@@ -112,34 +121,35 @@ export function useChessGame(options: UseChessGameOptions) {
     try {
       localStorage.setItem(storageKey, JSON.stringify(state));
     } catch {
-      // ignore quota errors
+      // ignore
     }
-  }, [fen, mode, persist, storageKey, playerSide, difficulty, chess, pgn]);
+  }, [fen, mode, persist, storageKey, playerSide, difficulty, chessRef]);
 
-  // Restore from localStorage on mount. Prefer PGN so move history (and undo) is preserved.
+  // Restore from localStorage on mount
   useEffect(() => {
     if (!persist || !storageKey) return;
     try {
       const raw = localStorage.getItem(storageKey);
       if (!raw) return;
-      const state = JSON.parse(raw) as ChessPersistedState;
-      if (state.pgn && state.pgn.trim().length > 0) {
-        const c = new Chess();
-        c.loadPgn(state.pgn, { strict: false });
-        setFen(c.fen());
-        const hist = c.history({ verbose: true });
-        if (hist.length > 0) {
-          const last = hist[hist.length - 1];
-          setLastMove({ from: last.from, to: last.to });
-        }
-      } else if (state.fen) {
-        const c = new Chess(state.fen);
-        setFen(c.fen());
+
+      // Parse safely
+      const state = JSON.parse(raw);
+
+      // If we have a stored PGN, load it to restore history!
+      if (state.pgn) {
+        chessRef.loadPgn(state.pgn);
+        updateState();
       }
-    } catch {
-      // ignore
+      // Fallback to FEN if no PGN (history lost, but position kept)
+      else if (state.fen) {
+        chessRef.load(state.fen);
+        updateState();
+      }
+    } catch (e) {
+      console.error("Failed to load chess state", e);
     }
-  }, [persist, storageKey]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount
 
   return {
     fen,
@@ -154,6 +164,6 @@ export function useChessGame(options: UseChessGameOptions) {
     reset,
     loadFromFen,
     pgn,
-    chess,
+    chess: chessRef,
   };
 }
