@@ -169,6 +169,9 @@ export function BlockBlast({ onBack }: BlockBlastProps) {
     const [previewPosition, setPreviewPosition] = useState<{ row: number; col: number } | null>(null);
     const [gameOver, setGameOver] = useState(false);
     const [combo, setCombo] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragPosition, setDragPosition] = useState<{ x: number; y: number } | null>(null);
+    const [dragOffset, setDragOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
     // Initialize shapes
     useEffect(() => {
@@ -303,24 +306,135 @@ export function BlockBlast({ onBack }: BlockBlastProps) {
     };
 
     const handleCellClick = (row: number, col: number) => {
-        if (draggedShape) {
+        if (draggedShape && !isDragging) {
             placeShape(draggedShape, row, col);
             setPreviewPosition(null);
         }
     };
 
     const handleShapeSelect = (index: number) => {
-        setSelectedShape(index);
-        setDraggedShape(currentShapes[index]);
+        if (!isDragging) {
+            setSelectedShape(index);
+            setDraggedShape(currentShapes[index]);
+        }
     };
 
     const handleCellHover = (row: number, col: number) => {
-        if (draggedShape && canPlaceShape(draggedShape, row, col)) {
+        if (draggedShape && !isDragging && canPlaceShape(draggedShape, row, col)) {
             setPreviewPosition({ row, col });
-        } else {
+        } else if (!isDragging) {
             setPreviewPosition(null);
         }
     };
+
+    // Drag and Drop handlers
+    const handleDragStart = (e: React.MouseEvent | React.TouchEvent, shapeIndex: number) => {
+        const shape = currentShapes[shapeIndex];
+        setSelectedShape(shapeIndex);
+        setDraggedShape(shape);
+        setIsDragging(true);
+
+        // Calculate offset from the center of the shape
+        const target = e.currentTarget as HTMLElement;
+        const rect = target.getBoundingClientRect();
+        const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+        setDragOffset({
+            x: clientX - rect.left,
+            y: clientY - rect.top
+        });
+
+        setDragPosition({
+            x: clientX,
+            y: clientY
+        });
+    };
+
+    const handleDrag = (e: MouseEvent | TouchEvent) => {
+        if (!isDragging || !draggedShape) return;
+
+        const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+        setDragPosition({
+            x: clientX,
+            y: clientY
+        });
+
+        // Calculate grid position from shape's top-left coordinates
+        const gridElement = document.querySelector('.game-grid');
+        if (gridElement) {
+            const rect = gridElement.getBoundingClientRect();
+            const cellSize = rect.width / GRID_SIZE;
+
+            // Adjust coordinates to be relative to the shape's top-left, not the cursor
+            const shapeX = clientX - dragOffset.x;
+            const shapeY = clientY - dragOffset.y;
+
+            // Add a small threshold (half cell) to make snapping feel more natural
+            // This aligns the center of the shape cells with the grid cells
+            const relativeX = shapeX - rect.left + (cellSize / 2);
+            const relativeY = shapeY - rect.top + (cellSize / 2);
+
+            const col = Math.floor(relativeX / cellSize);
+            const row = Math.floor(relativeY / cellSize);
+
+            if (row >= -1 && row <= GRID_SIZE && col >= -1 && col <= GRID_SIZE) {
+                // Determine valid placement
+                if (canPlaceShape(draggedShape, row, col)) {
+                    setPreviewPosition({ row, col });
+                } else {
+                    setPreviewPosition(null);
+                }
+            } else {
+                setPreviewPosition(null);
+            }
+        }
+    };
+
+    const handleDragEnd = () => {
+        if (!isDragging || !draggedShape) return;
+
+        // Reset drag state
+        setIsDragging(false);
+        setDragPosition(null);
+
+        // If we have a valid preview position, place the shape there
+        if (previewPosition) {
+            placeShape(draggedShape, previewPosition.row, previewPosition.col);
+        }
+
+        setPreviewPosition(null);
+        setSelectedShape(null);
+        setDraggedShape(null);
+    };
+
+    // Add global mouse/touch event listeners for dragging
+    useEffect(() => {
+        if (isDragging) {
+            const handleMove = (e: MouseEvent | TouchEvent) => {
+                e.preventDefault();
+                handleDrag(e);
+            };
+
+            const handleEnd = () => {
+                handleDragEnd();
+            };
+
+            window.addEventListener('mousemove', handleMove as any);
+            window.addEventListener('mouseup', handleEnd);
+            window.addEventListener('touchmove', handleMove as any, { passive: false });
+            window.addEventListener('touchend', handleEnd);
+
+            return () => {
+                window.removeEventListener('mousemove', handleMove as any);
+                window.removeEventListener('mouseup', handleEnd);
+                window.removeEventListener('touchmove', handleMove as any);
+                window.removeEventListener('touchend', handleEnd);
+            };
+        }
+    }, [isDragging, draggedShape, previewPosition]);
 
     const reset = () => {
         setGrid(generateRandomStartingGrid());
@@ -419,7 +533,7 @@ export function BlockBlast({ onBack }: BlockBlastProps) {
                 className="p-2 rounded-2xl shadow-2xl mb-5"
                 style={{ background: '#6F4E37' }}
             >
-                <div className="grid gap-1">
+                <div className="grid gap-1 game-grid">
                     {grid.map((row, r) => (
                         <div key={r} className="flex gap-1">
                             {row.map((cell, c) => {
@@ -449,7 +563,7 @@ export function BlockBlast({ onBack }: BlockBlastProps) {
             {/* Available Shapes */}
             <div className="w-full mb-4">
                 <div className="text-amber-200 text-center mb-3 font-semibold">
-                    {draggedShape ? 'Click on the grid to place' : 'Select a shape'}
+                    {isDragging ? 'Place the block!' : 'Drag blocks to the grid'}
                 </div>
                 <div className="flex justify-center gap-4">
                     {currentShapes.map((shape, idx) => (
@@ -457,16 +571,19 @@ export function BlockBlast({ onBack }: BlockBlastProps) {
                             key={idx}
                             whileHover={{ scale: 1.1, y: -5 }}
                             whileTap={{ scale: 0.95 }}
+                            onMouseDown={(e) => handleDragStart(e, idx)}
+                            onTouchStart={(e) => handleDragStart(e, idx)}
                             onClick={() => handleShapeSelect(idx)}
                             className={`
-                                p-3 rounded-xl cursor-pointer transition-all
-                                ${selectedShape === idx
+                                p-3 rounded-xl cursor-pointer transition-all touch-none
+                                ${selectedShape === idx && !isDragging
                                     ? 'bg-gradient-to-br from-[#FFD700] to-[#FFA500] shadow-xl ring-2 ring-white'
                                     : 'bg-white/10 backdrop-blur-sm border border-amber-200/20 hover:bg-white/20'
                                 }
+                                ${isDragging && selectedShape === idx ? 'opacity-0' : 'opacity-100'}
                             `}
                         >
-                            <div className="grid gap-1">
+                            <div className="grid gap-1 pointer-events-none">
                                 {shape.map((row, r) => (
                                     <div key={r} className="flex gap-1">
                                         {row.map((cell, c) => (
@@ -475,7 +592,7 @@ export function BlockBlast({ onBack }: BlockBlastProps) {
                                                 className={`
                                                     w-6 h-6 rounded
                                                     ${cell
-                                                        ? selectedShape === idx
+                                                        ? selectedShape === idx && !isDragging
                                                             ? 'bg-white shadow-md'
                                                             : 'bg-gradient-to-br from-[#D2691E] to-[#8B4513] shadow-md'
                                                         : 'opacity-0'
@@ -490,6 +607,37 @@ export function BlockBlast({ onBack }: BlockBlastProps) {
                     ))}
                 </div>
             </div>
+
+            {/* Dragged Shape Portal */}
+            {isDragging && draggedShape && dragPosition && (
+                <div
+                    className="fixed pointer-events-none z-50 p-2"
+                    style={{
+                        left: dragPosition.x - dragOffset.x,
+                        top: dragPosition.y - dragOffset.y,
+                        touchAction: 'none'
+                    }}
+                >
+                    <div className="grid gap-1">
+                        {draggedShape.map((row, r) => (
+                            <div key={r} className="flex gap-1">
+                                {row.map((cell, c) => (
+                                    <div
+                                        key={c}
+                                        className={`
+                                            w-10 h-10 rounded-lg shadow-xl
+                                            ${cell
+                                                ? 'bg-gradient-to-br from-[#FFD700] to-[#FFA500] ring-2 ring-white'
+                                                : 'opacity-0'
+                                            }
+                                        `}
+                                    />
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Reset Button */}
             <motion.button

@@ -53,8 +53,9 @@ This ensures every game feels fresh and presents different strategic opportuniti
 
 ### Controls
 
-- **Click/Tap**: Select shapes and place them on the grid
-- **Hover**: Preview where shapes can be placed
+- **Drag & Drop**: Drag shapes from the bottom panel onto the grid
+- **Click/Tap**: Select a shape, then click on the grid to place it (alternative method)
+- **Hover/Drag Preview**: See valid placement locations in real-time
 - **New Game Button**: Start fresh anytime
 - **Back Button**: Return to games menu (saves high score)
 
