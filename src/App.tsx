@@ -15,6 +15,7 @@ import { XO } from '@/scenes/XO';
 import { Sudoku } from '@/scenes/Sudoku';
 import { SipOrSpill } from '@/scenes/SipOrSpill';
 import { ChessLanding } from '@/scenes/chess/ChessLanding';
+import { BlockBlast } from '@/scenes/BlockBlast'; // Added import for BlockBlast
 import { Shop } from '@/components/Shop';
 import { PauseOverlay, SettingsOverlay } from '@/components/Overlays';
 import { Toaster } from '@/components/ui/sonner';
@@ -45,7 +46,7 @@ function App() {
 
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<'games-menu' | 'cooking' | 'xo' | 'sudoku' | 'sip-or-spill' | 'chess'>('games-menu');
+  const [currentView, setCurrentView] = useState<'games-menu' | 'cooking' | 'xo' | 'sudoku' | 'sip-or-spill' | 'chess' | 'block-blast'>('games-menu'); // Updated currentView type
 
   // Audio management
   const { playSound, initAudio } = useAudio(gameState.soundEnabled);
@@ -159,6 +160,8 @@ function App() {
       setCurrentView('sip-or-spill');
     } else if (gameId === 'chess') {
       setCurrentView('chess');
+    } else if (gameId === 'block-blast') { // Added block-blast navigation
+      setCurrentView('block-blast');
     }
   }, [playSound]);
 
@@ -201,6 +204,11 @@ function App() {
         {/* Chess */}
         {currentView === 'chess' && (
           <ChessLanding onBack={handleBackToGamesMenu} />
+        )}
+
+        {/* Block Blast Game */}
+        {currentView === 'block-blast' && ( // Conditional rendering for BlockBlast
+          <BlockBlast onBack={handleBackToGamesMenu} />
         )}
 
         {/* Cooking Game Scenes - Only show when currentView is 'cooking' */}
