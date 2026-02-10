@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { Utensils, Grid3X3, Swords, Coffee, Star, ChevronRight, Heart, Crown, Box } from 'lucide-react';
+import { Utensils, Grid3X3, Swords, Coffee, Star, ChevronRight, Heart, Crown } from 'lucide-react';
 
 interface GamesMenuProps {
     onNavigate: (gameId: string) => void;
@@ -51,14 +51,6 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
             icon: <Crown size={32} />,
             color: 'linear-gradient(135deg, #2C1810, #4B3621)',
             badge: 'Classic'
-        },
-        {
-            id: 'block-blast',
-            title: 'Block Blast 🧱',
-            desc: 'Blast Coffee Blocks!',
-            icon: <Box size={32} />,
-            color: 'linear-gradient(135deg, #FFD700, #FFA500)',
-            badge: 'New'
         }
     ];
 
