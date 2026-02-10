@@ -340,11 +340,11 @@ export function BlockBlast({ onBack }: BlockBlastProps) {
         const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
         const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
 
-        // Position the block above the cursor/finger
+        // Position the block well above the cursor/finger so it's fully visible
         // Use negative offset for Y to place it above, and center it horizontally
         setDragOffset({
             x: rect.width / 2,  // Center horizontally on cursor
-            y: rect.height + 20  // Position above cursor with 20px gap
+            y: rect.height + 80  // Position well above cursor with 80px gap
         });
 
         setDragPosition({
@@ -356,43 +356,46 @@ export function BlockBlast({ onBack }: BlockBlastProps) {
     const handleDrag = (e: MouseEvent | TouchEvent) => {
         if (!isDragging || !draggedShape) return;
 
-        const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-        const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+        // Use requestAnimationFrame for smoother, more responsive dragging
+        requestAnimationFrame(() => {
+            const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+            const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
 
-        setDragPosition({
-            x: clientX,
-            y: clientY
-        });
+            setDragPosition({
+                x: clientX,
+                y: clientY
+            });
 
-        // Calculate grid position from shape's top-left coordinates
-        const gridElement = document.querySelector('.game-grid');
-        if (gridElement) {
-            const rect = gridElement.getBoundingClientRect();
-            const cellSize = rect.width / GRID_SIZE;
+            // Calculate grid position from shape's top-left coordinates
+            const gridElement = document.querySelector('.game-grid');
+            if (gridElement) {
+                const rect = gridElement.getBoundingClientRect();
+                const cellSize = rect.width / GRID_SIZE;
 
-            // Adjust coordinates to be relative to the shape's top-left, not the cursor
-            const shapeX = clientX - dragOffset.x;
-            const shapeY = clientY - dragOffset.y;
+                // Adjust coordinates to be relative to the shape's top-left, not the cursor
+                const shapeX = clientX - dragOffset.x;
+                const shapeY = clientY - dragOffset.y;
 
-            // Add a small threshold (half cell) to make snapping feel more natural
-            // This aligns the center of the shape cells with the grid cells
-            const relativeX = shapeX - rect.left + (cellSize / 2);
-            const relativeY = shapeY - rect.top + (cellSize / 2);
+                // Add a small threshold (half cell) to make snapping feel more natural
+                // This aligns the center of the shape cells with the grid cells
+                const relativeX = shapeX - rect.left + (cellSize / 2);
+                const relativeY = shapeY - rect.top + (cellSize / 2);
 
-            const col = Math.floor(relativeX / cellSize);
-            const row = Math.floor(relativeY / cellSize);
+                const col = Math.floor(relativeX / cellSize);
+                const row = Math.floor(relativeY / cellSize);
 
-            if (row >= -1 && row <= GRID_SIZE && col >= -1 && col <= GRID_SIZE) {
-                // Determine valid placement
-                if (canPlaceShape(draggedShape, row, col)) {
-                    setPreviewPosition({ row, col });
+                if (row >= -1 && row <= GRID_SIZE && col >= -1 && col <= GRID_SIZE) {
+                    // Determine valid placement
+                    if (canPlaceShape(draggedShape, row, col)) {
+                        setPreviewPosition({ row, col });
+                    } else {
+                        setPreviewPosition(null);
+                    }
                 } else {
                     setPreviewPosition(null);
                 }
-            } else {
-                setPreviewPosition(null);
             }
-        }
+        });
     };
 
     const handleDragEnd = () => {
@@ -617,7 +620,9 @@ export function BlockBlast({ onBack }: BlockBlastProps) {
                     style={{
                         left: dragPosition.x - dragOffset.x,
                         top: dragPosition.y - dragOffset.y,
-                        touchAction: 'none'
+                        touchAction: 'none',
+                        willChange: 'transform',
+                        transform: 'translate3d(0, 0, 0)', // Enable hardware acceleration
                     }}
                 >
                     <div className="grid gap-1">
