@@ -334,15 +334,17 @@ export function BlockBlast({ onBack }: BlockBlastProps) {
         setDraggedShape(shape);
         setIsDragging(true);
 
-        // Calculate offset from the center of the shape
+        // Calculate offset to position block above the finger/mouse
         const target = e.currentTarget as HTMLElement;
         const rect = target.getBoundingClientRect();
         const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
         const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
 
+        // Position the block above the cursor/finger
+        // Use negative offset for Y to place it above, and center it horizontally
         setDragOffset({
-            x: clientX - rect.left,
-            y: clientY - rect.top
+            x: rect.width / 2,  // Center horizontally on cursor
+            y: rect.height + 20  // Position above cursor with 20px gap
         });
 
         setDragPosition({
