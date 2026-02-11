@@ -6,7 +6,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Users, Sparkles, Heart, Coffee, HelpCircle, AlertCircle, Fingerprint } from 'lucide-react';
+import { ArrowLeft, Users, Sparkles, Heart, Coffee, HelpCircle, AlertCircle, Fingerprint, Languages } from 'lucide-react';
 import { PlayerSetup } from '../components/siporspill/PlayerSetup';
 import { GameSession } from '../components/siporspill/GameSession';
 import { GameTutorial } from '../components/siporspill/GameTutorial';
@@ -20,11 +20,26 @@ interface SipOrSpillProps {
 type ViewState = 'menu' | 'setup' | 'game' | 'td-select' | 'tutorial';
 
 export function SipOrSpill({ onBack }: SipOrSpillProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const currentLang = i18n.language;
     const [view, setView] = useState<ViewState>('menu');
     const [gameType, setGameType] = useState<GameType>('truth-dare');
     const [category, setCategory] = useState<Category>('party');
     const [players, setPlayers] = useState<string[]>([]);
+
+    // Language switcher handler
+    const handleLanguageSwitch = () => {
+        const languages = ['en', 'fr', 'ar'];
+        const currentIndex = languages.indexOf(currentLang);
+        const nextIndex = (currentIndex + 1) % languages.length;
+        const nextLang = languages[nextIndex];
+
+        i18n.changeLanguage(nextLang);
+
+        // Update document direction for RTL support
+        document.documentElement.dir = nextLang === 'ar' ? 'rtl' : 'ltr';
+        document.documentElement.lang = nextLang;
+    };
 
     const handleGameSelect = (type: GameType) => {
         if (type === 'truth-dare') {
@@ -155,6 +170,20 @@ export function SipOrSpill({ onBack }: SipOrSpillProps) {
             >
                 <ArrowLeft size={24} className="text-[#1B4D3E]" />
             </button>
+
+            {/* Language Switcher */}
+            <motion.button
+                onClick={handleLanguageSwitch}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="absolute top-4 right-4 z-50 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all border-2 border-[#1B4D3E]/20 hover:border-[#2E8B57]/50"
+                title="Change Language"
+            >
+                <Languages size={20} className="text-[#1B4D3E]" />
+                <span className="absolute -bottom-1 -right-1 text-xs bg-[#1B4D3E] text-white rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {currentLang === 'en' ? '🇬🇧' : currentLang === 'fr' ? '🇫🇷' : '🇸🇦'}
+                </span>
+            </motion.button>
 
             {/* Header */}
             <motion.div

@@ -2,6 +2,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, RotateCcw, Users, Coffee, SkipForward } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { CONTENT, type GameType, type Category, type GameItem } from './GameData';
 
 interface GameSessionProps {
@@ -13,23 +14,36 @@ interface GameSessionProps {
 }
 
 export function GameSession({ gameType, category, players, onBack, onChangePlayers }: GameSessionProps) {
+    const { t } = useTranslation();
     const [currentCard, setCurrentCard] = useState<GameItem | null>(null);
     const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
     const [usedIndices, setUsedIndices] = useState<Set<string>>(new Set());
     const [skipsRemaining, setSkipsRemaining] = useState(1);
+    const [isChoosingType, setIsChoosingType] = useState(gameType === 'truth-dare');
+    const [selectedType, setSelectedType] = useState<'truth' | 'dare' | null>(null);
 
-    const getRandomCard = useCallback(() => {
+    const getRandomCard = useCallback((forcedType?: 'truth' | 'dare') => {
         let pool: (string | GameItem)[] = [];
         let type: 'truth' | 'dare' | undefined;
 
         if (gameType === 'truth-dare') {
+            // Use translated content for truth/dare
+            const translatedTruths = t('sipOrSpill.content.' + category + '.truths', { returnObjects: true }) as string[];
+            const translatedDares = t('sipOrSpill.content.' + category + '.dares', { returnObjects: true }) as string[];
+            
+            // Fallback to CONTENT if translations not available
             const truthDareContent = CONTENT['truth-dare'] as Record<string, { truths: string[], dares: string[] }>;
             const catContent = truthDareContent[category];
+            
             if (!catContent) return null;
 
-            // Randomly choose truth or dare
-            type = Math.random() > 0.5 ? 'truth' : 'dare';
-            pool = type === 'truth' ? catContent.truths : catContent.dares;
+            // Use forced type if provided, otherwise randomly choose
+            type = forcedType || (Math.random() > 0.5 ? 'truth' : 'dare');
+            
+            // Use translated content if available, otherwise fallback to CONTENT
+            const truths = (translatedTruths && translatedTruths.length > 0) ? translatedTruths : catContent.truths;
+            const dares = (translatedDares && translatedDares.length > 0) ? translatedDares : catContent.dares;
+            pool = type === 'truth' ? truths : dares;
         } else {
             const otherContent = CONTENT[gameType] as Record<string, (string | GameItem)[]>;
             pool = otherContent[category] || [];
@@ -62,28 +76,58 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
         }
         return { ...item, type, id: key };
 
-    }, [gameType, category, usedIndices]);
+    }, [gameType, category, usedIndices, t]);
 
     const handleNextCard = useCallback(() => {
-        const card = getRandomCard();
+        // For truth-dare, show choice first unless type is already selected
+        if (gameType === 'truth-dare' && !selectedType) {
+            setIsChoosingType(true);
+            setCurrentCard(null);
+            return;
+        }
+
+        const card = getRandomCard(selectedType || undefined);
         setCurrentCard(card);
+        setIsChoosingType(false);
+        setSelectedType(null);
 
         // Unify player rotation
         if (players.length > 0) {
             setCurrentPlayerIndex(prev => (prev + 1) % players.length);
         }
-    }, [getRandomCard, players.length]);
+    }, [getRandomCard, players.length, gameType, selectedType]);
+
+    const handleTypeSelect = (type: 'truth' | 'dare') => {
+        setSelectedType(type);
+        const card = getRandomCard(type);
+        setCurrentCard(card);
+        setIsChoosingType(false);
+
+        // Unify player rotation
+        if (players.length > 0) {
+            setCurrentPlayerIndex(prev => (prev + 1) % players.length);
+        }
+    };
 
     // Initial load
     useEffect(() => {
-        handleNextCard();
+        if (gameType !== 'truth-dare') {
+            handleNextCard();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSkip = () => {
         if (skipsRemaining > 0) {
             setSkipsRemaining(prev => prev - 1);
-            handleNextCard();
+            // Reset to choice state for truth-dare
+            if (gameType === 'truth-dare') {
+                setIsChoosingType(true);
+                setSelectedType(null);
+                setCurrentCard(null);
+            } else {
+                handleNextCard();
+            }
         }
     };
 
@@ -91,7 +135,14 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
         setUsedIndices(new Set());
         setSkipsRemaining(1);
         setCurrentPlayerIndex(0);
-        handleNextCard();
+        setSelectedType(null);
+        if (gameType === 'truth-dare') {
+            setIsChoosingType(true);
+            setCurrentCard(null);
+        } else {
+            setIsChoosingType(false);
+            handleNextCard();
+        }
     };
 
     const currentPlayer = players.length > 0 ? players[currentPlayerIndex] : "Player";
@@ -132,10 +183,10 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
 
     const getTitle = () => {
         switch (gameType) {
-            case 'truth-dare': return category === 'couples' ? 'Couples Mode' : 'Friends Mode';
-            case 'would-you-rather': return 'Would You Rather';
-            case 'never-have-i-ever': return 'Never Have I Ever';
-            case 'most-likely-to': return "Who's Likely To";
+            case 'truth-dare': return category === 'couples' ? t('sipOrSpill.couples') : t('sipOrSpill.friends');
+            case 'would-you-rather': return t('sipOrSpill.modes.wouldYouRather.title');
+            case 'never-have-i-ever': return t('sipOrSpill.modes.neverHaveIEver.title');
+            case 'most-likely-to': return t('sipOrSpill.modes.likelyTo.title');
         }
     };
 
@@ -172,8 +223,49 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
                     className="mb-6 px-6 py-2 bg-white/60 backdrop-blur-md rounded-full shadow-sm border border-white/50"
                 >
                     <p className="text-[#1B4D3E] font-semibold text-lg flex items-center gap-2">
-                        <span>👤</span> {currentPlayer}'s Turn
+                        <span>👤</span> {currentPlayer}
                     </p>
+                </motion.div>
+            )}
+
+            {/* Truth or Dare Choice */}
+            {gameType === 'truth-dare' && isChoosingType && (
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="w-full max-w-md"
+                >
+                    <div className={`bg-gradient-to-br ${category === 'couples' ? 'from-pink-400 to-purple-400' : 'from-blue-400 to-cyan-400'} rounded-3xl p-8 shadow-2xl min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden text-center`}>
+                        <div className="absolute top-0 right-0 text-6xl opacity-20">🎲</div>
+                        <div className="absolute bottom-0 left-0 text-6xl opacity-20">✨</div>
+                        
+                        <h2 className="text-white text-3xl font-bold mb-8 drop-shadow-lg">
+                            {t('sipOrSpill.selectMode')}
+                        </h2>
+                        
+                        <div className="flex flex-col gap-4 w-full">
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => handleTypeSelect('truth')}
+                                className="bg-white/90 backdrop-blur-sm text-blue-600 py-5 rounded-2xl font-bold text-xl shadow-lg flex items-center justify-center gap-3 hover:bg-white transition-all"
+                            >
+                                <span className="text-3xl">🤔</span>
+                                {t('sipOrSpill.truth')}
+                            </motion.button>
+                            
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => handleTypeSelect('dare')}
+                                className="bg-white/90 backdrop-blur-sm text-purple-600 py-5 rounded-2xl font-bold text-xl shadow-lg flex items-center justify-center gap-3 hover:bg-white transition-all"
+                            >
+                                <span className="text-3xl">🎯</span>
+                                {t('sipOrSpill.dare')}
+                            </motion.button>
+                        </div>
+                    </div>
                 </motion.div>
             )}
 
@@ -193,7 +285,7 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
                             {gameType === 'truth-dare' && (
                                 <div className="absolute top-6 left-6 bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full">
                                     <span className="text-white font-bold text-sm uppercase tracking-wider">
-                                        {currentCard.type === 'truth' ? '🤔 Truth' : '🎯 Dare'}
+                                        {currentCard.type === 'truth' ? `🤔 ${t('sipOrSpill.truth')}` : `🎯 ${t('sipOrSpill.dare')}`}
                                     </span>
                                 </div>
                             )}
@@ -227,18 +319,20 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
 
             {/* Action Buttons */}
             <div className="mt-8 flex flex-col gap-3 w-full max-w-md px-4">
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handleNextCard}
-                    className="bg-white text-[#1B4D3E] py-4 rounded-2xl font-bold text-lg shadow-lg border-2 border-[#1B4D3E] flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
-                >
-                    <Coffee size={24} />
-                    Next {gameType === 'would-you-rather' ? 'Scenario' : 'Card'}
-                </motion.button>
+                {!isChoosingType && (
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={handleNextCard}
+                        className="bg-white text-[#1B4D3E] py-4 rounded-2xl font-bold text-lg shadow-lg border-2 border-[#1B4D3E] flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
+                    >
+                        <Coffee size={24} />
+                        {t('sipOrSpill.next')}
+                    </motion.button>
+                )}
 
                 {/* Only show skip for Truth/Dare as per original spec, or maybe all? keeping to T/D for now as others are group games generally */}
-                {gameType === 'truth-dare' && (
+                {gameType === 'truth-dare' && !isChoosingType && (
                     <motion.button
                         whileHover={{ scale: skipsRemaining > 0 ? 1.05 : 1 }}
                         whileTap={{ scale: skipsRemaining > 0 ? 0.95 : 1 }}
@@ -250,7 +344,7 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
                             }`}
                     >
                         <SkipForward size={16} />
-                        {skipsRemaining > 0 ? `Skip (${skipsRemaining} left)` : 'No Skips Left'}
+                        {skipsRemaining > 0 ? `${t('sipOrSpill.skip')} ${t('sipOrSpill.skipsLeft', { count: skipsRemaining })}` : t('sipOrSpill.noSkipsLeft')}
                     </motion.button>
                 )}
             </div>
