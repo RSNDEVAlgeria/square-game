@@ -16,6 +16,7 @@ import {
 } from '@/constants/gameConfig';
 import type { Customer, FloatingText, ServeResult } from '@/types/game';
 import type { ActivePowerUp, ParticleEffect } from '@/types/enhancedGameplay';
+import { useTranslation } from 'react-i18next';
 
 interface GameplayProps {
   // Game state
@@ -73,6 +74,7 @@ export function Gameplay({
   onActivatePowerUp,
   onPlaySound
 }: GameplayProps) {
+  const { t } = useTranslation();
   const canvasRef = useRef<HTMLDivElement>(null);
   const trashRef = useRef<HTMLButtonElement>(null);
   const [isTouching, setIsTouching] = useState(false);
@@ -130,7 +132,7 @@ export function Gameplay({
         onAddFloatingText(
           rect.left - parentRect.left + rect.width / 2,
           rect.top - parentRect.top - 20,
-          '🗑 Cleared',
+          `🗑 ${t('gameplay.clear')}`,
           '#757575'
         );
       }
@@ -308,7 +310,7 @@ export function Gameplay({
                 <DollarSign className="w-5 h-5" strokeWidth={2.5} />
               </div>
               <div className="flex flex-col px-2 leading-none">
-                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Cash</span>
+                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{t('gameplay.money')}</span>
                 <span className="font-extrabold text-slate-700 text-lg">${money}</span>
               </div>
             </div>
@@ -318,7 +320,7 @@ export function Gameplay({
                 <Star className="w-5 h-5 fill-white" strokeWidth={2.5} />
               </div>
               <div className="flex flex-col px-2 leading-none">
-                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Score</span>
+                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{t('gameplay.score')}</span>
                 <span className="font-extrabold text-slate-700 text-lg">{score}</span>
               </div>
             </div>
@@ -354,7 +356,7 @@ export function Gameplay({
           <div className={`transition-all duration-300 h-8 flex items-center justify-center ${combo > 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <div className="bg-gradient-to-r from-orange-500 to-red-600 text-white text-sm font-extrabold px-4 py-1.5 rounded-full shadow-lg border-2 border-white flex items-center gap-2 animate-bounce">
               <span className="text-xl">🔥</span>
-              <span className="tracking-widest">{combo}x COMBO!</span>
+              <span className="tracking-widest">{combo}x {t('gameplay.combo')}!</span>
             </div>
           </div>
         </div>
@@ -415,7 +417,7 @@ export function Gameplay({
               >
                 <Trash2 className="w-6 h-6" />
               </Button>
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Clear</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">{t('gameplay.clear')}</span>
             </div>
           </div>
         </div>

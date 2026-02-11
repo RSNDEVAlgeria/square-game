@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { Coffee, Play, ShoppingBag, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { THEME } from '@/constants/gameConfig';
+import { useTranslation } from 'react-i18next';
 
 interface MainMenuProps {
   onPlay: () => void;
@@ -16,6 +17,7 @@ interface MainMenuProps {
 }
 
 export function MainMenu({ onPlay, onShop, onSettings, onBack }: MainMenuProps) {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -102,7 +104,7 @@ export function MainMenu({ onPlay, onShop, onSettings, onBack }: MainMenuProps) 
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             <div className="relative flex items-center justify-center gap-2">
               <Play className="w-6 h-6 fill-current" />
-              <span>START GAME</span>
+              <span>{t('mainMenu.play').toUpperCase()}</span>
             </div>
           </Button>
 
@@ -118,7 +120,7 @@ export function MainMenu({ onPlay, onShop, onSettings, onBack }: MainMenuProps) 
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             <div className="relative flex items-center justify-center gap-2">
               <ShoppingBag className="w-5 h-5" />
-              <span>SHOP</span>
+              <span>{t('mainMenu.shop').toUpperCase()}</span>
             </div>
           </Button>
 
@@ -131,7 +133,7 @@ export function MainMenu({ onPlay, onShop, onSettings, onBack }: MainMenuProps) 
               color: THEME.textMedium
             }}
           >
-            Settings
+            {t('mainMenu.settings')}
           </Button>
 
           <Button
@@ -140,7 +142,7 @@ export function MainMenu({ onPlay, onShop, onSettings, onBack }: MainMenuProps) 
             className="w-full h-10 text-xs font-medium text-amber-900/40 hover:text-amber-900 hover:bg-amber-900/5 gap-2"
           >
             <ArrowLeft size={14} />
-            Back to Games
+            {t('mainMenu.backToGames')}
           </Button>
         </div>
       </div>

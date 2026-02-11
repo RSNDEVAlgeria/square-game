@@ -11,6 +11,7 @@ import { PlayerSetup } from '../components/siporspill/PlayerSetup';
 import { GameSession } from '../components/siporspill/GameSession';
 import { GameTutorial } from '../components/siporspill/GameTutorial';
 import type { GameType, Category } from '../components/siporspill/GameData';
+import { useTranslation } from 'react-i18next';
 
 interface SipOrSpillProps {
     onBack: () => void;
@@ -19,6 +20,7 @@ interface SipOrSpillProps {
 type ViewState = 'menu' | 'setup' | 'game' | 'td-select' | 'tutorial';
 
 export function SipOrSpill({ onBack }: SipOrSpillProps) {
+    const { t } = useTranslation();
     const [view, setView] = useState<ViewState>('menu');
     const [gameType, setGameType] = useState<GameType>('truth-dare');
     const [category, setCategory] = useState<Category>('party');
@@ -98,7 +100,7 @@ export function SipOrSpill({ onBack }: SipOrSpillProps) {
                 </button>
 
                 <h2 className="text-3xl font-bold text-[#8B4049] mb-8 text-center" style={{ fontFamily: "'Pacifico', cursive" }}>
-                    Select Mode
+                    {t('sipOrSpill.selectMode')}
                 </h2>
 
                 <div className="flex flex-col gap-4 w-full max-w-sm">
@@ -114,8 +116,8 @@ export function SipOrSpill({ onBack }: SipOrSpillProps) {
                             <Heart size={32} fill="currentColor" />
                         </div>
                         <div className="text-left">
-                            <h3 className="text-xl font-bold text-pink-900">Couples</h3>
-                            <p className="text-sm text-pink-700">Romantic & Sweet</p>
+                            <h3 className="text-xl font-bold text-pink-900">{t('sipOrSpill.couples')}</h3>
+                            <p className="text-sm text-pink-700">{t('sipOrSpill.truth')} & {t('sipOrSpill.dare')}</p>
                         </div>
                     </motion.button>
 
@@ -132,8 +134,8 @@ export function SipOrSpill({ onBack }: SipOrSpillProps) {
                             <Users size={32} />
                         </div>
                         <div className="text-left">
-                            <h3 className="text-xl font-bold text-blue-900">Friends</h3>
-                            <p className="text-sm text-blue-700">Fun & Social</p>
+                            <h3 className="text-xl font-bold text-blue-900">{t('sipOrSpill.friends')}</h3>
+                            <p className="text-sm text-blue-700">{t('sipOrSpill.subtitle')}</p>
                         </div>
                     </motion.button>
                 </div>
@@ -168,17 +170,17 @@ export function SipOrSpill({ onBack }: SipOrSpillProps) {
                     ☕
                 </motion.div>
                 <h1 className="text-4xl font-bold text-[#1B4D3E] mb-1" style={{ fontFamily: "'Pacifico', cursive" }}>
-                    Sip or Spill
+                    {t('sipOrSpill.title')}
                 </h1>
-                <p className="text-[#8B735B]">Party Games Collection</p>
+                <p className="text-[#8B735B]">{t('sipOrSpill.subtitle')}</p>
             </motion.div>
 
             {/* Games Grid */}
             <div className="grid grid-cols-1 gap-4 w-full max-w-sm mb-20">
                 {/* Truth or Dare */}
                 <MenuButton
-                    title="Truth or Dare"
-                    subtitle="Couples & Friends Modes"
+                    title={t('sipOrSpill.modes.truthDare.title')}
+                    subtitle={t('sipOrSpill.modes.truthDare.subtitle')}
                     icon={<Coffee size={28} />}
                     color="from-purple-500 to-indigo-500"
                     onClick={() => handleGameSelect('truth-dare')}
@@ -187,8 +189,8 @@ export function SipOrSpill({ onBack }: SipOrSpillProps) {
 
                 {/* Would You Rather */}
                 <MenuButton
-                    title="Would You Rather"
-                    subtitle="Tough Choices"
+                    title={t('sipOrSpill.modes.wouldYouRather.title')}
+                    subtitle={t('sipOrSpill.modes.wouldYouRather.subtitle')}
                     icon={<HelpCircle size={28} />}
                     color="from-orange-400 to-amber-500"
                     onClick={() => handleGameSelect('would-you-rather')}
@@ -197,8 +199,8 @@ export function SipOrSpill({ onBack }: SipOrSpillProps) {
 
                 {/* Never Have I Ever */}
                 <MenuButton
-                    title="Never Have I Ever"
-                    subtitle="Reveal Secrets"
+                    title={t('sipOrSpill.modes.neverHaveIEver.title')}
+                    subtitle={t('sipOrSpill.modes.neverHaveIEver.subtitle')}
                     icon={<AlertCircle size={28} />}
                     color="from-pink-500 to-rose-500"
                     onClick={() => handleGameSelect('never-have-i-ever')}
@@ -207,8 +209,8 @@ export function SipOrSpill({ onBack }: SipOrSpillProps) {
 
                 {/* Who's Likely To */}
                 <MenuButton
-                    title="Who's Likely To"
-                    subtitle="Point Fingers"
+                    title={t('sipOrSpill.modes.likelyTo.title')}
+                    subtitle={t('sipOrSpill.modes.likelyTo.subtitle')}
                     icon={<Fingerprint size={28} />}
                     color="from-emerald-400 to-teal-500"
                     onClick={() => handleGameSelect('most-likely-to')}
@@ -227,7 +229,7 @@ export function SipOrSpill({ onBack }: SipOrSpillProps) {
                     className="bg-white/90 backdrop-blur-md border border-[#1B4D3E]/20 text-[#1B4D3E] px-6 py-3 rounded-2xl shadow-lg flex items-center gap-2 font-bold w-full max-w-sm justify-center"
                 >
                     <Users size={20} />
-                    <span>Manage Players ({players.length})</span>
+                    <span>{t('sipOrSpill.managePlayers')} ({players.length})</span>
                 </motion.button>
             </div>
         </div>

@@ -1,0 +1,225 @@
+{
+    "gamesMenu": {
+        "title": "Square Coffee",
+        "subtitle": "Open for Fun",
+        "footer": "Crafted with care at Square Coffee",
+        "madeBy": "Made by",
+        "games": {
+            "cooking": {
+                "title": "Cooking Game",
+                "desc": "Become the Head Chef",
+                "badge": "Popular"
+            },
+            "sipOrSpill": {
+                "title": "Sip or Spill ☕",
+                "desc": "Truth or Dare for Coffee Lovers",
+                "badge": "Social"
+            },
+            "sudoku": {
+                "title": "Sudoku",
+                "desc": "The Coffee Break Classic",
+                "badge": "Logic"
+            },
+            "xo": {
+                "title": "Tic Tac Toe",
+                "desc": "Challenge our Barista Bot",
+                "badge": "Quick"
+            },
+            "chess": {
+                "title": "Chess",
+                "desc": "Vs Friends or Vs AI",
+                "badge": "Classic"
+            }
+        }
+    },
+    "mainMenu": {
+        "play": "Play",
+        "shop": "Shop",
+        "settings": "Settings",
+        "backToGames": "Back to Games"
+    },
+    "waiterSelection": {
+        "title": "Choose Your Waiter",
+        "subtitle": "Select your character to begin serving customers",
+        "start": "Start Game",
+        "back": "Back"
+    },
+    "gameplay": {
+        "score": "Score",
+        "money": "Money",
+        "stamina": "Stamina",
+        "combo": "Combo",
+        "pause": "Pause",
+        "serve": "Serve",
+        "clear": "Clear",
+        "powerUps": "Power-Ups",
+        "active": "Active",
+        "customerNotFound": "Customer not found!",
+        "wrongOrder": "Wrong Order!",
+        "perfect": "⭐ Perfect!",
+        "good": "✓ Good",
+        "check": "✓",
+        "comboBonus": "+{{amount}} Combo!"
+    },
+    "gameOver": {
+        "title": "Game Over",
+        "subtitle": "Great job!",
+        "score": "Final Score",
+        "money": "Money Earned",
+        "customers": "Customers Served",
+        "playAgain": "Play Again",
+        "mainMenu": "Main Menu"
+    },
+    "shop": {
+        "title": "Shop",
+        "subtitle": "Upgrade your café",
+        "upgrades": "Upgrades",
+        "powerUps": "Power-Ups",
+        "buy": "Buy",
+        "owned": "Owned",
+        "close": "Close",
+        "level": "Level",
+        "max": "MAX",
+        "yourMoney": "Your Money",
+        "totalEarned": "Total Earned",
+        "upgrades_list": {
+            "faster_service": "Faster Service",
+            "faster_service_desc": "Reduce customer patience drain",
+            "extra_stamina": "Extra Stamina",
+            "extra_stamina_desc": "Increase maximum stamina",
+            "better_tips": "Better Tips",
+            "better_tips_desc": "Earn more money per order",
+            "power_saver": "Power Saver",
+            "power_saver_desc": "Reduce power-up costs",
+            "combo_master": "Combo Master",
+            "combo_master_desc": "Earn combo bonuses faster"
+        },
+        "powerups_list": {
+            "time_freeze": "Time Freeze",
+            "time_freeze_desc": "Freeze all customer timers",
+            "instant_serve": "Instant Serve",
+            "instant_serve_desc": "Serve all customers instantly",
+            "stamina_boost": "Stamina Boost",
+            "stamina_boost_desc": "Restore full stamina",
+            "money_multiplier": "Money Multiplier",
+            "money_multiplier_desc": "2x money for 30 seconds"
+        }
+    },
+    "settings": {
+        "title": "Settings",
+        "sound": "Sound",
+        "soundOn": "Sound On",
+        "soundOff": "Sound Off",
+        "language": "Language",
+        "close": "Close"
+    },
+    "pause": {
+        "title": "Paused",
+        "resume": "Resume",
+        "restart": "Restart",
+        "mainMenu": "Main Menu"
+    },
+    "xo": {
+        "title": "Tic Tac Toe",
+        "subtitle": "Challenge the Barista Bot",
+        "vsFriend": "Free Play",
+        "yourTurn": "Your Turn",
+        "aiTurn": "AI's Turn",
+        "youWin": "You Win!",
+        "youLose": "You Lose!",
+        "draw": "It's a Draw!",
+        "playAgain": "Play Again",
+        "back": "Back to Games",
+        "difficulty": "Difficulty",
+        "easy": "Easy",
+        "medium": "Medium",
+        "hard": "Hard"
+    },
+    "sudoku": {
+        "title": "Sudoku",
+        "subtitle": "The Coffee Break Classic",
+        "newGame": "New Game",
+        "solve": "Solve",
+        "clear": "Clear",
+        "check": "Check",
+        "hint": "Hint",
+        "back": "Back to Games",
+        "difficulty": "Difficulty",
+        "easy": "Easy",
+        "medium": "Medium",
+        "hard": "Hard",
+        "completed": "Puzzle Completed!",
+        "error": "Error in puzzle"
+    },
+    "sipOrSpill": {
+        "title": "Sip or Spill ☕",
+        "subtitle": "Truth or Dare for Coffee Lovers",
+        "selectMode": "Select Mode",
+        "couples": "Couples",
+        "friends": "Friends",
+        "truth": "Truth",
+        "dare": "Dare",
+        "next": "Next Card",
+        "back": "Back to Games",
+        "changeMode": "Change Mode",
+        "managePlayers": "Manage Players",
+        "modes": {
+            "truthDare": {
+                "title": "Truth or Dare",
+                "subtitle": "Couples & Friends Modes"
+            },
+            "wouldYouRather": {
+                "title": "Would You Rather",
+                "subtitle": "Tough Choices"
+            },
+            "neverHaveIEver": {
+                "title": "Never Have I Ever",
+                "subtitle": "Reveal Secrets"
+            },
+            "likelyTo": {
+                "title": "Who's Likely To",
+                "subtitle": "Point Fingers"
+            }
+        }
+    },
+    "chess": {
+        "title": "Chess",
+        "subtitle": "The Ultimate Strategy Game",
+        "vsAI": "Play vs AI",
+        "vsFriend": "Play vs Friend",
+        "back": "Back to Games",
+        "newGame": "New Game",
+        "resign": "Resign",
+        "yourTurn": "Your Turn",
+        "aiTurn": "AI's Turn",
+        "checkmate": "Checkmate!",
+        "stalemate": "Stalemate!",
+        "check": "Check!",
+        "whiteWins": "White Wins!",
+        "blackWins": "Black Wins!",
+        "draw": "Draw!",
+        "checkAlert": "⚠️ CHECK!",
+        "tableForTwo": "Table for Two",
+        "solo": "Solo",
+        "mild": "Mild",
+        "medium": "Medium",
+        "bold": "Bold",
+        "thankYou": "Thank you for playing!",
+        "noOrders": "No orders yet...",
+        "promotePawn": "Promote Pawn",
+        "selectPromote": "Select a piece to promote to",
+        "flipBoard": "Flip board each turn",
+        "white": "White",
+        "black": "Black",
+        "you": "You"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "yes": "Yes",
+        "no": "No",
+        "ok": "OK"
+    }
+}

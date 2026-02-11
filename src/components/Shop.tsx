@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { ShoppingBag, X, TrendingUp, Users, Zap, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SHOP_UPGRADES, POWER_UPS } from '@/constants/gameConfig';
+import { useTranslation } from 'react-i18next';
 
 interface ShopProps {
     isOpen: boolean;
@@ -32,6 +33,7 @@ export function Shop({
     onPurchasePowerUp,
     onPlaySound
 }: ShopProps) {
+    const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState<TabType>('upgrades');
     const [activeCategory, setActiveCategory] = useState<CategoryType>('all');
 
@@ -111,8 +113,8 @@ export function Shop({
                                 <ShoppingBag className="w-6 h-6 text-white" />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-bold text-white">Shop</h2>
-                                <p className="text-white/80 text-sm">Upgrades & Power-ups</p>
+                                <h2 className="text-2xl font-bold text-white">{t('shop.title')}</h2>
+                                <p className="text-white/80 text-sm">{t('shop.subtitle')}</p>
                             </div>
                         </div>
 
@@ -128,11 +130,11 @@ export function Shop({
                     {/* Money Display */}
                     <div className="relative mt-4 flex gap-3">
                         <div className="flex-1 bg-white/20 backdrop-blur-md rounded-2xl p-3 border border-white/30">
-                            <div className="text-white/80 text-xs font-semibold uppercase tracking-wider">Current Money</div>
+                            <div className="text-white/80 text-xs font-semibold uppercase tracking-wider">{t('shop.yourMoney')}</div>
                             <div className="text-white text-2xl font-bold">${money}</div>
                         </div>
                         <div className="flex-1 bg-white/20 backdrop-blur-md rounded-2xl p-3 border border-white/30">
-                            <div className="text-white/80 text-xs font-semibold uppercase tracking-wider">Total Earned</div>
+                            <div className="text-white/80 text-xs font-semibold uppercase tracking-wider">{t('shop.totalEarned')}</div>
                             <div className="text-white text-2xl font-bold">${totalMoneyEarned}</div>
                         </div>
                     </div>
@@ -148,7 +150,7 @@ export function Shop({
                             }`}
                     >
                         <TrendingUp className="w-4 h-4 inline mr-2" />
-                        Permanent Upgrades
+                        {t('shop.upgrades')}
                         {activeTab === 'upgrades' && (
                             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600" />
                         )}
@@ -161,7 +163,7 @@ export function Shop({
                             }`}
                     >
                         <Zap className="w-4 h-4 inline mr-2" />
-                        Power-ups
+                        {t('shop.powerUps')}
                         {activeTab === 'powerups' && (
                             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600" />
                         )}
@@ -214,8 +216,8 @@ export function Shop({
                                                     {upgrade.emoji}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h3 className="font-bold text-slate-800 text-sm">{upgrade.name}</h3>
-                                                    <p className="text-xs text-slate-500 mt-0.5">{upgrade.description}</p>
+                                                    <h3 className="font-bold text-slate-800 text-sm">{t(`shop.upgrades_list.${upgrade.id}`)}</h3>
+                                                    <p className="text-xs text-slate-500 mt-0.5">{t(`shop.upgrades_list.${upgrade.id}_desc`)}</p>
 
                                                     {/* Level Progress */}
                                                     <div className="mt-2 flex items-center gap-2">
@@ -267,7 +269,7 @@ export function Shop({
                                                                 : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                                                             }`}
                                                     >
-                                                        {isMaxed ? '✓ Maxed Out' : `Upgrade - $${cost}`}
+                                                        {isMaxed ? `✓ ${t('shop.max')}` : `${t('shop.buy')} - $${cost}`}
                                                     </Button>
                                                 </div>
                                             </div>
@@ -296,8 +298,8 @@ export function Shop({
                                                 {powerUp.emoji}
                                             </div>
                                             <div className="flex-1">
-                                                <h3 className="font-bold text-slate-800">{powerUp.name}</h3>
-                                                <p className="text-xs text-slate-500 mt-1">{powerUp.description}</p>
+                                                <h3 className="font-bold text-slate-800">{t(`shop.powerups_list.${powerUp.id}`)}</h3>
+                                                <p className="text-xs text-slate-500 mt-1">{t(`shop.powerups_list.${powerUp.id}_desc`)}</p>
                                                 <div className="mt-2 text-xs text-slate-600">
                                                     <span className="font-semibold">Duration:</span> {powerUp.duration / 1000}s
                                                 </div>
@@ -309,7 +311,7 @@ export function Shop({
                                                         : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                                                         }`}
                                                 >
-                                                    Buy - ${getPowerUpCost(powerUp)}
+                                                    {t('shop.buy')} - ${getPowerUpCost(powerUp)}
                                                 </Button>
                                             </div>
                                         </div>

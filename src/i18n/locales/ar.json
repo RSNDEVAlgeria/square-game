@@ -1,0 +1,225 @@
+{
+    "gamesMenu": {
+        "title": "Square Coffee",
+        "subtitle": "مفتوح للمرح",
+        "footer": "صُنع بعناية في Square Coffee",
+        "madeBy": "صُنع بواسطة",
+        "games": {
+            "cooking": {
+                "title": "لعبة الطبخ",
+                "desc": "كن الطاهي الرئيسي",
+                "badge": "شائع"
+            },
+            "sipOrSpill": {
+                "title": "Sip or Spill ☕",
+                "desc": "صراحة أو جرأة لعشاق القهوة",
+                "badge": "اجتماعي"
+            },
+            "sudoku": {
+                "title": "Sudoku",
+                "desc": "الكلاسيكية لاستراحة القهوة",
+                "badge": "منطق"
+            },
+            "xo": {
+                "title": "إكس أو",
+                "desc": "تحدى روبوت الباريستا",
+                "badge": "سريع"
+            },
+            "chess": {
+                "title": "شطرنج",
+                "desc": "ضد الأصدقاء أو الذكاء الاصطناعي",
+                "badge": "كلاسيكي"
+            }
+        }
+    },
+    "mainMenu": {
+        "play": "العب",
+        "shop": "المتجر",
+        "settings": "الإعدادات",
+        "backToGames": "العودة للألعاب"
+    },
+    "waiterSelection": {
+        "title": "اختر النادل الخاص بك",
+        "subtitle": "اختر شخصيتك لبدء خدمة العملاء",
+        "start": "ابدأ اللعبة",
+        "back": "رجوع"
+    },
+    "gameplay": {
+        "score": "النقاط",
+        "money": "المال",
+        "stamina": "الطاقة",
+        "combo": "كومبو",
+        "pause": "إيقاف مؤقت",
+        "serve": "قدم",
+        "clear": "مسح",
+        "powerUps": "القوى الخاصة",
+        "active": "نشط",
+        "customerNotFound": "العميل غير موجود!",
+        "wrongOrder": "طلب خاطئ!",
+        "perfect": "⭐ ممتاز!",
+        "good": "✓ جيد",
+        "check": "✓",
+        "comboBonus": "+{{amount}} كومبو!"
+    },
+    "gameOver": {
+        "title": "انتهت اللعبة",
+        "subtitle": "عمل رائع!",
+        "score": "النتيجة النهائية",
+        "money": "المال المكتسب",
+        "customers": "العملاء المخدومون",
+        "playAgain": "العب مرة أخرى",
+        "mainMenu": "القائمة الرئيسية"
+    },
+    "shop": {
+        "title": "المتجر",
+        "subtitle": "قم بترقية مقهاك",
+        "upgrades": "الترقيات",
+        "powerUps": "القوى الخاصة",
+        "buy": "اشتر",
+        "owned": "مملوك",
+        "close": "إغلاق",
+        "level": "مستوى",
+        "max": "الحد الأقصى",
+        "yourMoney": "مالك",
+        "totalEarned": "إجمالي المكتسب",
+        "upgrades_list": {
+            "faster_service": "خدمة أسرع",
+            "faster_service_desc": "تقليل استنزاف صبر العملاء",
+            "extra_stamina": "طاقة إضافية",
+            "extra_stamina_desc": "زيادة الطاقة القصوى",
+            "better_tips": "إكراميات أفضل",
+            "better_tips_desc": "اكسب المزيد من المال لكل طلب",
+            "power_saver": "موفر الطاقة",
+            "power_saver_desc": "تقليل تكاليف القوى الخاصة",
+            "combo_master": "سيد الكومبو",
+            "combo_master_desc": "احصل على مكافآت الكومبو بشكل أسرع"
+        },
+        "powerups_list": {
+            "time_freeze": "تجميد الوقت",
+            "time_freeze_desc": "تجميد جميع مؤقتات العملاء",
+            "instant_serve": "خدمة فورية",
+            "instant_serve_desc": "خدمة جميع العملاء على الفور",
+            "stamina_boost": "تعزيز الطاقة",
+            "stamina_boost_desc": "استعادة الطاقة الكاملة",
+            "money_multiplier": "مضاعف المال",
+            "money_multiplier_desc": "ضعف المال لمدة 30 ثانية"
+        }
+    },
+    "settings": {
+        "title": "الإعدادات",
+        "sound": "الصوت",
+        "soundOn": "الصوت مفعل",
+        "soundOff": "الصوت معطل",
+        "language": "اللغة",
+        "close": "إغلاق"
+    },
+    "pause": {
+        "title": "متوقف مؤقتاً",
+        "resume": "استئناف",
+        "restart": "إعادة البدء",
+        "mainMenu": "القائمة الرئيسية"
+    },
+    "xo": {
+        "title": "إكس أو",
+        "subtitle": "تحدى روبوت الباريستا",
+        "vsFriend": "لعب حر",
+        "yourTurn": "دورك",
+        "aiTurn": "دور الذكاء الاصطناعي",
+        "youWin": "لقد فزت!",
+        "youLose": "لقد خسرت!",
+        "draw": "تعادل!",
+        "playAgain": "العب مرة أخرى",
+        "back": "العودة للألعاب",
+        "difficulty": "الصعوبة",
+        "easy": "سهل",
+        "medium": "متوسط",
+        "hard": "صعب"
+    },
+    "sudoku": {
+        "title": "Sudoku",
+        "subtitle": "الكلاسيكية لاستراحة القهوة",
+        "newGame": "لعبة جديدة",
+        "solve": "حل",
+        "clear": "مسح",
+        "check": "تحقق",
+        "hint": "تلميح",
+        "back": "العودة للألعاب",
+        "difficulty": "الصعوبة",
+        "easy": "سهل",
+        "medium": "متوسط",
+        "hard": "صعب",
+        "completed": "اكتمل اللغز!",
+        "error": "خطأ في اللغز"
+    },
+    "sipOrSpill": {
+        "title": "Sip or Spill ☕",
+        "subtitle": "صراحة أو جرأة لعشاق القهوة",
+        "selectMode": "اختر الوضع",
+        "couples": "أزواج",
+        "friends": "أصدقاء",
+        "truth": "صراحة",
+        "dare": "جرأة",
+        "next": "البطاقة التالية",
+        "back": "العودة للألعاب",
+        "changeMode": "تغيير الوضع",
+        "managePlayers": "إدارة اللاعبين",
+        "modes": {
+            "truthDare": {
+                "title": "صراحة أو جرأة",
+                "subtitle": "أوضاع الأزواج والأصدقاء"
+            },
+            "wouldYouRather": {
+                "title": "لو خيروك",
+                "subtitle": "خيارات صعبة"
+            },
+            "neverHaveIEver": {
+                "title": "لم يسبق لي أبداً",
+                "subtitle": "كشف الأسرار"
+            },
+            "likelyTo": {
+                "title": "من الأكثر احتمالاً",
+                "subtitle": "وجه أصابع الاتهام"
+            }
+        }
+    },
+    "chess": {
+        "title": "شطرنج",
+        "subtitle": "لعبة الاستراتيجية النهائية",
+        "vsAI": "العب ضد الذكاء الاصطناعي",
+        "vsFriend": "العب ضد صديق",
+        "back": "العودة للألعاب",
+        "newGame": "لعبة جديدة",
+        "resign": "استسلم",
+        "yourTurn": "دورك",
+        "aiTurn": "دور الذكاء الاصطناعي",
+        "checkmate": "كش ملك!",
+        "stalemate": "جمود!",
+        "check": "كش!",
+        "whiteWins": "الأبيض يفوز!",
+        "blackWins": "الأسود يفوز!",
+        "draw": "تعادل!",
+        "checkAlert": "⚠️ كش!",
+        "tableForTwo": "طاولة لشخصين",
+        "solo": "فردي",
+        "mild": "خفيف",
+        "medium": "متوسط",
+        "bold": "ثقيل",
+        "thankYou": "شكراً للعبك!",
+        "noOrders": "لا توجد طلبات بعد...",
+        "promotePawn": "ترقية الجندي",
+        "selectPromote": "اختر قطعة للترقية",
+        "flipBoard": "اقلب الرقعة كل دور",
+        "white": "أبيض",
+        "black": "أسود",
+        "you": "أنت"
+    },
+    "common": {
+        "loading": "جاري التحميل...",
+        "error": "خطأ",
+        "confirm": "تأكيد",
+        "cancel": "إلغاء",
+        "yes": "نعم",
+        "no": "لا",
+        "ok": "موافق"
+    }
+}

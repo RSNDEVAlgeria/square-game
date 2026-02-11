@@ -25,6 +25,7 @@ import {
   ACHIEVEMENTS
 } from '@/constants/gameConfig';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 // Initial game state factory
 const createInitialState = (): GameState => {
@@ -61,6 +62,7 @@ const createInitialState = (): GameState => {
 };
 
 export function useGameState() {
+  const { t } = useTranslation();
   // Core game state
   const [gameState, setGameState] = useState<GameState>(createInitialState());
 
@@ -430,7 +432,7 @@ export function useGameState() {
         payment: 0,
         tip: 0,
         comboBonus: 0,
-        message: 'Customer not found!',
+        message: t('gameplay.customerNotFound'),
         color: '#F44336'
       };
     }
@@ -450,7 +452,7 @@ export function useGameState() {
         payment: 0,
         tip: 0,
         comboBonus: 0,
-        message: 'Wrong Order!',
+        message: t('gameplay.wrongOrder'),
         color: '#F44336'
       };
     }
@@ -470,18 +472,18 @@ export function useGameState() {
 
     const payment = CONFIG.BASE_PAYMENT;
     let tip = 0;
-    let message = '✓';
+    let message = t('gameplay.check');
     let color = '#98D8C8';
 
     if (patienceRatio > SERVICE_THRESHOLDS.perfect) {
       quality = 'perfect';
       tip = Math.floor(CONFIG.PERFECT_TIMING_BONUS * (waiter?.tipBonus || 1) * customerTipMultiplier * globalTipMultiplier * powerUpTipMultiplier);
-      message = '⭐ Perfect!';
+      message = t('gameplay.perfect');
       color = '#FFD700';
     } else if (patienceRatio > SERVICE_THRESHOLDS.good) {
       quality = 'good';
       tip = Math.floor(CONFIG.GOOD_TIMING_BONUS * (waiter?.tipBonus || 1) * customerTipMultiplier * globalTipMultiplier * powerUpTipMultiplier);
-      message = '✓ Good';
+      message = t('gameplay.good');
       color = '#4CAF50';
     } else {
       tip = Math.floor(5 * (waiter?.tipBonus || 1) * customerTipMultiplier * globalTipMultiplier * powerUpTipMultiplier);
@@ -560,7 +562,7 @@ export function useGameState() {
       payment,
       tip,
       comboBonus,
-      message: comboBonus > 0 ? `${message} +${comboBonus} Combo!` : message,
+      message: comboBonus > 0 ? `${message} ${t('gameplay.comboBonus', { amount: comboBonus })}` : message,
       color
     };
   }, [customers, plate.items, checkOrder, gameState.selectedWaiter, gameState.combo, gameState.lastServeTime, gameState.upgrades, activePowerUps, clearPlate, gameState.customersServed, gameState.money, unlockAchievement]);

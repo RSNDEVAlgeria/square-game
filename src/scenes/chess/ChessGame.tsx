@@ -8,16 +8,17 @@ import { useChessAI } from './useChessAI';
 import type { ChessMode, GameStatus, PlayerSide, AIDifficulty } from './types';
 import { THEME } from '@/constants/gameConfig';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const STATUS_LABELS: Record<GameStatus, string> = {
-  playing: 'Playing',
-  check: 'Check!',
-  checkmate: 'Checkmate',
-  stalemate: 'Stalemate',
-  draw_insufficient: 'Draw (insufficient material)',
-  draw_threefold: 'Draw (threefold repetition)',
-  draw_fifty: 'Draw (50 moves)',
-  draw_agreement: 'Draw',
+  playing: 'playing',
+  check: 'check',
+  checkmate: 'checkmate',
+  stalemate: 'stalemate',
+  draw_insufficient: 'draw',
+  draw_threefold: 'draw',
+  draw_fifty: 'draw',
+  draw_agreement: 'draw',
 };
 
 const PIECE_VALUES: Record<string, number> = {
@@ -32,6 +33,7 @@ interface ChessGameProps {
 }
 
 export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }: ChessGameProps) {
+  const { t } = useTranslation();
   const [selectedSquare, setSelectedSquare] = useState<string | null>(null);
   const [promotionPending, setPromotionPending] = useState<{ from: string; to: string } | null>(null);
   const [flipEachTurn, setFlipEachTurn] = useState(false);
@@ -299,9 +301,9 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
             <div className="flex items-center gap-2 mt-1">
               <span className="text-xs text-[#8B735B] font-bold uppercase tracking-wider">
                 {game.status === 'check' ? (
-                  <span className="text-red-700 font-extrabold animate-pulse">⚠️ CHECK!</span>
+                  <span className="text-red-700 font-extrabold animate-pulse">{t('chess.checkAlert')}</span>
                 ) : (
-                  mode === 'friends' ? 'Table for Two' : `Solo • ${difficulty === 1 ? 'Mild' : difficulty === 2 ? 'Medium' : 'Bold'}`
+                  mode === 'friends' ? t('chess.tableForTwo') : `${t('chess.solo')} • ${difficulty === 1 ? t('chess.mild') : difficulty === 2 ? t('chess.medium') : t('chess.bold')}`
                 )}
               </span>
             </div>
@@ -334,7 +336,7 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-bold text-[#F5E6D3] drop-shadow-sm">
-                  {mode === 'ai' ? 'Barista Bot' : (topPlayerColor === 'white' ? 'White' : 'Black')}
+                  {mode === 'ai' ? 'Barista Bot' : (topPlayerColor === 'white' ? t('chess.white') || 'White' : t('chess.black') || 'Black')}
                 </span>
                 <CapturedList
                   pieces={topCapturedPieces}
@@ -374,7 +376,7 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-bold text-[#F5E6D3] drop-shadow-sm">
-                  {mode === 'ai' ? 'You' : (bottomPlayerColor === 'white' ? 'White' : 'Black')}
+                  {mode === 'ai' ? t('chess.you') || 'You' : (bottomPlayerColor === 'white' ? t('chess.white') || 'White' : t('chess.black') || 'Black')}
                 </span>
                 <CapturedList
                   pieces={bottomCapturedPieces}
@@ -453,7 +455,7 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
                   {game.historySan.length === 0 && (
                     <div className="flex flex-col items-center justify-center h-40 text-[#A1887F] opacity-60">
                       <ScrollText size={32} className="mb-2 opacity-50" />
-                      <span className="text-sm font-medium">No orders yet...</span>
+                      <span className="text-sm font-medium">{t('chess.noOrders')}</span>
                     </div>
                   )}
                 </div>
@@ -499,13 +501,13 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
                       onChange={(e) => setFlipEachTurn(e.target.checked)}
                       className="rounded accent-[#5D4037] w-4 h-4 cursor-pointer"
                     />
-                    <span>Flip board each turn</span>
+                    <span>{t('chess.flipBoard')}</span>
                   </label>
                 )}
 
                 <div className="text-center mt-2 border-t border-[#D2B48C]/20 pt-2">
                   <div className="text-[10px] text-[#A1887F] uppercase tracking-[0.2em] opacity-60 font-bold mb-1">Square Café</div>
-                  <div className="text-[9px] text-[#D2B48C] font-mono">Thank you for playing!</div>
+                  <div className="text-[9px] text-[#D2B48C] font-mono">{t('chess.thankYou')}</div>
                 </div>
               </div>
             </motion.div>
@@ -530,7 +532,7 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
               className="bg-[#FAF9F6] rounded-2xl p-6 shadow-2xl border-2 border-[#D2B48C] max-w-sm w-full mx-4"
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-xl font-bold text-[#2C1810] mb-4 text-center">Promote Pawn</h3>
+              <h3 className="text-xl font-bold text-[#2C1810] mb-4 text-center">{t('chess.promotePawn')}</h3>
               <div className="flex gap-3 justify-center">
                 {(['q', 'r', 'b', 'n'] as const).map((p) => (
                   <button
@@ -544,7 +546,7 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
                   </button>
                 ))}
               </div>
-              <p className="text-center text-[#8B735B] text-sm mt-4">Select a piece to promote to</p>
+              <p className="text-center text-[#8B735B] text-sm mt-4">{t('chess.selectPromote')}</p>
             </motion.div>
           </motion.div>
         )}
@@ -565,22 +567,22 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
               className="bg-white rounded-2xl p-8 shadow-2xl border-4 border-[#D2B48C] text-center max-w-xs"
             >
               <Trophy size={48} className="mx-auto text-[#FFD700] mb-4 drop-shadow-md" />
-              <h2 className="text-2xl font-bold text-[#2C1810] mb-1">Game Over</h2>
-              <p className="text-lg font-medium text-[#4B3621] mb-6">{STATUS_LABELS[game.status]}</p>
+              <h2 className="text-2xl font-bold text-[#2C1810] mb-1">{t('gameOver.title')}</h2>
+              <p className="text-lg font-medium text-[#4B3621] mb-6">{t(`chess.${STATUS_LABELS[game.status]}`)}</p>
 
               <div className="flex flex-col gap-3">
                 <Button
                   className="w-full rounded-xl font-bold bg-[#4B3621] hover:bg-[#2C1810] text-white"
                   onClick={() => game.reset()}
                 >
-                  Play Again
+                  {t('gameOver.playAgain')}
                 </Button>
                 <Button
                   variant="outline"
                   className="w-full rounded-xl border-[#D2B48C] text-[#4B3621]"
                   onClick={onBack}
                 >
-                  Exit
+                  {t('common.cancel')}
                 </Button>
               </div>
             </motion.div>

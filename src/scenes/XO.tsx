@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RefreshCw, ArrowLeft, Coffee, Cookie, Trophy } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { useTranslation } from 'react-i18next';
 
 interface XOProps {
     onBack: () => void;
@@ -16,6 +17,7 @@ type Player = 'X' | 'O' | null;
 type Winner = 'X' | 'O' | 'Draw' | null;
 
 export function XO({ onBack }: XOProps) {
+    const { t } = useTranslation();
     const [gameMode, setGameMode] = useState<'select' | 'ai' | 'freeplay'>('select');
     const [board, setBoard] = useState<Player[]>(Array(9).fill(null));
     const [isXNext, setIsXNext] = useState(true);
@@ -129,7 +131,7 @@ export function XO({ onBack }: XOProps) {
                         className="text-2xl m-0"
                         style={{ fontFamily: "'Pacifico', cursive", color: '#4B3621' }}
                     >
-                        Tic Tac Toe
+                        {t('xo.title')}
                     </h2>
                     <div style={{ width: 40 }} />
                 </div>
@@ -148,8 +150,8 @@ export function XO({ onBack }: XOProps) {
                             <Coffee size={32} />
                         </div>
                         <div className="text-center z-10">
-                            <h3 className="text-xl font-bold text-[#2C1810] m-0">Classic Mode</h3>
-                            <p className="text-[#8B735B] text-sm m-0 mt-1">Challenge our Barista Bot</p>
+                            <h3 className="text-xl font-bold text-[#2C1810] m-0">{t('xo.subtitle')}</h3>
+                            <p className="text-[#8B735B] text-sm m-0 mt-1">{t('gamesMenu.games.xo.desc')}</p>
                         </div>
                     </motion.button>
 
@@ -169,8 +171,8 @@ export function XO({ onBack }: XOProps) {
                             </div>
                         </div>
                         <div className="text-center z-10">
-                            <h3 className="text-xl font-bold text-[#2C1810] m-0">Free Play</h3>
-                            <p className="text-[#8B735B] text-sm m-0 mt-1">Play with a Friend</p>
+                            <h3 className="text-xl font-bold text-[#2C1810] m-0">{t('xo.vsFriend')}</h3>
+                            <p className="text-[#8B735B] text-sm m-0 mt-1">{t('xo.playAgain')}</p>
                         </div>
                     </motion.button>
                 </div>
@@ -193,7 +195,7 @@ export function XO({ onBack }: XOProps) {
                     className="text-2xl m-0"
                     style={{ fontFamily: "'Pacifico', cursive", color: '#4B3621' }}
                 >
-                    Tic Tac Toe
+                    {t('xo.title')}
                 </h2>
                 <div style={{ width: 40 }} />
             </div>
@@ -209,10 +211,10 @@ export function XO({ onBack }: XOProps) {
                         <Trophy size={20} />
                         <span>
                             {winner === 'Draw'
-                                ? "It's a Cozy Tie!"
+                                ? t('xo.draw')
                                 : gameMode === 'freeplay'
-                                    ? `Player ${winner === 'X' ? 'Coffee' : 'Cookie'} Wins!`
-                                    : (winner === 'X' ? "You Won!" : "Barista Bot Wins!")
+                                    ? `${winner === 'X' ? 'Coffee' : 'Cookie'} ${t('xo.youWin')}`
+                                    : (winner === 'X' ? t('xo.youWin') : t('xo.youLose'))
                             }
                         </span>
                     </div>
@@ -220,8 +222,8 @@ export function XO({ onBack }: XOProps) {
                     <div className={isXNext ? 'text-[#1B4D3E]' : 'text-[#6F4E37]'}>
                         <span>
                             {gameMode === 'freeplay'
-                                ? (isXNext ? "Player Coffee's Turn" : "Player Cookie's Turn")
-                                : (isXNext ? "Your Turn (Coffee)" : "Bot's Turn (Cookie)")
+                                ? (isXNext ? `Coffee ${t('xo.yourTurn')}` : `Cookie ${t('xo.yourTurn')}`)
+                                : (isXNext ? t('xo.yourTurn') : t('xo.aiTurn'))
                             }
                         </span>
                     </div>
@@ -272,7 +274,7 @@ export function XO({ onBack }: XOProps) {
                 onClick={reset}
                 className="mt-12 flex items-center gap-2.5 px-8 py-3.5 text-lg bg-[#1B4D3E] text-white rounded-2xl font-semibold shadow-lg hover:bg-[#2E8B57] transition-colors"
             >
-                <RefreshCw size={20} /> Play Again
+                <RefreshCw size={20} /> {t('xo.playAgain')}
             </motion.button>
         </div>
     );

@@ -4,53 +4,78 @@
  */
 
 import { motion } from 'framer-motion';
-import { Utensils, Grid3X3, Swords, Coffee, Star, ChevronRight, Heart, Crown } from 'lucide-react';
+import { Utensils, Grid3X3, Swords, Coffee, Star, ChevronRight, Heart, Crown, Languages } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 
 interface GamesMenuProps {
     onNavigate: (gameId: string) => void;
 }
 
 export function GamesMenu({ onNavigate }: GamesMenuProps) {
+    const { t, i18n } = useTranslation();
+    const currentLang = i18n.language;
+
+    // Set initial direction based on language
+    useEffect(() => {
+        document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+        document.documentElement.lang = currentLang;
+    }, [currentLang]);
+
+    // Language switcher handler
+    const handleLanguageSwitch = () => {
+        const languages = ['en', 'fr', 'ar'];
+        const currentIndex = languages.indexOf(currentLang);
+        const nextIndex = (currentIndex + 1) % languages.length;
+        const nextLang = languages[nextIndex];
+
+        i18n.changeLanguage(nextLang);
+
+        // Update document direction for RTL support
+        document.documentElement.dir = nextLang === 'ar' ? 'rtl' : 'ltr';
+        document.documentElement.lang = nextLang;
+    };
+
     const menuItems = [
         {
             id: 'cooking',
-            title: 'Cooking Game',
-            desc: 'Become the Head Chef',
+            title: t('gamesMenu.games.cooking.title'),
+            desc: t('gamesMenu.games.cooking.desc'),
             icon: <Utensils size={32} />,
             color: 'linear-gradient(135deg, #1B4D3E, #2E8B57)',
-            badge: 'Popular'
+            badge: t('gamesMenu.games.cooking.badge')
         },
         {
             id: 'sip-or-spill',
-            title: 'Sip or Spill ☕',
-            desc: 'Truth or Dare for Coffee Lovers',
+            title: t('gamesMenu.games.sipOrSpill.title'),
+            desc: t('gamesMenu.games.sipOrSpill.desc'),
             icon: <Heart size={32} />,
             color: 'linear-gradient(135deg, #D4698B, #E85D75)',
-            badge: 'Social'
+            badge: t('gamesMenu.games.sipOrSpill.badge')
         },
         {
             id: 'sudoku',
-            title: 'Sudoku',
-            desc: 'The Coffee Break Classic',
+            title: t('gamesMenu.games.sudoku.title'),
+            desc: t('gamesMenu.games.sudoku.desc'),
             icon: <Grid3X3 size={32} />,
             color: 'linear-gradient(135deg, #4B3621, #6F4E37)',
-            badge: 'Logic'
+            badge: t('gamesMenu.games.sudoku.badge')
         },
         {
             id: 'xo',
-            title: 'Tic Tac Toe',
-            desc: 'Challenge our Barista Bot',
+            title: t('gamesMenu.games.xo.title'),
+            desc: t('gamesMenu.games.xo.desc'),
             icon: <Swords size={32} />,
             color: 'linear-gradient(135deg, #C19A6B, #8B5A2B)',
-            badge: 'Quick'
+            badge: t('gamesMenu.games.xo.badge')
         },
         {
             id: 'chess',
-            title: 'Chess',
-            desc: 'Vs Friends or Vs AI',
+            title: t('gamesMenu.games.chess.title'),
+            desc: t('gamesMenu.games.chess.desc'),
             icon: <Crown size={32} />,
             color: 'linear-gradient(135deg, #2C1810, #4B3621)',
-            badge: 'Classic'
+            badge: t('gamesMenu.games.chess.badge')
         }
     ];
 
@@ -92,10 +117,24 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
                 </div>
 
                 <div className="flex flex-col">
-                    <span className="text-[10px] font-bold text-[#1B4D3E] uppercase tracking-wider leading-tight">Made by</span>
+                    <span className="text-[10px] font-bold text-[#1B4D3E] uppercase tracking-wider leading-tight">{t('gamesMenu.madeBy')}</span>
                     <span className="text-xs font-black text-[#1B4D3E] group-hover:text-[#2E8B57] transition-colors leading-tight">RSN-dev</span>
                 </div>
             </a>
+
+            {/* Language Switcher */}
+            <motion.button
+                onClick={handleLanguageSwitch}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="absolute top-4 right-4 z-50 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all border-2 border-[#1B4D3E]/20 hover:border-[#2E8B57]/50"
+                title="Change Language"
+            >
+                <Languages size={20} className="text-[#1B4D3E]" />
+                <span className="absolute -bottom-1 -right-1 text-xs bg-[#1B4D3E] text-white rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {currentLang === 'en' ? '🇬🇧' : currentLang === 'fr' ? '🇫🇷' : '🇸🇦'}
+                </span>
+            </motion.button>
 
             <header className="text-center mt-12 mb-10 z-10">
                 <motion.div
@@ -114,11 +153,11 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
                         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.05)'
                     }}
                 >
-                    Square Coffee
+                    {t('gamesMenu.title')}
                 </motion.h1>
                 <div className="inline-flex items-center gap-1.5 bg-[#1B4D3E] text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mt-4">
                     <Star size={14} fill="currentColor" />
-                    <span>Open for Fun</span>
+                    <span>{t('gamesMenu.subtitle')}</span>
                 </div>
             </header>
 
@@ -183,7 +222,7 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
                     className="text-sm text-[#4B3621] m-0"
                     style={{ fontFamily: "'Pacifico', cursive" }}
                 >
-                    Crafted with care at Square Coffee
+                    {t('gamesMenu.footer')}
                 </p>
             </footer>
         </div>

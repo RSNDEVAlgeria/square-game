@@ -1,0 +1,225 @@
+{
+    "gamesMenu": {
+        "title": "Square Coffee",
+        "subtitle": "Ouvert pour s'amuser",
+        "footer": "Fabriqué avec soin chez Square Coffee",
+        "madeBy": "Créé par",
+        "games": {
+            "cooking": {
+                "title": "Jeu de Cuisine",
+                "desc": "Devenez le Chef Principal",
+                "badge": "Populaire"
+            },
+            "sipOrSpill": {
+                "title": "Sip or Spill ☕",
+                "desc": "Action ou Vérité pour les Amateurs de Café",
+                "badge": "Social"
+            },
+            "sudoku": {
+                "title": "Sudoku",
+                "desc": "Le Classique de la Pause Café",
+                "badge": "Logique"
+            },
+            "xo": {
+                "title": "Morpion",
+                "desc": "Défiez notre Barista Bot",
+                "badge": "Rapide"
+            },
+            "chess": {
+                "title": "Échecs",
+                "desc": "Contre Amis ou IA",
+                "badge": "Classique"
+            }
+        }
+    },
+    "mainMenu": {
+        "play": "Jouer",
+        "shop": "Boutique",
+        "settings": "Paramètres",
+        "backToGames": "Retour aux Jeux"
+    },
+    "waiterSelection": {
+        "title": "Choisissez Votre Serveur",
+        "subtitle": "Sélectionnez votre personnage pour commencer à servir",
+        "start": "Démarrer le Jeu",
+        "back": "Retour"
+    },
+    "gameplay": {
+        "score": "Score",
+        "money": "Argent",
+        "stamina": "Endurance",
+        "combo": "Combo",
+        "pause": "Pause",
+        "serve": "Servir",
+        "clear": "Effacer",
+        "powerUps": "Bonus",
+        "active": "Actif",
+        "customerNotFound": "Client introuvable !",
+        "wrongOrder": "Mauvaise Commande !",
+        "perfect": "⭐ Parfait !",
+        "good": "✓ Bien",
+        "check": "✓",
+        "comboBonus": "+{{amount}} Combo !"
+    },
+    "gameOver": {
+        "title": "Fin du Jeu",
+        "subtitle": "Bon travail !",
+        "score": "Score Final",
+        "money": "Argent Gagné",
+        "customers": "Clients Servis",
+        "playAgain": "Rejouer",
+        "mainMenu": "Menu Principal"
+    },
+    "shop": {
+        "title": "Boutique",
+        "subtitle": "Améliorez votre café",
+        "upgrades": "Améliorations",
+        "powerUps": "Bonus",
+        "buy": "Acheter",
+        "owned": "Possédé",
+        "close": "Fermer",
+        "level": "Niveau",
+        "max": "MAX",
+        "yourMoney": "Votre Argent",
+        "totalEarned": "Total Gagné",
+        "upgrades_list": {
+            "faster_service": "Service Plus Rapide",
+            "faster_service_desc": "Réduire la perte de patience des clients",
+            "extra_stamina": "Endurance Supplémentaire",
+            "extra_stamina_desc": "Augmenter l'endurance maximale",
+            "better_tips": "Meilleurs Pourboires",
+            "better_tips_desc": "Gagner plus d'argent par commande",
+            "power_saver": "Économiseur d'Énergie",
+            "power_saver_desc": "Réduire les coûts des bonus",
+            "combo_master": "Maître du Combo",
+            "combo_master_desc": "Gagner des bonus combo plus rapidement"
+        },
+        "powerups_list": {
+            "time_freeze": "Gel du Temps",
+            "time_freeze_desc": "Geler tous les minuteurs clients",
+            "instant_serve": "Service Instantané",
+            "instant_serve_desc": "Servir tous les clients instantanément",
+            "stamina_boost": "Boost d'Endurance",
+            "stamina_boost_desc": "Restaurer l'endurance complète",
+            "money_multiplier": "Multiplicateur d'Argent",
+            "money_multiplier_desc": "2x argent pendant 30 secondes"
+        }
+    },
+    "settings": {
+        "title": "Paramètres",
+        "sound": "Son",
+        "soundOn": "Son Activé",
+        "soundOff": "Son Désactivé",
+        "language": "Langue",
+        "close": "Fermer"
+    },
+    "pause": {
+        "title": "En Pause",
+        "resume": "Reprendre",
+        "restart": "Recommencer",
+        "mainMenu": "Menu Principal"
+    },
+    "xo": {
+        "title": "Morpion",
+        "subtitle": "Défiez le Barista Bot",
+        "vsFriend": "Jeu Libre",
+        "yourTurn": "Votre Tour",
+        "aiTurn": "Tour de l'IA",
+        "youWin": "Vous Gagnez !",
+        "youLose": "Vous Perdez !",
+        "draw": "Match Nul !",
+        "playAgain": "Rejouer",
+        "back": "Retour aux Jeux",
+        "difficulty": "Difficulté",
+        "easy": "Facile",
+        "medium": "Moyen",
+        "hard": "Difficile"
+    },
+    "sudoku": {
+        "title": "Sudoku",
+        "subtitle": "Le Classique de la Pause Café",
+        "newGame": "Nouvelle Partie",
+        "solve": "Résoudre",
+        "clear": "Effacer",
+        "check": "Vérifier",
+        "hint": "Indice",
+        "back": "Retour aux Jeux",
+        "difficulty": "Difficulté",
+        "easy": "Facile",
+        "medium": "Moyen",
+        "hard": "Difficile",
+        "completed": "Puzzle Terminé !",
+        "error": "Erreur dans le puzzle"
+    },
+    "sipOrSpill": {
+        "title": "Sip or Spill ☕",
+        "subtitle": "Action ou Vérité pour les Amateurs de Café",
+        "selectMode": "Sélectionner le Mode",
+        "couples": "Couples",
+        "friends": "Amis",
+        "truth": "Vérité",
+        "dare": "Action",
+        "next": "Carte Suivante",
+        "back": "Retour au Menu",
+        "changeMode": "Changer de Mode",
+        "managePlayers": "Gérer les Joueurs",
+        "modes": {
+            "truthDare": {
+                "title": "Action ou Vérité",
+                "subtitle": "Modes Couples & Amis"
+            },
+            "wouldYouRather": {
+                "title": "Tu Préfères",
+                "subtitle": "Choix Difficiles"
+            },
+            "neverHaveIEver": {
+                "title": "Je n'ai Jamais",
+                "subtitle": "Révélez vos Secrets"
+            },
+            "likelyTo": {
+                "title": "Qui est le plus...",
+                "subtitle": "Pointez du Doigt"
+            }
+        }
+    },
+    "chess": {
+        "title": "Échecs",
+        "subtitle": "Le Jeu de Stratégie Ultime",
+        "vsAI": "Jouer contre l'IA",
+        "vsFriend": "Jouer contre un Ami",
+        "back": "Retour aux Jeux",
+        "newGame": "Nouvelle Partie",
+        "resign": "Abandonner",
+        "yourTurn": "Votre Tour",
+        "aiTurn": "Tour de l'IA",
+        "checkmate": "Échec et Mat !",
+        "stalemate": "Pat !",
+        "check": "Échec !",
+        "whiteWins": "Les Blancs Gagnent !",
+        "blackWins": "Les Noirs Gagnent !",
+        "draw": "Match Nul !",
+        "checkAlert": "⚠️ ÉCHEC !",
+        "tableForTwo": "Table pour Deux",
+        "solo": "Solo",
+        "mild": "Doux",
+        "medium": "Moyen",
+        "bold": "Corsé",
+        "thankYou": "Merci d'avoir joué !",
+        "noOrders": "Pas de commandes...",
+        "promotePawn": "Promotion du Pion",
+        "selectPromote": "Choisissez une pièce",
+        "flipBoard": "Retourner l'échiquier",
+        "white": "Blancs",
+        "black": "Noirs",
+        "you": "Vous"
+    },
+    "common": {
+        "loading": "Chargement...",
+        "error": "Erreur",
+        "confirm": "Confirmer",
+        "cancel": "Annuler",
+        "yes": "Oui",
+        "no": "Non",
+        "ok": "OK"
+    }
+}

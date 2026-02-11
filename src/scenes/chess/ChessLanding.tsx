@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ChessGame } from './ChessGame';
 import type { PlayerSide, AIDifficulty } from './types';
 import { THEME } from '@/constants/gameConfig';
+import { useTranslation } from 'react-i18next';
 
 interface ChessLandingProps {
   onBack: () => void;
@@ -17,6 +18,7 @@ interface ChessLandingProps {
 type View = 'menu' | 'friends' | 'ai' | 'ai-setup';
 
 export function ChessLanding({ onBack }: ChessLandingProps) {
+  const { t } = useTranslation();
   const [view, setView] = useState<View>('menu');
   const [playerSide, setPlayerSide] = useState<PlayerSide>('white');
   const [difficulty, setDifficulty] = useState<AIDifficulty>(2);
@@ -61,11 +63,11 @@ export function ChessLanding({ onBack }: ChessLandingProps) {
             </div>
           </div>
 
-          <h2 className="text-2xl font-bold text-[#2C1810] mb-6 text-center">Game Setup</h2>
+          <h2 className="text-2xl font-bold text-[#2C1810] mb-6 text-center">{t('chess.newGame')}</h2>
 
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-bold text-[#4B3621] mb-3 uppercase tracking-wider">Choose Side</label>
+              <label className="block text-sm font-bold text-[#4B3621] mb-3 uppercase tracking-wider">{t('chess.yourTurn')}</label>
               <div className="flex gap-3">
                 {(['white', 'black'] as const).map((side) => (
                   <button
@@ -84,7 +86,7 @@ export function ChessLanding({ onBack }: ChessLandingProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-[#4B3621] mb-3 uppercase tracking-wider">Difficulty</label>
+              <label className="block text-sm font-bold text-[#4B3621] mb-3 uppercase tracking-wider">{t('xo.difficulty')}</label>
               <div className="flex gap-2">
                 {([1, 2, 3] as const).map((d) => (
                   <button
@@ -95,7 +97,7 @@ export function ChessLanding({ onBack }: ChessLandingProps) {
                       : 'border-[#E5E7EB] text-[#8B735B] hover:bg-[#FAF9F6]'
                       }`}
                   >
-                    {d === 1 ? 'Easy' : d === 2 ? 'Medium' : 'Hard'}
+                    {d === 1 ? t('xo.easy') : d === 2 ? t('xo.medium') : t('xo.hard')}
                   </button>
                 ))}
               </div>
@@ -109,7 +111,7 @@ export function ChessLanding({ onBack }: ChessLandingProps) {
               }}
               onClick={() => setView('ai')}
             >
-              Start Game
+              {t('waiterSelection.start')}
             </Button>
           </div>
         </motion.div>
@@ -135,7 +137,7 @@ export function ChessLanding({ onBack }: ChessLandingProps) {
         className="absolute top-4 left-4 p-2 rounded-xl border border-[#D2B48C]/50 text-[#F5E6D3] hover:bg-white/10 flex items-center gap-2 z-10 transition-colors backdrop-blur-sm"
       >
         <ArrowLeft size={22} />
-        <span className="text-sm font-sans font-bold">Back</span>
+        <span className="text-sm font-sans font-bold">{t('xo.back')}</span>
       </button>
 
       <motion.div
@@ -155,10 +157,10 @@ export function ChessLanding({ onBack }: ChessLandingProps) {
               letterSpacing: '1px'
             }}
           >
-            Chess
+            {t('chess.title')}
           </h1>
         </div>
-        <p className="text-[#D7CCC8]/80 mt-3 font-sans font-medium text-lg tracking-wide">Square Café Collection</p>
+        <p className="text-[#D7CCC8]/80 mt-3 font-sans font-medium text-lg tracking-wide">{t('chess.subtitle')}</p>
       </motion.div>
 
       <div className="w-full max-w-sm flex flex-col gap-5 z-10">
@@ -181,8 +183,8 @@ export function ChessLanding({ onBack }: ChessLandingProps) {
               <Users size={28} />
             </div>
             <div className="flex-1 text-left">
-              <h3 className="text-xl font-bold text-[#F5E6D3] group-hover:text-white font-sans">Play vs Friends</h3>
-              <p className="text-sm text-[#D7CCC8]/60 font-sans">Table for two</p>
+              <h3 className="text-xl font-bold text-[#F5E6D3] group-hover:text-white font-sans">{t('chess.vsFriend')}</h3>
+              <p className="text-sm text-[#D7CCC8]/60 font-sans">{t('chess.subtitle')}</p>
             </div>
             <ChevronRight className="text-[#D2B48C]/50 group-hover:text-[#D2B48C] transition-colors" size={24} />
           </div>
@@ -207,8 +209,8 @@ export function ChessLanding({ onBack }: ChessLandingProps) {
               <Bot size={28} />
             </div>
             <div className="flex-1 text-left">
-              <h3 className="text-xl font-bold text-[#F5E6D3] group-hover:text-white font-sans">Play vs Bot</h3>
-              <p className="text-sm text-[#D7CCC8]/60 font-sans">Single player challenge</p>
+              <h3 className="text-xl font-bold text-[#F5E6D3] group-hover:text-white font-sans">{t('chess.vsAI')}</h3>
+              <p className="text-sm text-[#D7CCC8]/60 font-sans">{t('chess.subtitle')}</p>
             </div>
             <ChevronRight className="text-[#D2B48C]/50 group-hover:text-[#D2B48C] transition-colors" size={24} />
           </div>

@@ -6,12 +6,14 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, RefreshCw, CheckCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface SudokuProps {
     onBack: () => void;
 }
 
 export function Sudoku({ onBack }: SudokuProps) {
+    const { t } = useTranslation();
     const initialBoard = [
         [5, 3, 0, 0, 7, 0, 0, 0, 0],
         [6, 0, 0, 1, 9, 5, 0, 0, 0],
@@ -87,7 +89,7 @@ export function Sudoku({ onBack }: SudokuProps) {
                     className="text-2xl m-0"
                     style={{ fontFamily: "'Pacifico', cursive", color: '#4B3621' }}
                 >
-                    Coffee Sudoku
+                    {t('sudoku.title')}
                 </h2>
                 <div style={{ width: 40 }} />
             </div>
@@ -141,13 +143,13 @@ export function Sudoku({ onBack }: SudokuProps) {
                         onClick={reset}
                         className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-[#D2B48C] text-white rounded-2xl font-semibold shadow-md hover:bg-[#C19A6B] transition-colors"
                     >
-                        <RefreshCw size={18} /> Reset
+                        <RefreshCw size={18} /> {t('sudoku.newGame')}
                     </button>
                     <button
                         onClick={checkSolution}
                         className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-[#1B4D3E] text-white rounded-2xl font-semibold shadow-md hover:bg-[#2E8B57] transition-colors"
                     >
-                        <CheckCircle size={18} /> Check
+                        <CheckCircle size={18} /> {t('sudoku.check')}
                     </button>
                 </div>
             </div>

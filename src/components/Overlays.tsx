@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { Play, RotateCcw, Home, Volume2, VolumeX, X, Pause } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { THEME } from '@/constants/gameConfig';
+import { useTranslation } from 'react-i18next';
 
 // ===== PAUSE OVERLAY =====
 interface PauseOverlayProps {
@@ -17,6 +18,7 @@ interface PauseOverlayProps {
 }
 
 export function PauseOverlay({ isOpen, onResume, onRestart, onMainMenu }: PauseOverlayProps) {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -63,9 +65,9 @@ export function PauseOverlay({ isOpen, onResume, onRestart, onMainMenu }: PauseO
               className="text-3xl font-extrabold tracking-tight"
               style={{ color: THEME.textDark }}
             >
-              Paused
+              {t('pause.title')}
             </h3>
-            <p className="text-sm font-medium text-slate-400 uppercase tracking-widest mt-1">Game Paused</p>
+            <p className="text-sm font-medium text-slate-400 uppercase tracking-widest mt-1">{t('pause.title')}</p>
           </div>
 
           <div className="flex flex-col gap-3 w-full">
@@ -80,7 +82,7 @@ export function PauseOverlay({ isOpen, onResume, onRestart, onMainMenu }: PauseO
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               <div className="relative flex items-center justify-center gap-2">
                 <Play className="w-6 h-6 fill-current" />
-                Resume
+                {t('pause.resume')}
               </div>
             </Button>
 
@@ -95,7 +97,7 @@ export function PauseOverlay({ isOpen, onResume, onRestart, onMainMenu }: PauseO
             >
               <div className="flex items-center justify-center gap-2">
                 <RotateCcw className="w-5 h-5" />
-                Restart
+                {t('pause.restart')}
               </div>
             </Button>
 
@@ -106,7 +108,7 @@ export function PauseOverlay({ isOpen, onResume, onRestart, onMainMenu }: PauseO
             >
               <div className="flex items-center justify-center gap-2">
                 <Home className="w-5 h-5" />
-                Quit to Menu
+                {t('pause.mainMenu')}
               </div>
             </Button>
           </div>
@@ -125,6 +127,7 @@ interface SettingsOverlayProps {
 }
 
 export function SettingsOverlay({ isOpen, soundEnabled, onToggleSound, onClose }: SettingsOverlayProps) {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -168,7 +171,7 @@ export function SettingsOverlay({ isOpen, soundEnabled, onToggleSound, onClose }
           className="text-2xl font-bold text-center mb-8"
           style={{ color: THEME.coffeeBrown }}
         >
-          ⚙ Settings
+          ⚙ {t('settings.title')}
         </h3>
 
         <div className="flex flex-col gap-4">
@@ -194,7 +197,7 @@ export function SettingsOverlay({ isOpen, soundEnabled, onToggleSound, onClose }
                 className="font-bold text-lg"
                 style={{ color: THEME.textDark }}
               >
-                Sound
+                {t('settings.sound')}
               </span>
             </div>
 

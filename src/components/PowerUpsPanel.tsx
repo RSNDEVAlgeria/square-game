@@ -8,6 +8,7 @@ import { Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SHOP_UPGRADES, POWER_UPS } from '@/constants/gameConfig';
 import type { ActivePowerUp } from '@/types/game';
+import { useTranslation } from 'react-i18next';
 
 interface PowerUpsPanelProps {
     money: number;
@@ -19,6 +20,7 @@ interface PowerUpsPanelProps {
 }
 
 export function PowerUpsPanel({ money, inventory, activePowerUps, upgradeLevels, onActivate, onPlaySound }: PowerUpsPanelProps) {
+    const { t } = useTranslation();
     const [isExpanded, setIsExpanded] = useState(false);
 
     const getPowerUpCost = (powerUpType: string) => {
@@ -74,7 +76,7 @@ export function PowerUpsPanel({ money, inventory, activePowerUps, upgradeLevels,
             {isExpanded && (
                 <div className="absolute right-0 top-14 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/60 p-4 w-64 animate-in slide-in-from-right-4 duration-300">
                     <div className="flex items-center justify-between mb-3">
-                        <h3 className="font-bold text-slate-700 text-sm uppercase tracking-wider">Power-Ups</h3>
+                        <h3 className="font-bold text-slate-700 text-sm uppercase tracking-wider">{t('gameplay.powerUps')}</h3>
                         <div className="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full">
                             ${money}
                         </div>
@@ -115,18 +117,18 @@ export function PowerUpsPanel({ money, inventory, activePowerUps, upgradeLevels,
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center justify-between gap-2">
-                                                <h4 className="font-bold text-slate-700 text-sm">{powerUp.name}</h4>
+                                                <h4 className="font-bold text-slate-700 text-sm">{t(`shop.powerups_list.${powerUp.type}`)}</h4>
                                                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${hasOwned ? 'bg-purple-100 text-purple-700' : affordable ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                                                     }`}>
-                                                    {hasOwned ? 'Owned' : `$${currentCost}`}
+                                                    {hasOwned ? t('shop.owned') : `$${currentCost}`}
                                                 </span>
                                             </div>
 
-                                            <p className="text-xs text-slate-500 mt-0.5">{powerUp.description}</p>
+                                            <p className="text-xs text-slate-500 mt-0.5">{t(`shop.powerups_list.${powerUp.type}_desc`)}</p>
                                             {isActive && timeLeft > 0 && (
                                                 <div className="mt-2">
                                                     <div className="flex items-center justify-between text-xs mb-1">
-                                                        <span className="text-green-600 font-semibold">Active</span>
+                                                        <span className="text-green-600 font-semibold">{t('gameplay.active')}</span>
                                                         <span className="text-slate-600">{Math.ceil(timeLeft / 1000)}s</span>
                                                     </div>
                                                     <div className="h-1.5 bg-slate-200 rounded-full overflow-hidden">

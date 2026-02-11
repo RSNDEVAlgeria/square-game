@@ -8,6 +8,7 @@ import { ArrowRight, Zap, Heart, Coins, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { WAITERS, THEME } from '@/constants/gameConfig';
 import type { Waiter } from '@/types/game';
+import { useTranslation } from 'react-i18next';
 
 interface WaiterSelectionProps {
   onSelect: (waiterId: number) => void;
@@ -30,6 +31,7 @@ const StatIcon = ({ type }: { type: string }) => {
 };
 
 export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSelectionProps) {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredWaiter, setHoveredWaiter] = useState<number | null>(null);
 
@@ -55,13 +57,13 @@ export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSel
           className="text-2xl md:text-3xl font-bold mb-1"
           style={{ color: THEME.coffeeBrown }}
         >
-          Choose Your Waiter
+          {t('waiterSelection.title')}
         </h2>
         <p
           className="text-sm"
           style={{ color: THEME.textMedium }}
         >
-          Each waiter has unique abilities
+          {t('waiterSelection.subtitle')}
         </p>
       </div>
 
@@ -179,7 +181,7 @@ export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSel
           color: THEME.espresso
         }}
       >
-        Start Game
+        {t('waiterSelection.start')}
         <ArrowRight className="w-5 h-5 ml-2" />
       </Button>
     </div>

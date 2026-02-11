@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { RotateCcw, Home, Trophy, TrendingUp, DollarSign, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { THEME } from '@/constants/gameConfig';
+import { useTranslation } from 'react-i18next';
 
 interface GameOverProps {
   score: number;
@@ -17,13 +18,14 @@ interface GameOverProps {
 }
 
 export function GameOver({ score, money, customersServed, onPlayAgain, onMainMenu }: GameOverProps) {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const [animatedScore, setAnimatedScore] = useState(0);
   const [animatedMoney, setAnimatedMoney] = useState(0);
 
   useEffect(() => {
     setIsVisible(true);
-    
+
     // Animate numbers counting up
     const scoreInterval = setInterval(() => {
       setAnimatedScore(prev => {
@@ -56,11 +58,11 @@ export function GameOver({ score, money, customersServed, onPlayAgain, onMainMen
   const performance = getPerformanceMessage();
 
   return (
-    <div 
+    <div
       className="w-full h-full flex items-center justify-center p-6"
       style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(5px)' }}
     >
-      <div 
+      <div
         className={`
           w-full max-w-sm rounded-3xl p-6 shadow-2xl
           transition-all duration-500
@@ -69,7 +71,7 @@ export function GameOver({ score, money, customersServed, onPlayAgain, onMainMen
         style={{ background: 'white' }}
       >
         {/* Title */}
-        <h2 
+        <h2
           className="text-2xl font-bold text-center mb-6"
           style={{ color: performance.color }}
         >
@@ -79,63 +81,63 @@ export function GameOver({ score, money, customersServed, onPlayAgain, onMainMen
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           {/* Score */}
-          <div 
+          <div
             className="p-4 rounded-2xl text-center"
             style={{ background: THEME.bgCream }}
           >
             <Trophy className="w-6 h-6 mx-auto mb-2" style={{ color: THEME.gold }} />
-            <div 
+            <div
               className="text-2xl font-bold"
               style={{ color: THEME.coffeeBrown }}
             >
               {animatedScore.toLocaleString()}
             </div>
-            <div 
+            <div
               className="text-xs font-medium uppercase tracking-wide"
               style={{ color: THEME.textLight }}
             >
-              Score
+              {t('gameOver.score')}
             </div>
           </div>
 
           {/* Money */}
-          <div 
+          <div
             className="p-4 rounded-2xl text-center"
             style={{ background: THEME.bgCream }}
           >
             <DollarSign className="w-6 h-6 mx-auto mb-2" style={{ color: THEME.success }} />
-            <div 
+            <div
               className="text-2xl font-bold"
               style={{ color: THEME.coffeeBrown }}
             >
               ${animatedMoney.toLocaleString()}
             </div>
-            <div 
+            <div
               className="text-xs font-medium uppercase tracking-wide"
               style={{ color: THEME.textLight }}
             >
-              Earned
+              {t('gameOver.money')}
             </div>
           </div>
 
           {/* Customers Served */}
-          <div 
+          <div
             className="col-span-2 p-4 rounded-2xl flex items-center justify-center gap-4"
             style={{ background: THEME.bgCream }}
           >
             <Users className="w-6 h-6" style={{ color: THEME.mint }} />
             <div>
-              <div 
+              <div
                 className="text-xl font-bold"
                 style={{ color: THEME.coffeeBrown }}
               >
                 {customersServed}
               </div>
-              <div 
+              <div
                 className="text-xs font-medium uppercase tracking-wide"
                 style={{ color: THEME.textLight }}
               >
-                Customers Served
+                {t('gameOver.customers')}
               </div>
             </div>
             <TrendingUp className="w-5 h-5 ml-2" style={{ color: THEME.success }} />
@@ -153,7 +155,7 @@ export function GameOver({ score, money, customersServed, onPlayAgain, onMainMen
             }}
           >
             <RotateCcw className="w-5 h-5 mr-2" />
-            Play Again
+            {t('gameOver.playAgain')}
           </Button>
 
           <Button
@@ -166,7 +168,7 @@ export function GameOver({ score, money, customersServed, onPlayAgain, onMainMen
             }}
           >
             <Home className="w-5 h-5 mr-2" />
-            Main Menu
+            {t('gameOver.mainMenu')}
           </Button>
         </div>
       </div>
