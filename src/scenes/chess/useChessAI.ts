@@ -74,6 +74,19 @@ function evaluatePosition(chess: Chess): number {
   return score;
 }
 
+// Move ordering: prioritize captures and checks for better alpha-beta pruning
+function scoreMove(m: ReturnType<Chess['move']>): number {
+  let score = 0;
+  if (m.captured) {
+    // MVV-LVA: Most Valuable Victim - Least Valuable Attacker
+    const victimValue = PIECE_VALUES[m.captured] || 0;
+    const attackerValue = PIECE_VALUES[m.piece] || 0;
+    score += victimValue * 10 - attackerValue;
+  }
+  if (m.promotion) score += 800; // Promotion is very good
+  return score;
+}
+
 function minimax(chess: Chess, depth: number, alpha: number, beta: number, maximizing: boolean): number {
   if (depth === 0) return evaluatePosition(chess);
   const moves = chess.moves({ verbose: true });
@@ -81,6 +94,10 @@ function minimax(chess: Chess, depth: number, alpha: number, beta: number, maxim
     if (chess.isCheckmate()) return maximizing ? -100000 + (4 - depth) : 100000 - (4 - depth);
     return 0; // stalemate
   }
+  
+  // Sort moves for better pruning (captures and promotions first)
+  moves.sort((a, b) => scoreMove(b as ReturnType<Chess['move']>) - scoreMove(a as ReturnType<Chess['move']>));
+  
   if (maximizing) {
     let best = -Infinity;
     for (const m of moves) {
@@ -119,9 +136,14 @@ export function getAIMove(chess: Chess, difficulty: AIDifficulty): { from: strin
   const depth = AI_DEPTH_BY_DIFFICULTY[difficulty];
   const moves = chess.moves({ verbose: true });
   if (moves.length === 0) return null;
+  
+  // Sort moves by capture value for better move ordering at root
+  moves.sort((a, b) => scoreMove(b as ReturnType<Chess['move']>) - scoreMove(a as ReturnType<Chess['move']>));
+  
   const maximizing = chess.turn() === 'w';
   let bestScore = maximizing ? -Infinity : Infinity;
   let bestMove: (typeof moves)[0] | null = null;
+  
   for (const m of moves) {
     chess.move(m);
     const score = minimax(chess, depth - 1, -Infinity, Infinity, !maximizing);
@@ -158,7 +180,7 @@ export function useChessAI(options: UseChessAIOptions) {
         } finally {
           computingRef.current = false;
         }
-      }, 50);
+      }, 0);
       return () => clearTimeout(id);
     },
     [difficulty]

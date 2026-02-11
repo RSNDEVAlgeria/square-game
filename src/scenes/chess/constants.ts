@@ -10,5 +10,5 @@ export const CHESS_STORAGE_KEYS = {
 export const AI_DEPTH_BY_DIFFICULTY = {
   1: 2,  // easy
   2: 3,  // medium
-  3: 4,  // hard
+  3: 3,  // hard (reduced from 4 for better performance)
 } as const;

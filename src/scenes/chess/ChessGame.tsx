@@ -69,9 +69,11 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
       ai.computeMove(game.fen, (from, to, promotion) => {
         game.makeMove(from, to, promotion);
       });
-    }, 500);
+    }, 200);
     return () => clearTimeout(timer);
-  }, [mode, game.isGameOver, ai.isAITurn, game.fen]);
+    // Note: game.fen is intentionally omitted from deps to prevent infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, game.isGameOver, ai.isAITurn]);
 
   const turnLabel = game.turn === 'white' ? 'White' : 'Black';
   const boardOrientation: 'white' | 'black' =
