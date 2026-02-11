@@ -398,6 +398,50 @@
                     "Pretend you're a time traveler from the future where coffee is illegal"
                 ]
             }
+        },
+        "tutorial": {
+            "truthDare": {
+                "title": "How to Play Truth or Dare",
+                "steps": [
+                    "Players take turns picking Truth or Dare.",
+                    "Truth: Answer the question honestly!",
+                    "Dare: Complete the challenge!",
+                    "You have one 'Skip' per game to avoid a card.",
+                    "Keep it fun and café-friendly!"
+                ]
+            },
+            "wouldYouRather": {
+                "title": "How to Play Would You Rather",
+                "steps": [
+                    "A scenario with two difficult choices will be shown.",
+                    "Read the options out loud to the group.",
+                    "Everyone must choose one option - no middle ground!",
+                    "Discuss why you made your choice.",
+                    "There are no right or wrong answers, just fun debates!"
+                ]
+            },
+            "neverHaveIEver": {
+                "title": "How to Play Never Have I Ever",
+                "steps": [
+                    "Read the statement on the card out loud (e.g., 'Never have I ever...').",
+                    "Anyone who HAS done the action must take a sip of their drink ☕.",
+                    "If you haven't done it, you're safe!",
+                    "Share the story if you're comfortable!",
+                    "Keep it fun and respectful."
+                ]
+            },
+            "likelyTo": {
+                "title": "How to Play Who's Likely To",
+                "steps": [
+                    "Read the 'Who is most likely to...' question out loud.",
+                    "On the count of three, everyone points to the person they think fits best.",
+                    "The person with the most fingers pointed at them wins (or loses!) that round.",
+                    "The winner can take a sip or share a story.",
+                    "Debate and defend your choices!"
+                ]
+            },
+            "footer": "Remember to keep it friendly and café-appropriate! Have fun!",
+            "startButton": "Start Playing"
         }
     },
     "chess": {

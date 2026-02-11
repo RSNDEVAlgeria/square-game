@@ -398,6 +398,50 @@
                     "Fais comme si tu étais un voyageur temporel du futur où le café est illégal"
                 ]
             }
+        },
+        "tutorial": {
+            "truthDare": {
+                "title": "Comment Jouer à Action ou Vérité",
+                "steps": [
+                    "Les joueurs choisissent à tour de rôle Vérité ou Action.",
+                    "Vérité : Répondez honnêtement à la question !",
+                    "Action : Relevez le défi !",
+                    "Vous avez un 'Pass' par partie pour éviter une carte.",
+                    "Gardez ça amusant et adapté au café !"
+                ]
+            },
+            "wouldYouRather": {
+                "title": "Comment Jouer à Tu Préfères",
+                "steps": [
+                    "Un scénario avec deux choix difficiles sera montré.",
+                    "Lisez les options à haute voix au groupe.",
+                    "Tout le monde doit choisir une option - pas de juste milieu !",
+                    "Discutez de pourquoi vous avez fait ce choix.",
+                    "Il n'y a pas de bonnes ou mauvaises réponses, juste des débats amusants !"
+                ]
+            },
+            "neverHaveIEver": {
+                "title": "Comment Jouer à Je n'ai Jamais",
+                "steps": [
+                    "Lisez l'énoncé sur la carte à haute voix (ex: 'Je n'ai jamais...').",
+                    "Quiconque A DÉJÀ fait l'action doit boire une gorgée de sa boisson ☕.",
+                    "Si vous ne l'avez pas fait, vous êtes en sécurité !",
+                    "Partagez l'histoire si vous êtes à l'aise !",
+                    "Gardez ça amusant et respectueux."
+                ]
+            },
+            "likelyTo": {
+                "title": "Comment Jouer à Qui est le plus...",
+                "steps": [
+                    "Lisez la question 'Qui est le plus susceptible de...' à haute voix.",
+                    "Au compte de trois, tout le monde pointe la personne qui correspond le mieux.",
+                    "La personne avec le plus de doigts pointés gagne (ou perd !) ce tour.",
+                    "Le gagnant peut boire une gorgée ou partager une histoire.",
+                    "Débattez et défendez vos choix !"
+                ]
+            },
+            "footer": "N'oubliez pas de rester amical et approprié pour un café ! Amusez-vous !",
+            "startButton": "Commencer à Jouer"
         }
     },
     "chess": {
