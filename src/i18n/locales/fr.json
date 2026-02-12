@@ -83,26 +83,32 @@
         "yourMoney": "Votre Argent",
         "totalEarned": "Total Gagné",
         "upgrades_list": {
-            "faster_service": "Service Plus Rapide",
-            "faster_service_desc": "Réduire la perte de patience des clients",
-            "extra_stamina": "Endurance Supplémentaire",
-            "extra_stamina_desc": "Augmenter l'endurance maximale",
-            "better_tips": "Meilleurs Pourboires",
-            "better_tips_desc": "Gagner plus d'argent par commande",
-            "power_saver": "Économiseur d'Énergie",
-            "power_saver_desc": "Réduire les coûts des bonus",
-            "combo_master": "Maître du Combo",
-            "combo_master_desc": "Gagner des bonus combo plus rapidement"
+            "vip_spawn": "Aimant VIP",
+            "vip_spawn_desc": "Augmente les chances d'apparition des clients VIP (5% → 25%)",
+            "critic_spawn": "Appel du Critique",
+            "critic_spawn_desc": "Augmente les chances d'apparition du Critique (3% → 18%)",
+            "influencer_spawn": "Boost Social",
+            "influencer_spawn_desc": "Augmente les chances d'apparition de l'Influenceur (8% → 38%)",
+            "max_stamina": "Entraînement d'Endurance",
+            "max_stamina_desc": "Augmente l'endurance maximale (100 → 250)",
+            "stamina_recovery": "Récupération Rapide",
+            "stamina_recovery_desc": "Récupère plus d'endurance par service réussi (8 → 28)",
+            "base_tips": "École du Charme",
+            "base_tips_desc": "Augmente les pourboires de base (1.0x → 2.0x)",
+            "customer_patience": "Patience Plus",
+            "customer_patience_desc": "Les clients attendent plus longtemps avant de partir (1.0x → 1.8x)",
+            "powerup_discount": "Économiseur",
+            "powerup_discount_desc": "Réduit les coûts des bonus (0% → 50% de réduction)"
         },
         "powerups_list": {
-            "time_freeze": "Gel du Temps",
-            "time_freeze_desc": "Geler tous les minuteurs clients",
-            "instant_serve": "Service Instantané",
-            "instant_serve_desc": "Servir tous les clients instantanément",
+            "speed_boost": "Boost de Vitesse",
+            "speed_boost_desc": "Les clients attendent 50% plus longtemps pendant 15 secondes",
+            "patience_freeze": "Gel de Patience",
+            "patience_freeze_desc": "Gèle la patience de tous les clients pendant 10 secondes",
+            "double_tips": "Pourboires Doublés",
+            "double_tips_desc": "Gagnez 2x plus de pourboires pendant 20 secondes",
             "stamina_boost": "Boost d'Endurance",
-            "stamina_boost_desc": "Restaurer l'endurance complète",
-            "money_multiplier": "Multiplicateur d'Argent",
-            "money_multiplier_desc": "2x argent pendant 30 secondes"
+            "stamina_boost_desc": "Restaure 50% de l'endurance instantanément"
         }
     },
     "settings": {
@@ -163,6 +169,13 @@
         "back": "Retour au Menu",
         "changeMode": "Changer de Mode",
         "managePlayers": "Gérer les Joueurs",
+        "playerSetup": {
+            "title": "Configuration des Joueurs",
+            "description": "Ajoutez des joueurs pour personnaliser l'expérience de jeu !",
+            "placeholder": "Entrez le nom du joueur",
+            "noPlayers": "Aucun joueur ajouté pour l'instant.",
+            "done": "Terminé"
+        },
         "skip": "Passer",
         "skipsLeft": "({{count}} restant)",
         "noSkipsLeft": "Plus de Passes",

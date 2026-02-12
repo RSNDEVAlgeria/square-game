@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Plus, Trash2, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface PlayerSetupProps {
     players: string[];
@@ -11,6 +12,7 @@ interface PlayerSetupProps {
 }
 
 export function PlayerSetup({ players, onAddPlayer, onRemovePlayer, onBack }: PlayerSetupProps) {
+    const { t } = useTranslation();
     const [newPlayerName, setNewPlayerName] = useState('');
 
     const handleAdd = (e?: React.FormEvent) => {
@@ -38,7 +40,7 @@ export function PlayerSetup({ players, onAddPlayer, onRemovePlayer, onBack }: Pl
                 </button>
 
                 <h2 className="text-2xl font-bold text-[#1B4D3E]" style={{ fontFamily: "'Pacifico', cursive" }}>
-                    Player Setup
+                    {t('sipOrSpill.playerSetup.title')}
                 </h2>
 
                 <div className="w-12"></div> {/* Spacer for centering */}
@@ -51,7 +53,7 @@ export function PlayerSetup({ players, onAddPlayer, onRemovePlayer, onBack }: Pl
             >
                 <div className="text-center mb-6">
                     <Users size={48} className="mx-auto text-[#6D28D9] mb-2" />
-                    <p className="text-[#4B5563]">Add players to customize the game experience!</p>
+                    <p className="text-[#4B5563]">{t('sipOrSpill.playerSetup.description')}</p>
                 </div>
 
                 {/* Add Player Form */}
@@ -60,7 +62,7 @@ export function PlayerSetup({ players, onAddPlayer, onRemovePlayer, onBack }: Pl
                         type="text"
                         value={newPlayerName}
                         onChange={(e) => setNewPlayerName(e.target.value)}
-                        placeholder="Enter player name"
+                        placeholder={t('sipOrSpill.playerSetup.placeholder')}
                         className="flex-1 px-4 py-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none bg-white/80"
                     />
                     <button
@@ -76,7 +78,7 @@ export function PlayerSetup({ players, onAddPlayer, onRemovePlayer, onBack }: Pl
                 {/* Player List */}
                 <div className="space-y-3 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
                     {players.length === 0 ? (
-                        <p className="text-center text-gray-400 italic py-4">No players added yet.</p>
+                        <p className="text-center text-gray-400 italic py-4">{t('sipOrSpill.playerSetup.noPlayers')}</p>
                     ) : (
                         players.map((player, index) => (
                             <motion.div
@@ -104,7 +106,7 @@ export function PlayerSetup({ players, onAddPlayer, onRemovePlayer, onBack }: Pl
                         onClick={onBack}
                         className="w-full py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl font-bold shadow-lg hover:opacity-90 transition-opacity"
                     >
-                        Done
+                        {t('sipOrSpill.playerSetup.done')}
                     </button>
                 </div>
             </motion.div>

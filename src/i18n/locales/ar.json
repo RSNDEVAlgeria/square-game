@@ -83,26 +83,32 @@
         "yourMoney": "مالك",
         "totalEarned": "إجمالي المكتسب",
         "upgrades_list": {
-            "faster_service": "خدمة أسرع",
-            "faster_service_desc": "تقليل استنزاف صبر العملاء",
-            "extra_stamina": "طاقة إضافية",
-            "extra_stamina_desc": "زيادة الطاقة القصوى",
-            "better_tips": "إكراميات أفضل",
-            "better_tips_desc": "اكسب المزيد من المال لكل طلب",
-            "power_saver": "موفر الطاقة",
-            "power_saver_desc": "تقليل تكاليف القوى الخاصة",
-            "combo_master": "سيد الكومبو",
-            "combo_master_desc": "احصل على مكافآت الكومبو بشكل أسرع"
+            "vip_spawn": "مغناطيس VIP",
+            "vip_spawn_desc": "زيادة فرص ظهور العملاء VIP (5% → 25%)",
+            "critic_spawn": "جاذبية الناقد",
+            "critic_spawn_desc": "زيادة فرص ظهور ناقد الطعام (3% → 18%)",
+            "influencer_spawn": "دفعة اجتماعية",
+            "influencer_spawn_desc": "زيادة فرص ظهور المؤثر (8% → 38%)",
+            "max_stamina": "تدريب التحمل",
+            "max_stamina_desc": "زيادة الطاقة القصوى (100 → 250)",
+            "stamina_recovery": "استشفاء سريع",
+            "stamina_recovery_desc": "استعادة المزيد من الطاقة لكل خدمة ناجحة (8 → 28)",
+            "base_tips": "مدرسة السحر",
+            "base_tips_desc": "زيادة الإكراميات الأساسية (1.0x → 2.0x)",
+            "customer_patience": "صبر إضافي",
+            "customer_patience_desc": "العملاء ينتظرون لفترة أطول قبل المغادرة (1.0x → 1.8x)",
+            "powerup_discount": "موفر القوى الخاصة",
+            "powerup_discount_desc": "تقليل تكاليف القوى الخاصة (0% → 50% خصم)"
         },
         "powerups_list": {
-            "time_freeze": "تجميد الوقت",
-            "time_freeze_desc": "تجميد جميع مؤقتات العملاء",
-            "instant_serve": "خدمة فورية",
-            "instant_serve_desc": "خدمة جميع العملاء على الفور",
+            "speed_boost": "دفعة السرعة",
+            "speed_boost_desc": "العملاء ينتظرون 50% أطول لمدة 15 ثانية",
+            "patience_freeze": "تجميد الصبر",
+            "patience_freeze_desc": "تجميد صبر جميع العملاء لمدة 10 ثوانٍ",
+            "double_tips": "الإكراميات المضاعفة",
+            "double_tips_desc": "اكسب ضعف الإكراميات لمدة 20 ثانية",
             "stamina_boost": "تعزيز الطاقة",
-            "stamina_boost_desc": "استعادة الطاقة الكاملة",
-            "money_multiplier": "مضاعف المال",
-            "money_multiplier_desc": "ضعف المال لمدة 30 ثانية"
+            "stamina_boost_desc": "استعادة 50% من الطاقة فوراً"
         }
     },
     "settings": {
@@ -163,6 +169,13 @@
         "back": "العودة للألعاب",
         "changeMode": "تغيير الوضع",
         "managePlayers": "إدارة اللاعبين",
+        "playerSetup": {
+            "title": "إعداد اللاعبين",
+            "description": "أضف لاعبين لتخصيص تجربة اللعبة!",
+            "placeholder": "أدخل اسم اللاعب",
+            "noPlayers": "لم يتم إضافة لاعبين بعد.",
+            "done": "تم"
+        },
         "skip": "تخطي",
         "skipsLeft": "({{count}} متبقي)",
         "noSkipsLeft": "لا يوجد تخطيات متبقية",

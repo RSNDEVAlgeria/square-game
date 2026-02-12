@@ -83,26 +83,32 @@
         "yourMoney": "Your Money",
         "totalEarned": "Total Earned",
         "upgrades_list": {
-            "faster_service": "Faster Service",
-            "faster_service_desc": "Reduce customer patience drain",
-            "extra_stamina": "Extra Stamina",
-            "extra_stamina_desc": "Increase maximum stamina",
-            "better_tips": "Better Tips",
-            "better_tips_desc": "Earn more money per order",
-            "power_saver": "Power Saver",
-            "power_saver_desc": "Reduce power-up costs",
-            "combo_master": "Combo Master",
-            "combo_master_desc": "Earn combo bonuses faster"
+            "vip_spawn": "VIP Magnet",
+            "vip_spawn_desc": "Increase VIP customer spawn chance (5% → 25%)",
+            "critic_spawn": "Critic Appeal",
+            "critic_spawn_desc": "Increase Food Critic spawn chance (3% → 18%)",
+            "influencer_spawn": "Social Boost",
+            "influencer_spawn_desc": "Increase Influencer spawn chance (8% → 38%)",
+            "max_stamina": "Endurance Training",
+            "max_stamina_desc": "Increase maximum stamina (100 → 250)",
+            "stamina_recovery": "Quick Recovery",
+            "stamina_recovery_desc": "Recover more stamina per correct serve (8 → 28)",
+            "base_tips": "Charm School",
+            "base_tips_desc": "Increase base tip amounts (1.0x → 2.0x)",
+            "customer_patience": "Patience Plus",
+            "customer_patience_desc": "Customers wait longer before leaving (1.0x → 1.8x)",
+            "powerup_discount": "Power Saver",
+            "powerup_discount_desc": "Reduce power-up costs (0% → 50% off)"
         },
         "powerups_list": {
-            "time_freeze": "Time Freeze",
-            "time_freeze_desc": "Freeze all customer timers",
-            "instant_serve": "Instant Serve",
-            "instant_serve_desc": "Serve all customers instantly",
+            "speed_boost": "Speed Boost",
+            "speed_boost_desc": "Customers wait 50% longer for 15 seconds",
+            "patience_freeze": "Patience Freeze",
+            "patience_freeze_desc": "Freeze all customer patience for 10 seconds",
+            "double_tips": "Double Tips",
+            "double_tips_desc": "Earn 2x tips for 20 seconds",
             "stamina_boost": "Stamina Boost",
-            "stamina_boost_desc": "Restore full stamina",
-            "money_multiplier": "Money Multiplier",
-            "money_multiplier_desc": "2x money for 30 seconds"
+            "stamina_boost_desc": "Restore 50% stamina instantly"
         }
     },
     "settings": {
@@ -163,6 +169,13 @@
         "back": "Back to Games",
         "changeMode": "Change Mode",
         "managePlayers": "Manage Players",
+        "playerSetup": {
+            "title": "Player Setup",
+            "description": "Add players to customize the game experience!",
+            "placeholder": "Enter player name",
+            "noPlayers": "No players added yet.",
+            "done": "Done"
+        },
         "skip": "Skip",
         "skipsLeft": "({{count}} left)",
         "noSkipsLeft": "No Skips Left",
