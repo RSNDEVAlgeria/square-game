@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { Chessboard, ChessboardProvider } from 'react-chessboard';
 import { ArrowLeft, RotateCcw, Copy, RefreshCw, Trophy, ScrollText, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import type { Square } from 'chess.js';
 import { useChessGame } from './useChessGame';
@@ -29,10 +30,11 @@ interface ChessGameProps {
   mode: ChessMode;
   playerSide?: PlayerSide;
   difficulty?: AIDifficulty;
-  onBack: () => void;
+  onBack?: () => void;
 }
 
-export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }: ChessGameProps) {
+export function ChessGame({ mode, playerSide = 'white', difficulty = 2 }: ChessGameProps) {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [selectedSquare, setSelectedSquare] = useState<string | null>(null);
   const [promotionPending, setPromotionPending] = useState<{ from: string; to: string } | null>(null);
@@ -291,7 +293,7 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
           }}
         >
           <button
-            onClick={onBack}
+            onClick={() => navigate('/')}
             className="p-2 rounded-xl text-[#4B3621] border border-[#D2B48C] hover:bg-white/50 transition-colors"
           >
             <ArrowLeft size={20} />
@@ -582,7 +584,7 @@ export function ChessGame({ mode, playerSide = 'white', difficulty = 2, onBack }
                 <Button
                   variant="outline"
                   className="w-full rounded-xl border-[#D2B48C] text-[#4B3621]"
-                  onClick={onBack}
+                  onClick={() => navigate('/')}
                 >
                   {t('common.cancel')}
                 </Button>

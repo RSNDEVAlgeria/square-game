@@ -5,6 +5,7 @@
 
 import { useEffect, useState } from 'react';
 import { Coffee, Play, ShoppingBag, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { THEME } from '@/constants/gameConfig';
 import { useTranslation } from 'react-i18next';
@@ -13,10 +14,11 @@ interface MainMenuProps {
   onPlay: () => void;
   onShop: () => void;
   onSettings: () => void;
-  onBack: () => void;
+  onBack?: () => void;
 }
 
-export function MainMenu({ onPlay, onShop, onSettings, onBack }: MainMenuProps) {
+export function MainMenu({ onPlay, onShop, onSettings }: MainMenuProps) {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -137,7 +139,7 @@ export function MainMenu({ onPlay, onShop, onSettings, onBack }: MainMenuProps) 
           </Button>
 
           <Button
-            onClick={onBack}
+            onClick={() => navigate('/')}
             variant="ghost"
             className="w-full h-10 text-xs font-medium text-amber-900/40 hover:text-amber-900 hover:bg-amber-900/5 gap-2"
           >

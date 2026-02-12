@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Users, Bot, ArrowLeft, ChevronRight, Crown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ChessGame } from './ChessGame';
 import type { PlayerSide, AIDifficulty } from './types';
@@ -12,12 +13,13 @@ import { THEME } from '@/constants/gameConfig';
 import { useTranslation } from 'react-i18next';
 
 interface ChessLandingProps {
-  onBack: () => void;
+  onBack?: () => void;
 }
 
 type View = 'menu' | 'friends' | 'ai' | 'ai-setup';
 
-export function ChessLanding({ onBack }: ChessLandingProps) {
+export function ChessLanding(_props: ChessLandingProps) {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [view, setView] = useState<View>('menu');
   const [playerSide, setPlayerSide] = useState<PlayerSide>('white');
@@ -133,7 +135,7 @@ export function ChessLanding({ onBack }: ChessLandingProps) {
 
       <button
         type="button"
-        onClick={onBack}
+        onClick={() => navigate('/')}
         className="absolute top-4 left-4 p-2 rounded-xl border border-[#D2B48C]/50 text-[#F5E6D3] hover:bg-white/10 flex items-center gap-2 z-10 transition-colors backdrop-blur-sm"
       >
         <ArrowLeft size={22} />

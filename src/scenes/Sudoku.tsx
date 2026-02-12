@@ -6,13 +6,15 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, RefreshCw, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 interface SudokuProps {
-    onBack: () => void;
+    onBack?: () => void;
 }
 
-export function Sudoku({ onBack }: SudokuProps) {
+export function Sudoku(_props: SudokuProps) {
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const initialBoard = [
         [5, 3, 0, 0, 7, 0, 0, 0, 0],
@@ -80,7 +82,7 @@ export function Sudoku({ onBack }: SudokuProps) {
         <div className="w-full h-full flex flex-col items-center p-5" style={{ background: '#FAF9F6' }}>
             <div className="w-full flex items-center justify-between mb-5">
                 <button
-                    onClick={onBack}
+                    onClick={() => navigate('/')}
                     className="p-2.5 rounded-xl bg-white text-[#4B3621] border border-[#D2B48C] shadow-none hover:bg-gray-50 transition-colors"
                 >
                     <ArrowLeft size={24} />

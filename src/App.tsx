@@ -4,20 +4,16 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useGameState } from '@/hooks/useGameState';
 import { useAudio } from '@/hooks/useAudio';
 import { GamesMenu } from '@/scenes/GamesMenu';
-import { MainMenu } from '@/scenes/MainMenu';
-import { WaiterSelection } from '@/scenes/WaiterSelection';
-import { Gameplay } from '@/scenes/Gameplay';
-import { GameOver } from '@/scenes/GameOver';
 import { XO } from '@/scenes/XO';
 import { Sudoku } from '@/scenes/Sudoku';
 import { SipOrSpill } from '@/scenes/SipOrSpill';
 import { ChessLanding } from '@/scenes/chess/ChessLanding';
-import { Shop } from '@/components/Shop';
-import { PauseOverlay, SettingsOverlay } from '@/components/Overlays';
 import { Toaster } from '@/components/ui/sonner';
+import CookingGameWrapper from '@/components/CookingGameWrapper';
 
 function App() {
   // Game state management
@@ -45,7 +41,6 @@ function App() {
 
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<'games-menu' | 'cooking' | 'xo' | 'sudoku' | 'sip-or-spill' | 'chess'>('games-menu'); // Updated currentView type
 
   // Audio management
   const { playSound, initAudio } = useAudio(gameState.soundEnabled);
@@ -91,9 +86,6 @@ function App() {
     playSound('click');
     setIsSettingsOpen(false);
   }, [playSound]);
-
-
-
 
   const handleWaiterSelect = useCallback((waiterId: number) => {
     playSound('click');
@@ -147,26 +139,6 @@ function App() {
     addFloatingText(x, y, text, color);
   }, [addFloatingText]);
 
-  const handleGameNavigate = useCallback((gameId: string) => {
-    playSound('click');
-    if (gameId === 'cooking') {
-      setCurrentView('cooking');
-    } else if (gameId === 'xo') {
-      setCurrentView('xo');
-    } else if (gameId === 'sudoku') {
-      setCurrentView('sudoku');
-    } else if (gameId === 'sip-or-spill') {
-      setCurrentView('sip-or-spill');
-    } else if (gameId === 'chess') {
-      setCurrentView('chess');
-    }
-  }, [playSound]);
-
-  const handleBackToGamesMenu = useCallback(() => {
-    playSound('click');
-    setCurrentView('games-menu');
-  }, [playSound]);
-
   // ===== RENDER =====
   return (
     <div className="w-full h-screen flex items-center justify-center overflow-hidden bg-gray-900">
@@ -178,119 +150,59 @@ function App() {
           aspectRatio: '9/16'
         }}
       >
-        {/* Games Menu - Initial Landing Page */}
-        {currentView === 'games-menu' && (
-          <GamesMenu onNavigate={handleGameNavigate} />
-        )}
-
-        {/* XO Game */}
-        {currentView === 'xo' && (
-          <XO onBack={handleBackToGamesMenu} />
-        )}
-
-        {/* Sudoku Game */}
-        {currentView === 'sudoku' && (
-          <Sudoku onBack={handleBackToGamesMenu} />
-        )}
-
-        {/* Sip or Spill Game */}
-        {currentView === 'sip-or-spill' && (
-          <SipOrSpill onBack={handleBackToGamesMenu} />
-        )}
-
-        {/* Chess */}
-        {currentView === 'chess' && (
-          <ChessLanding onBack={handleBackToGamesMenu} />
-        )}
-
-
-
-        {/* Cooking Game Scenes - Only show when currentView is 'cooking' */}
-        {currentView === 'cooking' && (
-          <>
-            {/* Main Menu Scene */}
-            {gameState.currentScene === 'main-menu' && (
-              <MainMenu
-                onPlay={handlePlay}
-                onShop={handleOpenShop}
-                onSettings={handleOpenSettings}
-                onBack={handleBackToGamesMenu}
-              />
-            )}
-
-            {/* Waiter Selection Scene */}
-            {gameState.currentScene === 'waiter-selection' && (
-              <WaiterSelection
-                onSelect={handleWaiterSelect}
-                onStart={handleStartGame}
-                selectedWaiter={gameState.selectedWaiter}
-              />
-            )}
-
-            {/* Gameplay Scene */}
-            {gameState.currentScene === 'gameplay' && (
-              <Gameplay
-                score={gameState.score}
-                money={gameState.money}
-                stamina={gameState.stamina}
-                maxStamina={gameState.maxStamina}
-                combo={gameState.combo}
-                customers={customers}
-                plateItems={plate.items}
-                floatingTexts={floatingTexts}
-                inventory={gameState.inventory}
-                upgradeLevels={gameState.upgrades}
-                activePowerUps={activePowerUps}
-                onPause={handlePause}
-                onAddToPlate={handleAddToPlate}
-                onClearPlate={handleClearPlate}
-                onServeCustomer={handleServeCustomer}
-                onAddFloatingText={handleAddFloatingText}
-                onActivatePowerUp={activatePowerUp}
-                onPlaySound={playSound}
-              />
-            )}
-
-            {/* Game Over Scene */}
-            {gameState.currentScene === 'game-over' && (
-              <GameOver
-                score={gameState.score}
-                money={gameState.money}
-                customersServed={gameState.customersServed}
-                onPlayAgain={handlePlayAgain}
-                onMainMenu={handleMainMenu}
-              />
-            )}
-
-            {/* Pause Overlay */}
-            <PauseOverlay
-              isOpen={gameState.isPaused && !gameState.isGameOver && gameState.currentScene === 'gameplay'}
-              onResume={handleResume}
-              onRestart={handleRestart}
-              onMainMenu={handleMainMenu}
+        <Routes>
+          {/* Main Games Menu */}
+          <Route path="/" element={<GamesMenu />} />
+          
+          {/* Cooking Game Routes */}
+          <Route path="/maingame/*" element={
+            <CookingGameWrapper
+              gameState={gameState}
+              plate={plate}
+              customers={customers}
+              floatingTexts={floatingTexts}
+              activePowerUps={activePowerUps}
+              isShopOpen={isShopOpen}
+              isSettingsOpen={isSettingsOpen}
+              playSound={playSound}
+              handlePlay={handlePlay}
+              handleOpenShop={handleOpenShop}
+              handleCloseShop={handleCloseShop}
+              handleOpenSettings={handleOpenSettings}
+              handleCloseSettings={handleCloseSettings}
+              handleWaiterSelect={handleWaiterSelect}
+              handleStartGame={handleStartGame}
+              handlePause={handlePause}
+              handleResume={handleResume}
+              handleRestart={handleRestart}
+              handleMainMenu={handleMainMenu}
+              handlePlayAgain={handlePlayAgain}
+              handleAddToPlate={handleAddToPlate}
+              handleClearPlate={handleClearPlate}
+              handleServeCustomer={handleServeCustomer}
+              handleAddFloatingText={handleAddFloatingText}
+              activatePowerUp={activatePowerUp}
+              purchaseUpgrade={purchaseUpgrade}
+              purchasePowerUp={purchasePowerUp}
+              toggleSound={toggleSound}
             />
-
-            {/* Settings Overlay - shown on main menu */}
-            <SettingsOverlay
-              isOpen={isSettingsOpen}
-              soundEnabled={gameState.soundEnabled}
-              onToggleSound={toggleSound}
-              onClose={handleCloseSettings}
-            />
-
-            {/* Shop Modal */}
-            <Shop
-              isOpen={isShopOpen}
-              onClose={handleCloseShop}
-              money={gameState.money}
-              totalMoneyEarned={gameState.totalMoneyEarned}
-              upgradeLevels={gameState.upgrades}
-              onPurchaseUpgrade={purchaseUpgrade}
-              onPurchasePowerUp={purchasePowerUp}
-              onPlaySound={playSound}
-            />
-          </>
-        )}
+          } />
+          
+          {/* XO Game */}
+          <Route path="/xo" element={<XO onBack={() => {}} />} />
+          
+          {/* Sudoku Game */}
+          <Route path="/sudoku" element={<Sudoku onBack={() => {}} />} />
+          
+          {/* Sip or Spill Game */}
+          <Route path="/siporspill" element={<SipOrSpill onBack={() => {}} />} />
+          
+          {/* Chess Game */}
+          <Route path="/chess" element={<ChessLanding onBack={() => {}} />} />
+          
+          {/* Redirect unknown routes to games menu */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
 
         {/* Toast notifications */}
         <Toaster />

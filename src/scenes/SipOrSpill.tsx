@@ -7,6 +7,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Users, Sparkles, Heart, Coffee, HelpCircle, AlertCircle, Fingerprint, Languages } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { PlayerSetup } from '../components/siporspill/PlayerSetup';
 import { GameSession } from '../components/siporspill/GameSession';
 import { GameTutorial } from '../components/siporspill/GameTutorial';
@@ -14,12 +15,13 @@ import type { GameType, Category } from '../components/siporspill/GameData';
 import { useTranslation } from 'react-i18next';
 
 interface SipOrSpillProps {
-    onBack: () => void;
+    onBack?: () => void;
 }
 
 type ViewState = 'menu' | 'setup' | 'game' | 'td-select' | 'tutorial';
 
-export function SipOrSpill({ onBack }: SipOrSpillProps) {
+export function SipOrSpill(_props: SipOrSpillProps) {
+    const navigate = useNavigate();
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language;
     const [view, setView] = useState<ViewState>('menu');
@@ -165,7 +167,7 @@ export function SipOrSpill({ onBack }: SipOrSpillProps) {
 
             {/* Back Button */}
             <button
-                onClick={onBack}
+                onClick={() => navigate('/')}
                 className="absolute top-4 left-4 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-all z-10"
             >
                 <ArrowLeft size={24} className="text-[#1B4D3E]" />

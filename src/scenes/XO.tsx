@@ -6,17 +6,19 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RefreshCw, ArrowLeft, Coffee, Cookie, Trophy } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { useTranslation } from 'react-i18next';
 
 interface XOProps {
-    onBack: () => void;
+    onBack?: () => void;
 }
 
 type Player = 'X' | 'O' | null;
 type Winner = 'X' | 'O' | 'Draw' | null;
 
-export function XO({ onBack }: XOProps) {
+export function XO(_props: XOProps) {
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const [gameMode, setGameMode] = useState<'select' | 'ai' | 'freeplay'>('select');
     const [board, setBoard] = useState<Player[]>(Array(9).fill(null));
@@ -108,7 +110,7 @@ export function XO({ onBack }: XOProps) {
 
     const handleBack = () => {
         if (gameMode === 'select') {
-            onBack();
+            navigate('/');
         } else {
             setGameMode('select');
             reset();
@@ -122,7 +124,7 @@ export function XO({ onBack }: XOProps) {
             }}>
                 <div className="w-full flex items-center justify-between mb-12">
                     <button
-                        onClick={onBack}
+                        onClick={() => navigate('/')}
                         className="p-2.5 rounded-xl text-[#4B3621] bg-white border border-[#D2B48C] shadow-none hover:bg-gray-50 transition-colors"
                     >
                         <ArrowLeft size={24} />

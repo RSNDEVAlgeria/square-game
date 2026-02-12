@@ -7,12 +7,10 @@ import { motion } from 'framer-motion';
 import { Utensils, Grid3X3, Swords, Coffee, Star, ChevronRight, Heart, Crown, Languages } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-interface GamesMenuProps {
-    onNavigate: (gameId: string) => void;
-}
-
-export function GamesMenu({ onNavigate }: GamesMenuProps) {
+export function GamesMenu() {
+    const navigate = useNavigate();
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language;
 
@@ -39,6 +37,7 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
     const menuItems = [
         {
             id: 'cooking',
+            path: '/maingame',
             title: t('gamesMenu.games.cooking.title'),
             desc: t('gamesMenu.games.cooking.desc'),
             icon: <Utensils size={32} />,
@@ -47,6 +46,7 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
         },
         {
             id: 'sip-or-spill',
+            path: '/siporspill',
             title: t('gamesMenu.games.sipOrSpill.title'),
             desc: t('gamesMenu.games.sipOrSpill.desc'),
             icon: <Heart size={32} />,
@@ -55,6 +55,7 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
         },
         {
             id: 'sudoku',
+            path: '/sudoku',
             title: t('gamesMenu.games.sudoku.title'),
             desc: t('gamesMenu.games.sudoku.desc'),
             icon: <Grid3X3 size={32} />,
@@ -63,6 +64,7 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
         },
         {
             id: 'xo',
+            path: '/xo',
             title: t('gamesMenu.games.xo.title'),
             desc: t('gamesMenu.games.xo.desc'),
             icon: <Swords size={32} />,
@@ -71,6 +73,7 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
         },
         {
             id: 'chess',
+            path: '/chess',
             title: t('gamesMenu.games.chess.title'),
             desc: t('gamesMenu.games.chess.desc'),
             icon: <Crown size={32} />,
@@ -185,7 +188,7 @@ export function GamesMenu({ onNavigate }: GamesMenuProps) {
                                 whileHover={{ scale: 1.03, x: 5 }}
                                 whileTap={{ scale: 0.97 }}
                                 className="bg-white rounded-3xl p-4 flex items-center gap-4 shadow-md cursor-pointer border border-[#D2B48C]/20 relative hover:shadow-xl transition-shadow"
-                                onClick={() => onNavigate(item.id)}
+                                onClick={() => navigate(item.path)}
                             >
                                 <div
                                     className="w-16 h-16 rounded-2xl flex items-center justify-center text-white flex-shrink-0"
