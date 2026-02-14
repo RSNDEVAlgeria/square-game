@@ -46,58 +46,32 @@ export const CONFIG: GameConfig = {
 export const WAITERS: Waiter[] = [
   {
     id: 0,
-    name: 'Alex',
-    emoji: '👦',
-    color: 'from-blue-400 to-blue-600',
-    speed: 1.2,
-    stamina: 0.9,
-    tipBonus: 1.0,
-    description: 'Speed specialist with quick reflexes',
+    name: 'Waiter 1',
+    emoji: '👨‍🍳',
+    image: '/waiters/waiter-1.jpg',
+    color: 'from-amber-600 to-amber-800',
+    speed: 1.1,
+    stamina: 1.0,
+    tipBonus: 1.1,
+    description: 'Fast and efficient service specialist',
     stats: {
-      speedBonus: '+20%',
-      staminaBonus: '-10%'
+      speedBonus: '+10%',
+      staminaBonus: 'Balanced'
     }
   },
   {
     id: 1,
-    name: 'Emma',
-    emoji: '👧',
-    color: 'from-emerald-400 to-emerald-600',
+    name: 'Waiter 2',
+    emoji: '👨‍🍳',
+    image: '/waiters/waiter-2.jpg',
+    color: 'from-slate-600 to-slate-800',
     speed: 1.0,
-    stamina: 1.0,
-    tipBonus: 1.15,  // Slightly improved
-    description: 'Balanced all-rounder with charm',
+    stamina: 1.15,
+    tipBonus: 1.2,
+    description: 'Experienced with excellent customer service',
     stats: {
       speedBonus: 'Balanced',
       staminaBonus: '+15%'
-    }
-  },
-  {
-    id: 2,
-    name: 'Marcus',
-    emoji: '👨‍🦳',
-    color: 'from-red-400 to-red-600',
-    speed: 0.85,
-    stamina: 1.0,
-    tipBonus: 1.35,  // Improved for better balance
-    description: 'Experienced veteran with high tips',
-    stats: {
-      speedBonus: '-15%',
-      staminaBonus: 'Exp +30%'
-    }
-  },
-  {
-    id: 3,
-    name: 'Sophia',
-    emoji: '👩',
-    color: 'from-violet-400 to-violet-600',
-    speed: 1.0,
-    stamina: 1.25,
-    tipBonus: 0.95,
-    description: 'Endurance expert for long sessions',
-    stats: {
-      speedBonus: 'Balanced',
-      staminaBonus: '+25%'
     }
   }
 ];

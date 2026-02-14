@@ -11,6 +11,7 @@ export interface Waiter {
   id: number;
   name: string;
   emoji: string;
+  image?: string;     // Optional image path for real photos
   color: string;
   speed: number;      // Movement/action speed multiplier
   stamina: number;    // Stamina multiplier

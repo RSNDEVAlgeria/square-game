@@ -67,8 +67,8 @@ export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSel
         </p>
       </div>
 
-      {/* Waiter Grid - Fixed 2x2 layout, no scroll */}
-      <div className="grid grid-cols-2 gap-3 md:gap-4 mb-4">
+      {/* Waiter Grid - Two large cards side by side */}
+      <div className="grid grid-cols-2 gap-4 md:gap-6 mb-4 px-2">
         {WAITERS.map((waiter, index) => (
           <div
             key={waiter.id}
@@ -76,10 +76,10 @@ export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSel
             onMouseEnter={() => setHoveredWaiter(waiter.id)}
             onMouseLeave={() => setHoveredWaiter(null)}
             className={`
-              relative flex flex-col items-center p-3 md:p-4 rounded-2xl cursor-pointer
+              relative flex flex-col items-center p-4 md:p-5 rounded-2xl cursor-pointer
               transition-all duration-300 ease-out
               ${selectedWaiter?.id === waiter.id
-                ? 'ring-4 ring-offset-2 scale-[1.02]'
+                ? 'scale-[1.02]'
                 : 'hover:scale-[1.02]'
               }
               ${isVisible
@@ -90,44 +90,59 @@ export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSel
             style={{
               background: 'white',
               boxShadow: selectedWaiter?.id === waiter.id
-                ? `0 0 0 4px ${THEME.mint}, 0 4px 12px rgba(0,0,0,0.1)`
-                : '0 2px 8px rgba(0,0,0,0.08)',
+                ? `0 8px 24px rgba(152, 216, 200, 0.4), 0 4px 12px rgba(0,0,0,0.1)`
+                : '0 4px 12px rgba(0,0,0,0.08)',
               transitionDelay: `${index * 80}ms`,
-              borderColor: selectedWaiter?.id === waiter.id ? THEME.mint : 'transparent',
+              border: selectedWaiter?.id === waiter.id ? `3px solid ${THEME.mint}` : '3px solid transparent',
             }}
           >
             {/* Avatar */}
             <div
               className={`
-                w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center
-                text-3xl md:text-4xl mb-2 shadow-md
+                w-20 h-24 md:w-24 md:h-28 rounded-xl overflow-hidden mb-2 shadow-md
                 bg-gradient-to-br ${waiter.color}
-                transition-transform duration-300
-                ${hoveredWaiter === waiter.id ? 'scale-110' : ''}
+                transition-transform duration-300 border-4 border-white
+                ${hoveredWaiter === waiter.id ? 'scale-105' : ''}
+                ${selectedWaiter?.id === waiter.id ? 'ring-4 ring-offset-2' : ''}
               `}
+              style={{
+                boxShadow: selectedWaiter?.id === waiter.id
+                  ? `0 0 0 4px ${THEME.mint}, 0 4px 12px rgba(0,0,0,0.15)`
+                  : '0 2px 8px rgba(0,0,0,0.1)'
+              }}
             >
-              {waiter.emoji}
+              {waiter.image ? (
+                <img
+                  src={waiter.image}
+                  alt={waiter.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-3xl md:text-4xl">
+                  {waiter.emoji}
+                </div>
+              )}
             </div>
 
             {/* Name */}
             <h3
-              className="font-bold text-sm md:text-base mb-1"
+              className="font-bold text-base md:text-lg mb-2"
               style={{ color: THEME.textDark }}
             >
               {waiter.name}
             </h3>
 
             {/* Stats */}
-            <div className="flex flex-wrap gap-1 justify-center mt-auto">
+            <div className="flex flex-wrap gap-2 justify-center mt-auto">
               <span
-                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold"
+                className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold"
                 style={{ background: THEME.bgCream, color: THEME.textMedium }}
               >
                 <StatIcon type="speed" />
                 {waiter.stats.speedBonus}
               </span>
               <span
-                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold"
+                className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold"
                 style={{ background: THEME.bgCream, color: THEME.textMedium }}
               >
                 <StatIcon type="stamina" />
