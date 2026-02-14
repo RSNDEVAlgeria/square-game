@@ -45,8 +45,18 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
             const dares = (translatedDares && translatedDares.length > 0) ? translatedDares : catContent.dares;
             pool = type === 'truth' ? truths : dares;
         } else {
+            // Use translated content for other game types
+            const translationKey = 'sipOrSpill.content.' + gameType.replace(/-/g, '');
+            const translatedContent = t(translationKey, { returnObjects: true }) as string[] | GameItem[];
+            
+            // Fallback to CONTENT if translations not available
             const otherContent = CONTENT[gameType] as Record<string, (string | GameItem)[]>;
-            pool = otherContent[category] || [];
+            const fallbackPool = otherContent[category] || [];
+            
+            // Use translated content if available, otherwise fallback
+            pool = (translatedContent && Array.isArray(translatedContent) && translatedContent.length > 0) 
+                ? translatedContent 
+                : fallbackPool;
         }
 
         if (!pool || pool.length === 0) return null;
