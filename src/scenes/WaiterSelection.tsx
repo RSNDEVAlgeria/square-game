@@ -114,7 +114,7 @@ export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSel
               {waiter.image ? (
                 <img
                   src={waiter.image}
-                  alt={waiter.name}
+                  alt={t(`waiterSelection.waiters.waiter${waiter.id + 1}.name`)}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -129,7 +129,7 @@ export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSel
               className="font-bold text-base md:text-lg mb-2"
               style={{ color: THEME.textDark }}
             >
-              {waiter.name}
+              {t(`waiterSelection.waiters.waiter${waiter.id + 1}.name`)}
             </h3>
 
             {/* Stats */}
@@ -175,7 +175,7 @@ export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSel
             className="text-sm font-medium"
             style={{ color: THEME.textMedium }}
           >
-            {selectedWaiter.description}
+            {t(`waiterSelection.waiters.waiter${selectedWaiter.id + 1}.description`)}
           </p>
         </div>
       )}

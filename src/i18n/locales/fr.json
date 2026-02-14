@@ -42,7 +42,17 @@
         "title": "Choisissez Votre Serveur",
         "subtitle": "Sélectionnez votre personnage pour commencer à servir",
         "start": "Démarrer le Jeu",
-        "back": "Retour"
+        "back": "Retour",
+        "waiters": {
+            "waiter1": {
+                "name": "Serveur 1",
+                "description": "Spécialiste du service rapide et efficace"
+            },
+            "waiter2": {
+                "name": "Serveur 2",
+                "description": "Expérimenté avec un excellent service client"
+            }
+        }
     },
     "gameplay": {
         "score": "Score",

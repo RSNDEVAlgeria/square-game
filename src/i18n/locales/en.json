@@ -42,7 +42,17 @@
         "title": "Choose Your Waiter",
         "subtitle": "Select your character to begin serving customers",
         "start": "Start Game",
-        "back": "Back"
+        "back": "Back",
+        "waiters": {
+            "waiter1": {
+                "name": "Waiter 1",
+                "description": "Fast and efficient service specialist"
+            },
+            "waiter2": {
+                "name": "Waiter 2",
+                "description": "Experienced with excellent customer service"
+            }
+        }
     },
     "gameplay": {
         "score": "Score",
