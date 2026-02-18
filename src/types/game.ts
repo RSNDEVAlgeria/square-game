@@ -4,7 +4,7 @@
  */
 
 // ===== GAME SCENES =====
-export type GameScene = 'main-menu' | 'waiter-selection' | 'gameplay' | 'game-over';
+export type GameScene = 'main-menu' | 'waiter-selection' | 'tutorial' | 'gameplay' | 'game-over';
 
 // ===== WAITER TYPES =====
 export interface Waiter {

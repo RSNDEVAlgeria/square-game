@@ -89,13 +89,20 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
     }, [gameType, category, usedIndices, t]);
 
     const handleNextCard = useCallback(() => {
-        // For truth-dare, show choice first unless type is already selected
-        if (gameType === 'truth-dare' && !selectedType) {
+        // For truth-dare, rotate to next player and show choice for new player
+        if (gameType === 'truth-dare') {
+            // Rotate to next player
+            if (players.length > 0) {
+                setCurrentPlayerIndex(prev => (prev + 1) % players.length);
+            }
+            // Reset state for new player's choice
             setIsChoosingType(true);
+            setSelectedType(null);
             setCurrentCard(null);
             return;
         }
 
+        // For other game types
         const card = getRandomCard(selectedType || undefined);
         setCurrentCard(card);
         setIsChoosingType(false);
@@ -112,11 +119,7 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
         const card = getRandomCard(type);
         setCurrentCard(card);
         setIsChoosingType(false);
-
-        // Unify player rotation
-        if (players.length > 0) {
-            setCurrentPlayerIndex(prev => (prev + 1) % players.length);
-        }
+        // Player stays the same until Next is clicked
     };
 
     // Initial load
@@ -130,8 +133,11 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
     const handleSkip = () => {
         if (skipsRemaining > 0) {
             setSkipsRemaining(prev => prev - 1);
-            // Reset to choice state for truth-dare
+            // Reset to choice state for truth-dare and rotate player
             if (gameType === 'truth-dare') {
+                if (players.length > 0) {
+                    setCurrentPlayerIndex(prev => (prev + 1) % players.length);
+                }
                 setIsChoosingType(true);
                 setSelectedType(null);
                 setCurrentCard(null);

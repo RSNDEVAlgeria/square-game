@@ -94,6 +94,11 @@ function App() {
 
   const handleStartGame = useCallback(() => {
     playSound('click');
+    switchScene('tutorial');
+  }, [playSound, switchScene]);
+
+  const handleTutorialStart = useCallback(() => {
+    playSound('click');
     startGame();
   }, [playSound, startGame]);
 
@@ -172,6 +177,7 @@ function App() {
               handleCloseSettings={handleCloseSettings}
               handleWaiterSelect={handleWaiterSelect}
               handleStartGame={handleStartGame}
+              handleTutorialStart={handleTutorialStart}
               handlePause={handlePause}
               handleResume={handleResume}
               handleRestart={handleRestart}

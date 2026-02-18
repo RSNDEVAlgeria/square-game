@@ -54,6 +54,30 @@
             }
         }
     },
+    "tutorial": {
+        "title": "How to Play",
+        "subtitle": "Learn the basics",
+        "start": "Let's Go!",
+        "skip": "Skip Tutorial",
+        "steps": {
+            "1_title": "Check Orders",
+            "1_desc": "Look at what customers want - their order bubbles show the items they need.",
+            "2_title": "Tap Ingredients",
+            "2_desc": "Tap the food items at the bottom to add them to your plate.",
+            "3_title": "Serve Customers",
+            "3_desc": "Tap on a customer when your plate matches their order to serve them!",
+            "4_title": "Watch Patience",
+            "4_desc": "Customers have limited patience! The colored bar shows how much time is left.",
+            "5_title": "Build Combos",
+            "5_desc": "Serve customers quickly in a row to build combos and earn bonus points!"
+        },
+        "tips": {
+            "title": "Pro Tips",
+            "tip1": "Watch the patience bar - red means the customer is about to leave!",
+            "tip2": "Clear your plate if you made a mistake using the trash button.",
+            "tip3": "Special customers (VIPs, Critics, Influencers) give bigger rewards!"
+        }
+    },
     "gameplay": {
         "score": "Score",
         "money": "Money",
@@ -179,6 +203,7 @@
         "back": "Back to Games",
         "changeMode": "Change Mode",
         "managePlayers": "Manage Players",
+        "addPlayersFirst": "Add players",
         "playerSetup": {
             "title": "Player Setup",
             "description": "Add players to customize the game experience!",

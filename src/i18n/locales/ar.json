@@ -179,6 +179,7 @@
         "back": "العودة للألعاب",
         "changeMode": "تغيير الوضع",
         "managePlayers": "إدارة اللاعبين",
+        "addPlayersFirst": "أضف لاعبين",
         "playerSetup": {
             "title": "إعداد اللاعبين",
             "description": "أضف لاعبين لتخصيص تجربة اللعبة!",

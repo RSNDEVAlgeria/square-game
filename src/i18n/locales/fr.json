@@ -54,6 +54,30 @@
             }
         }
     },
+    "tutorial": {
+        "title": "Comment Jouer",
+        "subtitle": "Apprenez les bases",
+        "start": "C'est parti !",
+        "skip": "Passer le Tutoriel",
+        "steps": {
+            "1_title": "Vérifiez les Commandes",
+            "1_desc": "Regardez ce que veulent les clients - leurs bulles de commande montrent les articles.",
+            "2_title": "Tapez les Ingrédients",
+            "2_desc": "Tapez sur les aliments en bas pour les ajouter à votre plateau.",
+            "3_title": "Servez les Clients",
+            "3_desc": "Tapez sur un client quand votre plateau correspond à sa commande !",
+            "4_title": "Surveillez la Patience",
+            "4_desc": "Les clients ont une patience limitée ! La barre colorée montre le temps restant.",
+            "5_title": "Construisez des Combos",
+            "5_desc": "Servez rapidement les clients d'affilée pour construire des combos et gagner des bonus !"
+        },
+        "tips": {
+            "title": "Conseils Pro",
+            "tip1": "Surveillez la barre de patience - rouge signifie que le client va partir !",
+            "tip2": "Videz votre plateau si vous avez fait une erreur en utilisant la poubelle.",
+            "tip3": "Les clients spéciaux (VIPs, Critiques, Influenceurs) offrent de meilleures récompenses !"
+        }
+    },
     "gameplay": {
         "score": "Score",
         "money": "Argent",
@@ -179,6 +203,7 @@
         "back": "Retour au Menu",
         "changeMode": "Changer de Mode",
         "managePlayers": "Gérer les Joueurs",
+        "addPlayersFirst": "Ajouter des joueurs",
         "playerSetup": {
             "title": "Configuration des Joueurs",
             "description": "Ajoutez des joueurs pour personnaliser l'expérience de jeu !",

@@ -44,6 +44,11 @@ export function SipOrSpill(_props: SipOrSpillProps) {
     };
 
     const handleGameSelect = (type: GameType) => {
+        if (players.length === 0) {
+            setView('setup');
+            return;
+        }
+        
         if (type === 'truth-dare') {
             setView('td-select');
         } else {
@@ -54,6 +59,11 @@ export function SipOrSpill(_props: SipOrSpillProps) {
     };
 
     const handleTDSelect = (cat: Category) => {
+        if (players.length === 0) {
+            setView('setup');
+            return;
+        }
+        
         setGameType('truth-dare');
         setCategory(cat);
         setView('tutorial');

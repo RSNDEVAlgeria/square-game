@@ -5,6 +5,7 @@
 
 import { MainMenu } from '@/scenes/MainMenu';
 import { WaiterSelection } from '@/scenes/WaiterSelection';
+import { Tutorial } from '@/scenes/Tutorial';
 import { Gameplay } from '@/scenes/Gameplay';
 import { GameOver } from '@/scenes/GameOver';
 import { Shop } from '@/components/Shop';
@@ -27,6 +28,7 @@ interface CookingGameWrapperProps {
   handleCloseSettings: () => void;
   handleWaiterSelect: (waiterId: number) => void;
   handleStartGame: () => void;
+  handleTutorialStart: () => void;
   handlePause: () => void;
   handleResume: () => void;
   handleRestart: () => void;
@@ -58,6 +60,7 @@ export default function CookingGameWrapper(props: CookingGameWrapperProps) {
     handleCloseSettings,
     handleWaiterSelect,
     handleStartGame,
+    handleTutorialStart,
     handlePause,
     handleResume,
     handleRestart,
@@ -91,6 +94,14 @@ export default function CookingGameWrapper(props: CookingGameWrapperProps) {
           onSelect={handleWaiterSelect}
           onStart={handleStartGame}
           selectedWaiter={gameState.selectedWaiter}
+        />
+      )}
+
+      {/* Tutorial Scene */}
+      {gameState.currentScene === 'tutorial' && (
+        <Tutorial
+          onStart={handleTutorialStart}
+          onSkip={handleTutorialStart}
         />
       )}
 
