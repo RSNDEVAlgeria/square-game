@@ -424,7 +424,7 @@ export function Gameplay({
 
         {/* Ingredients Menu (Redesigned Bottom Sheet) - Moved up for mobile */}
         <div
-          className="w-full bg-white/95 backdrop-blur-2xl rounded-t-[3rem] shadow-[0_-10px_60px_-15px_rgba(0,0,0,0.15)] border-t border-white/60 p-4 pb-4 relative overflow-hidden"
+          className="w-full bg-white/95 backdrop-blur-2xl rounded-t-[3rem] rounded-b-3xl shadow-[0_-10px_60px_-15px_rgba(0,0,0,0.15)] border-t border-white/60 p-4 pb-6 relative overflow-hidden"
         >
           {/* Glass glare effect */}
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-50" />
