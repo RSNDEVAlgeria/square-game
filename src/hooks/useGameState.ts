@@ -54,6 +54,13 @@ const createInitialState = (): GameState => {
     combo: 0,
     comboTimer: 0,
     lastServeTime: 0,
+    comboBar: 0,
+    maxComboBar: CONFIG.COMBO_BAR_MAX,
+    isRushActive: false,
+    rushTimer: 0,
+    rushDuration: CONFIG.RUSH_DURATION,
+    rushCooldown: CONFIG.RUSH_COOLDOWN,
+    rushCooldownTimer: 0,
     upgrades: savedUpgrades ? JSON.parse(savedUpgrades) : {},
     totalMoneyEarned: savedTotalMoney ? parseInt(savedTotalMoney) : 0,
     inventory: savedInventory ? JSON.parse(savedInventory) : {},
@@ -75,6 +82,11 @@ export function useGameState() {
     localStorage.setItem('square_coffee_achievements', JSON.stringify(gameState.achievements));
   }, [gameState.upgrades, gameState.totalMoneyEarned, gameState.money, gameState.inventory, gameState.achievements]);
 
+  // Update refs for game loop
+  useEffect(() => {
+    isRushActiveRef.current = gameState.isRushActive;
+  }, [gameState.isRushActive]);
+
   // Plate state
   const [plate, setPlate] = useState<PlateState>({ items: [] });
 
@@ -91,6 +103,9 @@ export function useGameState() {
   const gameLoopRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(Date.now());
   const nextSpawnTimeRef = useRef<number>(CONFIG.CUSTOMER_SPAWN_INTERVAL_BASE);
+  
+  // Refs for game loop to access current state
+  const isRushActiveRef = useRef<boolean>(false);
 
   // ===== SCENE MANAGEMENT =====
   const switchScene = useCallback((scene: GameScene) => {
@@ -501,7 +516,13 @@ export function useGameState() {
       newCombo = 1;
     }
 
-    const totalEarned = payment + tip + comboBonus;
+    let totalEarned = payment + tip + comboBonus;
+    
+    // Apply 1.5x money multiplier during rush
+    if (gameState.isRushActive) {
+      totalEarned = Math.floor(totalEarned * CONFIG.RUSH_MONEY_MULTIPLIER);
+    }
+    
     const scoreGain = totalEarned * 10;
 
     // Stamina recovery upgrade
@@ -509,6 +530,22 @@ export function useGameState() {
     const recoveryUpgrade = SHOP_UPGRADES?.find(u => u.id === 'stamina_recovery');
     const staminaRecovery = (recoveryUpgrade?.effect.baseValue || CONFIG.STAMINA_RECOVERY_CORRECT) +
       (recoveryUpgrade?.effect.valuePerLevel || 0) * recoveryLevel;
+
+    // Calculate new combo bar
+    let newComboBar = gameState.comboBar + CONFIG.COMBO_BAR_GAIN_PER_SERVICE;
+    let rushActive = gameState.isRushActive;
+    let rushTimer = gameState.rushTimer;
+    let rushCooldownTimer = gameState.rushCooldownTimer;
+    
+    // Check if combo bar is full and trigger rush (only if not in cooldown and not already active)
+    if (newComboBar >= gameState.maxComboBar && !gameState.isRushActive && gameState.rushCooldownTimer <= 0) {
+      newComboBar = gameState.maxComboBar;
+      rushActive = true;
+      rushTimer = CONFIG.RUSH_DURATION;
+      rushCooldownTimer = CONFIG.RUSH_COOLDOWN;
+    } else if (newComboBar > gameState.maxComboBar) {
+      newComboBar = gameState.maxComboBar;
+    }
 
     // Update game state
     setGameState(prev => ({
@@ -521,7 +558,11 @@ export function useGameState() {
       combo: newCombo,
       lastServeTime: now,
       comboTimer: CONFIG.COMBO_TIMEOUT,
-      difficulty: prev.difficulty * 1.02
+      difficulty: prev.difficulty * 1.02,
+      comboBar: newComboBar,
+      isRushActive: rushActive,
+      rushTimer: rushTimer,
+      rushCooldownTimer: rushCooldownTimer
     }));
 
     // Remove customer and clear plate
@@ -613,18 +654,66 @@ export function useGameState() {
         }
       }
 
-      // Spawn customers
+      // Update combo bar decay and rush timers
+      setGameState(prev => {
+        let newComboBar = prev.comboBar;
+        let newRushTimer = prev.rushTimer;
+        let newRushCooldownTimer = prev.rushCooldownTimer;
+        let isRushActive = prev.isRushActive;
+
+        // Handle rush timer
+        if (prev.isRushActive) {
+          newRushTimer -= deltaTime;
+          if (newRushTimer <= 0) {
+            isRushActive = false;
+            newRushTimer = 0;
+            newComboBar = 0; // Reset combo bar after rush
+            newRushCooldownTimer = CONFIG.RUSH_COOLDOWN;
+          }
+        } else if (prev.rushCooldownTimer > 0) {
+          // Handle cooldown timer
+          newRushCooldownTimer -= deltaTime;
+          if (newRushCooldownTimer < 0) newRushCooldownTimer = 0;
+          
+          // Decay combo bar when not in rush or cooldown
+          if (newComboBar > 0) {
+            newComboBar -= (CONFIG.COMBO_BAR_DECAY_RATE * deltaTime / 1000);
+            if (newComboBar < 0) newComboBar = 0;
+          }
+        } else {
+          // Decay combo bar when not in rush
+          if (newComboBar > 0) {
+            newComboBar -= (CONFIG.COMBO_BAR_DECAY_RATE * deltaTime / 1000);
+            if (newComboBar < 0) newComboBar = 0;
+          }
+        }
+
+        return {
+          ...prev,
+          comboBar: newComboBar,
+          rushTimer: newRushTimer,
+          rushCooldownTimer: newRushCooldownTimer,
+          isRushActive
+        };
+      });
+
+      // Spawn customers - faster during rush
       nextSpawnTimeRef.current -= deltaTime;
-      if (nextSpawnTimeRef.current <= 0 && customers.length < CONFIG.MAX_CUSTOMERS) {
+      const isRush = isRushActiveRef.current;
+      const maxCustomersDuringRush = isRush ? 10 : CONFIG.MAX_CUSTOMERS;
+      const spawnInterval = isRush 
+        ? CONFIG.RUSH_CUSTOMER_SPAWN_INTERVAL 
+        : Math.max(CONFIG.CUSTOMER_SPAWN_INTERVAL_MIN, CONFIG.CUSTOMER_SPAWN_INTERVAL_BASE / gameState.difficulty);
+      
+      if (nextSpawnTimeRef.current <= 0 && customers.length < maxCustomersDuringRush) {
         spawnCustomer();
-        nextSpawnTimeRef.current = Math.max(
-          CONFIG.CUSTOMER_SPAWN_INTERVAL_MIN,
-          CONFIG.CUSTOMER_SPAWN_INTERVAL_BASE / gameState.difficulty
-        );
+        nextSpawnTimeRef.current = spawnInterval;
       }
 
-      // Update customer patience
-      updateCustomerPatience(deltaTime);
+      // Update customer patience - infinite during rush
+      if (!isRush) {
+        updateCustomerPatience(deltaTime);
+      }
 
       // Check game over
       if (gameState.stamina <= 0) {

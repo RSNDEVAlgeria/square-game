@@ -68,14 +68,16 @@
             "3_desc": "Tap on a customer when your plate matches their order to serve them!",
             "4_title": "Watch Patience",
             "4_desc": "Customers have limited patience! The colored bar shows how much time is left.",
-            "5_title": "Build Combos",
-            "5_desc": "Serve customers quickly in a row to build combos and earn bonus points!"
+            "5_title": "Fill Combo Bar",
+            "5_desc": "Serve customers to fill the combo bar on the right! When it's full, RUSH mode begins!",
+            "6_title": "Rush Mode",
+            "6_desc": "During Rush: infinite customers, no patience timer, and 1.5x money! Watch the fire!"
         },
         "tips": {
             "title": "Pro Tips",
             "tip1": "Watch the patience bar - red means the customer is about to leave!",
-            "tip2": "Clear your plate if you made a mistake using the trash button.",
-            "tip3": "Special customers (VIPs, Critics, Influencers) give bigger rewards!"
+            "tip2": "Fill the combo bar quickly - it decays over time!",
+            "tip3": "Rush mode gives 1.5x money - make the most of it!"
         }
     },
     "gameplay": {

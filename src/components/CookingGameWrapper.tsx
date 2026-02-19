@@ -112,7 +112,11 @@ export default function CookingGameWrapper(props: CookingGameWrapperProps) {
           money={gameState.money}
           stamina={gameState.stamina}
           maxStamina={gameState.maxStamina}
-          combo={gameState.combo}
+          comboBar={gameState.comboBar}
+          maxComboBar={gameState.maxComboBar}
+          isRushActive={gameState.isRushActive}
+          rushTimer={gameState.rushTimer}
+          rushCooldownTimer={gameState.rushCooldownTimer}
           customers={customers}
           plateItems={plate.items}
           floatingTexts={floatingTexts}

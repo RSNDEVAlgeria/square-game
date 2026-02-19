@@ -68,14 +68,16 @@
             "3_desc": "Tapez sur un client quand votre plateau correspond à sa commande !",
             "4_title": "Surveillez la Patience",
             "4_desc": "Les clients ont une patience limitée ! La barre colorée montre le temps restant.",
-            "5_title": "Construisez des Combos",
-            "5_desc": "Servez rapidement les clients d'affilée pour construire des combos et gagner des bonus !"
+            "5_title": "Remplissez la Barre",
+            "5_desc": "Servez les clients pour remplir la barre de combo à droite ! Quand elle est pleine, le mode RUSH commence !",
+            "6_title": "Mode Rush",
+            "6_desc": "Pendant Rush: clients infinis, pas de patience, et 1.5x l'argent ! Regardez le feu !"
         },
         "tips": {
             "title": "Conseils Pro",
             "tip1": "Surveillez la barre de patience - rouge signifie que le client va partir !",
-            "tip2": "Videz votre plateau si vous avez fait une erreur en utilisant la poubelle.",
-            "tip3": "Les clients spéciaux (VIPs, Critiques, Influenceurs) offrent de meilleures récompenses !"
+            "tip2": "Remplissez la barre de combo rapidement - elle diminue avec le temps !",
+            "tip3": "Le mode Rush donne 1.5x l'argent - Profitez-en !"
         }
     },
     "gameplay": {

@@ -85,6 +85,15 @@ export interface GameState {
   comboTimer: number;
   lastServeTime: number;
 
+  // New Combo Bar System
+  comboBar: number;
+  maxComboBar: number;
+  isRushActive: boolean;
+  rushTimer: number;
+  rushDuration: number;
+  rushCooldown: number;
+  rushCooldownTimer: number;
+
   // Meta-progression (Shop)
   upgrades: Record<string, number>;
   totalMoneyEarned: number;
@@ -147,6 +156,15 @@ export interface GameConfig {
   // Combo system (enhancement)
   COMBO_TIMEOUT: number;
   COMBO_MULTIPLIER_BASE: number;
+
+  // New Combo Bar System
+  COMBO_BAR_MAX: number;
+  COMBO_BAR_GAIN_PER_SERVICE: number;
+  COMBO_BAR_DECAY_RATE: number;
+  RUSH_DURATION: number;
+  RUSH_COOLDOWN: number;
+  RUSH_MONEY_MULTIPLIER: number;
+  RUSH_CUSTOMER_SPAWN_INTERVAL: number;
 
   // Order complexity
   MIN_ORDER_ITEMS: number;

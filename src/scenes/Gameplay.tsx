@@ -24,7 +24,11 @@ interface GameplayProps {
   money: number;
   stamina: number;
   maxStamina: number;
-  combo: number;
+  comboBar: number;
+  maxComboBar: number;
+  isRushActive: boolean;
+  rushTimer: number;
+  rushCooldownTimer: number;
   customers: Customer[];
   plateItems: string[];
   floatingTexts: FloatingText[];
@@ -58,7 +62,11 @@ export function Gameplay({
   money,
   stamina,
   maxStamina,
-  combo,
+  comboBar,
+  maxComboBar,
+  isRushActive,
+  rushTimer,
+  rushCooldownTimer,
   customers,
   plateItems,
   floatingTexts,
@@ -287,6 +295,82 @@ export function Gameplay({
         <ParticleEffects particles={particles} />
       </div>
 
+      {/* --- COMBO BAR (RIGHT SIDE) --- */}
+      <div className="absolute right-3 top-[320px] z-30 flex flex-col items-center">
+        {/* Combo Bar Container */}
+        <div className="relative">
+          {/* Fire effect during rush */}
+          {isRushActive && (
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-10">
+              <div className="flex gap-0.5 animate-fire">
+                <span className="text-3xl filter drop-shadow-lg">🔥</span>
+                <span className="text-3xl filter drop-shadow-lg">🔥</span>
+                <span className="text-3xl filter drop-shadow-lg">🔥</span>
+              </div>
+            </div>
+          )}
+          
+          {/* Bar Background - fills from bottom to top */}
+          <div className={`w-6 h-28 bg-black/20 backdrop-blur-sm rounded-full overflow-hidden border-2 border-white/30 shadow-lg ${isRushActive ? 'animate-rush-glow' : ''}`}>
+            {/* Combo Bar Fill - bottom to top */}
+            <div
+              className={`w-full absolute bottom-0 transition-all duration-200 rounded-full relative overflow-hidden ${
+                isRushActive 
+                  ? 'bg-gradient-to-t from-red-600 via-orange-500 to-yellow-400' 
+                  : 'bg-gradient-to-t from-green-500 via-yellow-400 to-orange-500'
+              }`}
+              style={{
+                height: `${(comboBar / maxComboBar) * 100}%`,
+                boxShadow: isRushActive ? '0 0 20px rgba(255,100,0,0.8)' : 'none'
+              }}
+            >
+              {/* Shimmer effect */}
+              <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-transparent" />
+            </div>
+            
+            {/* Rush indicator glow when full */}
+            {(comboBar / maxComboBar) >= 1 && !isRushActive && rushCooldownTimer <= 0 && (
+              <div className="absolute inset-0 rounded-full animate-pulse bg-gradient-to-t from-yellow-400/50 to-transparent" />
+            )}
+          </div>
+
+          {/* Cooldown indicator after rush */}
+          {rushCooldownTimer > 0 && !isRushActive && (
+            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-center">
+              <div className="text-xs font-bold text-slate-500 bg-white/80 backdrop-blur-sm px-2 py-1 rounded-lg animate-cooldown">
+                {Math.ceil(rushCooldownTimer / 1000)}s
+              </div>
+            </div>
+          )}
+
+          {/* Rush timer when active */}
+          {isRushActive && (
+            <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-center">
+              <div className="text-sm font-bold text-white bg-red-500/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-lg animate-pulse">
+                {Math.ceil(rushTimer / 1000)}s
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Combo bar label */}
+        <div className="mt-2 text-center">
+          {isRushActive ? (
+            <div className="text-xs font-bold text-red-500 bg-white/80 backdrop-blur-sm px-2 py-0.5 rounded-full animate-pulse">
+              RUSH!
+            </div>
+          ) : rushCooldownTimer > 0 ? (
+            <div className="text-[10px] font-medium text-slate-400">
+              Wait
+            </div>
+          ) : (
+            <div className="text-[10px] font-medium text-slate-500">
+              Combo
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Power-Ups Panel */}
       {onActivatePowerUp && (
         <PowerUpsPanel
@@ -305,13 +389,20 @@ export function Gameplay({
         <div className="flex items-start justify-between pointer-events-auto">
           {/* Stats Container - floating glass card (NEW) */}
           <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-0.5 bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/60 p-1.5 pr-4 animate-in slide-in-from-top-4 duration-500">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white shadow-lg shadow-green-500/30">
+            <div className={`flex items-center gap-0.5 bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/60 p-1.5 pr-4 animate-in slide-in-from-top-4 duration-500 ${isRushActive ? 'ring-2 ring-red-400 ring-offset-2' : ''}`}>
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-lg ${isRushActive ? 'bg-gradient-to-br from-red-500 to-orange-500 shadow-orange-500/30' : 'bg-gradient-to-br from-green-500 to-green-600 shadow-green-500/30'}`}>
                 <DollarSign className="w-5 h-5" strokeWidth={2.5} />
               </div>
               <div className="flex flex-col px-2 leading-none">
                 <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{t('gameplay.money')}</span>
-                <span className="font-extrabold text-slate-700 text-lg">${money}</span>
+                <div className="flex items-center gap-1">
+                  <span className="font-extrabold text-slate-700 text-lg">${money}</span>
+                  {isRushActive && (
+                    <span className="text-[10px] font-bold text-orange-500 bg-orange-100 px-1.5 py-0.5 rounded-full animate-pulse">
+                      1.5x
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -336,7 +427,7 @@ export function Gameplay({
           </Button>
         </div>
 
-        {/* Combo & Stamina - Centered just below header (NEW) */}
+        {/* Stamina Bar - Centered just below header (NEW) */}
         <div className="flex flex-col items-center pointer-events-none mt-2 space-y-2">
 
           {/* Stamina Bar - Slim (NEW) */}
@@ -349,14 +440,6 @@ export function Gameplay({
               }}
             >
               <div className="absolute inset-0 bg-gradient-to-b from-white/30 to-transparent" />
-            </div>
-          </div>
-
-          {/* Combo Indicator */}
-          <div className={`transition-all duration-300 h-8 flex items-center justify-center ${combo > 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            <div className="bg-gradient-to-r from-orange-500 to-red-600 text-white text-sm font-extrabold px-4 py-1.5 rounded-full shadow-lg border-2 border-white flex items-center gap-2 animate-bounce">
-              <span className="text-xl">🔥</span>
-              <span className="tracking-widest">{combo}x {t('gameplay.combo')}!</span>
             </div>
           </div>
         </div>
@@ -494,6 +577,29 @@ export function Gameplay({
         @keyframes bounce-in {
             0% { opacity: 0; transform: scale(0.3); }
             100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes fire-flicker {
+          0%, 100% { transform: scale(1) rotate(-2deg); opacity: 1; }
+          25% { transform: scale(1.1) rotate(2deg); opacity: 0.9; }
+          50% { transform: scale(0.95) rotate(-1deg); opacity: 1; }
+          75% { transform: scale(1.05) rotate(1deg); opacity: 0.85; }
+        }
+        @keyframes rush-glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(255, 100, 0, 0.6), 0 0 40px rgba(255, 50, 0, 0.4); }
+          50% { box-shadow: 0 0 30px rgba(255, 150, 0, 0.8), 0 0 60px rgba(255, 100, 0, 0.5); }
+        }
+        @keyframes cooldown-pulse {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 0.8; }
+        }
+        .animate-fire {
+          animation: fire-flicker 0.3s ease-in-out infinite;
+        }
+        .animate-rush-glow {
+          animation: rush-glow 0.5s ease-in-out infinite;
+        }
+        .animate-cooldown {
+          animation: cooldown-pulse 1s ease-in-out infinite;
         }
       `}</style>
     </div >

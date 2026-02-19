@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { ChevronRight, Lightbulb, Users, Clock, Zap, Star } from 'lucide-react';
+import { ChevronRight, Lightbulb, Users, Clock, Zap, Star, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { THEME } from '@/constants/gameConfig';
 import { useTranslation } from 'react-i18next';
@@ -37,6 +37,11 @@ const TUTORIAL_STEPS = [
   },
   {
     key: '5',
+    icon: Flame,
+    color: 'bg-orange-500',
+  },
+  {
+    key: '6',
     icon: Lightbulb,
     color: 'bg-green-500',
   },

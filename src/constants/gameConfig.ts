@@ -37,6 +37,15 @@ export const CONFIG: GameConfig = {
   COMBO_TIMEOUT: 5000,             // 5 seconds to maintain combo
   COMBO_MULTIPLIER_BASE: 0.5,      // +0.5x per combo level
 
+  // New Combo Bar System
+  COMBO_BAR_MAX: 100,
+  COMBO_BAR_GAIN_PER_SERVICE: 20,   // How much combo bar fills per serve
+  COMBO_BAR_DECAY_RATE: 5,          // Combo bar decay per second
+  RUSH_DURATION: 15000,             // 15 seconds rush mode
+  RUSH_COOLDOWN: 20000,             // 20 seconds cooldown after rush
+  RUSH_MONEY_MULTIPLIER: 1.5,       // 1.5x money during rush
+  RUSH_CUSTOMER_SPAWN_INTERVAL: 800, // Fast spawn during rush
+
   // Order complexity
   MIN_ORDER_ITEMS: 1,
   MAX_ORDER_ITEMS: 3,
