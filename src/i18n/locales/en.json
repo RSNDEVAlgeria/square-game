@@ -71,13 +71,13 @@
             "5_title": "Fill Combo Bar",
             "5_desc": "Serve customers to fill the combo bar on the right! When it's full, RUSH mode begins!",
             "6_title": "Rush Mode",
-            "6_desc": "During Rush: infinite customers, no patience timer, and 1.5x money! Watch the fire!"
+            "6_desc": "During Rush: infinite customers, no patience timer, infinite stamina, and 4x money! Watch the fire!"
         },
         "tips": {
             "title": "Pro Tips",
             "tip1": "Watch the patience bar - red means the customer is about to leave!",
             "tip2": "Fill the combo bar quickly - it decays over time!",
-            "tip3": "Rush mode gives 1.5x money - make the most of it!"
+            "tip3": "Rush mode gives 4x money - make the most of it!"
         }
     },
     "gameplay": {

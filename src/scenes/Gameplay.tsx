@@ -89,7 +89,7 @@ export function Gameplay({
   const touchHandledRef = useRef(false);
   const { hapticFeedback } = useHaptic();
 
-  const staminaPercent = (stamina / maxStamina) * 100;
+  const staminaPercent = isRushActive ? 100 : (stamina / maxStamina) * 100;
   const staminaColor = getPatienceColor(staminaPercent / 100);
 
   // Handle food item click

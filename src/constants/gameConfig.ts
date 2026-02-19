@@ -43,7 +43,7 @@ export const CONFIG: GameConfig = {
   COMBO_BAR_DECAY_RATE: 5,          // Combo bar decay per second
   RUSH_DURATION: 15000,             // 15 seconds rush mode
   RUSH_COOLDOWN: 20000,             // 20 seconds cooldown after rush
-  RUSH_MONEY_MULTIPLIER: 1.5,       // 1.5x money during rush
+  RUSH_MONEY_MULTIPLIER: 4,          // 4x money during rush
   RUSH_CUSTOMER_SPAWN_INTERVAL: 800, // Fast spawn during rush
 
   // Order complexity

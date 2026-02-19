@@ -317,11 +317,13 @@ export function useGameState() {
   // ===== PLATE MANAGEMENT =====
   const addToPlate = useCallback((foodId: string) => {
     setPlate(prev => ({ items: [...prev.items, foodId] }));
-    // Drain stamina for each action
-    setGameState(prev => ({
-      ...prev,
-      stamina: Math.max(0, prev.stamina - CONFIG.STAMINA_DRAIN_PER_ACTION)
-    }));
+    // Drain stamina for each action (but not during rush mode - stamina is infinite then)
+    if (!gameState.isRushActive) {
+      setGameState(prev => ({
+        ...prev,
+        stamina: Math.max(0, prev.stamina - CONFIG.STAMINA_DRAIN_PER_ACTION)
+      }));
+    }
   }, []);
 
   const clearPlate = useCallback(() => {
@@ -715,8 +717,8 @@ export function useGameState() {
         updateCustomerPatience(deltaTime);
       }
 
-      // Check game over
-      if (gameState.stamina <= 0) {
+      // Check game over (but not during rush mode - stamina is infinite then)
+      if (gameState.stamina <= 0 && !isRush) {
         gameOver();
       }
 
