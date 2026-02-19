@@ -395,12 +395,10 @@ export function Gameplay({
               </div>
               <div className="flex flex-col px-2 leading-none">
                 <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{t('gameplay.money')}</span>
-                <div className="flex items-center gap-1">
+                <div className="flex flex-col">
                   <span className="font-extrabold text-slate-700 text-lg">${money}</span>
                   {isRushActive && (
-                    <span className="text-[10px] font-bold text-orange-500 bg-orange-100 px-1.5 py-0.5 rounded-full animate-pulse">
-                      1.5x
-                    </span>
+                    <span className="text-lg animate-pulse -mt-1">⚡</span>
                   )}
                 </div>
               </div>
@@ -427,8 +425,24 @@ export function Gameplay({
           </Button>
         </div>
 
-        {/* Stamina Bar - Centered just below header (NEW) */}
+        {/* Rush/Cooldown & Stamina Bar - Centered just below header (NEW) */}
         <div className="flex flex-col items-center pointer-events-none mt-2 space-y-2">
+
+          {/* Rush Duration / Cooldown Indicator */}
+          {isRushActive && (
+            <div className="flex items-center gap-2 bg-red-500/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg animate-pulse">
+              <span className="text-lg">🔥</span>
+              <span className="text-white font-bold text-sm">{Math.ceil(rushTimer / 1000)}s</span>
+              <span className="text-white/80 text-xs">RUSH!</span>
+            </div>
+          )}
+          
+          {!isRushActive && rushCooldownTimer > 0 && (
+            <div className="flex items-center gap-2 bg-slate-400/80 backdrop-blur-sm px-3 py-1 rounded-full">
+              <span className="text-white/60 text-xs">Cooldown</span>
+              <span className="text-white font-bold text-sm">{Math.ceil(rushCooldownTimer / 1000)}s</span>
+            </div>
+          )}
 
           {/* Stamina Bar - Slim (NEW) */}
           <div className="w-48 bg-black/10 backdrop-blur-sm h-3 rounded-full overflow-hidden shadow-inner border border-white/20">

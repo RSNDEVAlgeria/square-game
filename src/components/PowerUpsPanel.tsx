@@ -62,7 +62,7 @@ export function PowerUpsPanel({ money, inventory, activePowerUps, upgradeLevels,
     };
 
     return (
-        <div className="fixed right-2 top-20 z-50">
+        <div className="fixed right-2 top-36 z-50">
             {/* Toggle Button */}
             <Button
                 onClick={() => setIsExpanded(!isExpanded)}
