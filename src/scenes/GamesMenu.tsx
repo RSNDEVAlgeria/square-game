@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { Utensils, Grid3X3, Swords, Coffee, Star, ChevronRight, Heart, Crown, Languages } from 'lucide-react';
+import { Utensils, Grid3X3, Swords, Coffee, Star, ChevronRight, Heart, Crown, Languages, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -122,6 +122,22 @@ export function GamesMenu() {
                 <div className="flex flex-col">
                     <span className="text-[10px] font-bold text-[#1B4D3E] uppercase tracking-wider leading-tight">{t('gamesMenu.madeBy')}</span>
                     <span className="text-xs font-black text-[#1B4D3E] group-hover:text-[#2E8B57] transition-colors leading-tight">RSN-dev</span>
+                </div>
+            </a>
+
+            {/* Square Coffee Shop Link */}
+            <a
+                href="https://squarecoffee.shop"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-4 left-40 z-50 flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity no-underline group"
+            >
+                <div className="w-10 h-10 bg-[#1B4D3E] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <ExternalLink size={18} className="text-amber-100" />
+                </div>
+                <div className="flex flex-col">
+                    <span className="text-[10px] font-bold text-[#1B4D3E] uppercase tracking-wider leading-tight">Visit</span>
+                    <span className="text-xs font-black text-[#1B4D3E] group-hover:text-[#2E8B57] transition-colors leading-tight">Square Coffee</span>
                 </div>
             </a>
 
