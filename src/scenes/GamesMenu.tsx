@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { Utensils, Grid3X3, Swords, Coffee, Star, ChevronRight, Heart, Crown, Languages, ExternalLink } from 'lucide-react';
+import { Utensils, Grid3X3, Swords, Star, ChevronRight, Heart, Crown, Languages, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -159,9 +159,9 @@ export function GamesMenu() {
                 <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-5 shadow-lg"
+                    className="w-32 h-32 bg-white rounded-3xl flex items-center justify-center mx-auto mb-5 shadow-lg p-3"
                 >
-                    <Coffee size={48} className="text-[#1B4D3E]" />
+                    <img src="/logo.png" alt="Coffee Logo" className="w-full h-full object-contain" />
                 </motion.div>
                 <motion.h1
                     initial={{ opacity: 0, y: -20 }}
@@ -181,7 +181,7 @@ export function GamesMenu() {
             </header>
 
             {/* Scrollable Games Container */}
-            <div className="w-full flex-1 relative z-10 overflow-hidden">
+            <div className="w-full max-w-4xl flex-1 relative z-10 overflow-hidden">
                 {/* Scroll Indicator - Top */}
                 <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-[#FAF9F6] to-transparent pointer-events-none z-20 opacity-60" />
 
