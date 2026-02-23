@@ -147,7 +147,34 @@ export function MainMenu({ onPlay, onShop, onSettings }: MainMenuProps) {
             {t('mainMenu.backToGames')}
           </Button>
         </div>
+
+        {/* Decorative Items Below Menu */}
+        <div className="mt-8 flex items-center justify-center gap-3">
+          <span className="text-2xl opacity-20 animate-pulse">☕</span>
+          <span className="text-2xl opacity-20 animate-pulse" style={{ animationDelay: '0.3s' }}>🥐</span>
+          <span className="text-2xl opacity-20 animate-pulse" style={{ animationDelay: '0.6s' }}>🍵</span>
+          <span className="text-2xl opacity-20 animate-pulse" style={{ animationDelay: '0.9s' }}>🍰</span>
+          <span className="text-2xl opacity-20 animate-pulse" style={{ animationDelay: '1.2s' }}>🧃</span>
+        </div>
+
+        {/* Decorative Cup Row */}
+        <div className="mt-6 flex items-center justify-center gap-6">
+          <div className="w-12 h-16 rounded-full opacity-10 flex items-center justify-center text-2xl" style={{ background: THEME.woodMedium }}>
+            ☕
+          </div>
+          <div className="w-12 h-16 rounded-full opacity-10 flex items-center justify-center text-2xl" style={{ background: THEME.coral }}>
+            🍵
+          </div>
+          <div className="w-12 h-16 rounded-full opacity-10 flex items-center justify-center text-2xl" style={{ background: THEME.mint }}>
+            🧃
+          </div>
+        </div>
       </div>
+
+      {/* Floating Decorative Elements */}
+      <div className="absolute bottom-24 left-8 text-4xl opacity-10 animate-bounce" style={{ animationDuration: '3s' }}>☕</div>
+      <div className="absolute bottom-32 right-12 text-3xl opacity-10 animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>🥐</div>
+      <div className="absolute bottom-20 left-1/4 text-2xl opacity-10 animate-bounce" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>🍪</div>
 
       {/* Footer */}
       <div className="absolute bottom-6 text-xs font-bold tracking-widest text-amber-900/20 uppercase">

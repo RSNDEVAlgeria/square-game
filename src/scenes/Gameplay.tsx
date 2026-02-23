@@ -580,6 +580,15 @@ export function Gameplay({
         </div>
       </div>
 
+      {/* Decorative bottom fill */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 pointer-events-none"
+        style={{ 
+          height: '280px',
+          background: 'white',
+        }}
+      />
+      
       <style>{`
         @keyframes float-up {
           0% { opacity: 1; transform: translateY(0) scale(0.8); }
