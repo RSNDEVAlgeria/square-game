@@ -4,15 +4,49 @@
  */
 
 import { motion } from 'framer-motion';
-import { Utensils, Grid3X3, Swords, Star, ChevronRight, Heart, Crown, Languages, ExternalLink } from 'lucide-react';
+import { Utensils, Grid3X3, Swords, Star, ChevronRight, Heart, Crown, Languages, ExternalLink, Download, Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export function GamesMenu() {
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language;
+    const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    useEffect(() => {
+        const handler = (e: any) => {
+            e.preventDefault();
+            setDeferredPrompt(e);
+        };
+        window.addEventListener('beforeinstallprompt', handler);
+        return () => window.removeEventListener('beforeinstallprompt', handler);
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (menuOpen && !target.closest('.menu-dropdown')) {
+                setMenuOpen(false);
+            }
+        };
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, [menuOpen]);
+
+    const handleInstall = async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            await deferredPrompt.userChoice;
+            setDeferredPrompt(null);
+        } else {
+            alert('To install: Add to Home Screen from your browser menu (iOS: Share > Add to Home Screen, Android: Menu > Add to Home Screen)');
+        }
+    };
+
+    const toggleMenu = () => setMenuOpen(prev => !prev);
 
     // Set initial direction based on language
     useEffect(() => {
@@ -114,46 +148,69 @@ export function GamesMenu() {
                         e.currentTarget.parentElement!.querySelector('.fallback-logo')!.classList.remove('hidden');
                     }}
                 />
-                {/* Fallback if logo missing */}
                 <div className="fallback-logo hidden w-10 h-10 bg-[#1B4D3E] rounded-full flex items-center justify-center text-amber-100 font-bold text-xs ring-2 ring-amber-100/50">
                     RSN
                 </div>
-
                 <div className="flex flex-col">
                     <span className="text-[10px] font-bold text-[#1B4D3E] uppercase tracking-wider leading-tight">{t('gamesMenu.madeBy')}</span>
                     <span className="text-xs font-black text-[#1B4D3E] group-hover:text-[#2E8B57] transition-colors leading-tight">RSN-dev</span>
                 </div>
             </a>
 
-            {/* Square Coffee Shop Link */}
-            <a
-                href="https://squarecoffee.shop"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="absolute top-4 left-40 z-50 flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity no-underline group"
-            >
-                <div className="w-10 h-10 bg-[#1B4D3E] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                    <ExternalLink size={18} className="text-amber-100" />
-                </div>
-                <div className="flex flex-col">
-                    <span className="text-[10px] font-bold text-[#1B4D3E] uppercase tracking-wider leading-tight">Visit</span>
-                    <span className="text-xs font-black text-[#1B4D3E] group-hover:text-[#2E8B57] transition-colors leading-tight">Square Coffee</span>
-                </div>
-            </a>
-
-            {/* Language Switcher */}
+            {/* Menu Button */}
             <motion.button
-                onClick={handleLanguageSwitch}
+                onClick={toggleMenu}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="absolute top-4 right-4 z-50 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all border-2 border-[#1B4D3E]/20 hover:border-[#2E8B57]/50"
-                title="Change Language"
+                className="menu-dropdown absolute top-4 right-4 z-50 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all border-2 border-[#1B4D3E]/20"
+                title="Menu"
             >
-                <Languages size={20} className="text-[#1B4D3E]" />
-                <span className="absolute -bottom-1 -right-1 text-xs bg-[#1B4D3E] text-white rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                    {currentLang === 'en' ? '🇬🇧' : currentLang === 'fr' ? '🇫🇷' : '🇸🇦'}
-                </span>
+                {menuOpen ? <X size={20} className="text-[#1B4D3E]" /> : <Menu size={20} className="text-[#1B4D3E]" />}
             </motion.button>
+
+            {/* Dropdown Menu */}
+            {menuOpen && (
+                <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="menu-dropdown absolute top-16 right-4 z-50 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-[#D2B48C]/20 overflow-hidden min-w-[200px]"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    {/* Install Button - always visible now */}
+                    <button
+                        onClick={() => { handleInstall(); setMenuOpen(false); }}
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#1B4D3E]/5 transition-colors text-[#1B4D3E]"
+                    >
+                        <Download size={18} />
+                        <span className="font-medium">Install App</span>
+                    </button>
+
+                    {/* Language Switcher */}
+                    <button
+                        onClick={() => { handleLanguageSwitch(); setMenuOpen(false); }}
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#1B4D3E]/5 transition-colors text-[#1B4D3E]"
+                    >
+                        <Languages size={18} />
+                        <span className="font-medium">Language</span>
+                        <span className="ml-auto text-sm opacity-60">{currentLang.toUpperCase()}</span>
+                    </button>
+
+                    {/* Divider */}
+                    <div className="h-px bg-[#D2B48C]/20" />
+
+                    {/* Visit Square Coffee */}
+                    <a
+                        href="https://squarecoffee.shop"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setMenuOpen(false)}
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#1B4D3E]/5 transition-colors text-[#1B4D3E]"
+                    >
+                        <ExternalLink size={18} />
+                        <span className="font-medium">Visit Square Coffee</span>
+                    </a>
+                </motion.div>
+            )}
 
             <header className="text-center mt-12 mb-10 z-10">
                 <motion.div
