@@ -25,34 +25,25 @@ export function GamesMenu() {
         return () => window.removeEventListener('beforeinstallprompt', handler);
     }, []);
 
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            const target = e.target as HTMLElement;
-            if (menuOpen && !target.closest('.menu-dropdown')) {
-                setMenuOpen(false);
-            }
-        };
-        document.addEventListener('click', handleClickOutside);
-        return () => document.removeEventListener('click', handleClickOutside);
-    }, [menuOpen]);
-
-    const handleInstall = async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            await deferredPrompt.userChoice;
-            setDeferredPrompt(null);
-        } else {
-            alert('To install: Add to Home Screen from your browser menu (iOS: Share > Add to Home Screen, Android: Menu > Add to Home Screen)');
-        }
-    };
-
-    const toggleMenu = () => setMenuOpen(prev => !prev);
-
     // Set initial direction based on language
     useEffect(() => {
         document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
         document.documentElement.lang = currentLang;
     }, [currentLang]);
+
+    const toggleMenu = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setMenuOpen(!menuOpen);
+    };
+
+    const handleInstall = () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            setDeferredPrompt(null);
+        } else {
+            alert('To install: Add to Home Screen from your browser menu (iOS: Share > Add to Home Screen, Android: Menu > Add to Home Screen)');
+        }
+    };
 
     // Language switcher handler
     const handleLanguageSwitch = () => {
@@ -162,7 +153,7 @@ export function GamesMenu() {
                 onClick={toggleMenu}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="menu-dropdown absolute top-4 right-4 z-50 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all border-2 border-[#1B4D3E]/20"
+                className="absolute top-4 right-4 z-50 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all border-2 border-[#1B4D3E]/20"
                 title="Menu"
             >
                 {menuOpen ? <X size={20} className="text-[#1B4D3E]" /> : <Menu size={20} className="text-[#1B4D3E]" />}
@@ -170,10 +161,8 @@ export function GamesMenu() {
 
             {/* Dropdown Menu */}
             {menuOpen && (
-                <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="menu-dropdown absolute top-16 right-4 z-50 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-[#D2B48C]/20 overflow-hidden min-w-[200px]"
+                <div
+                    className="absolute top-16 right-4 z-50 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-[#D2B48C]/20 overflow-hidden min-w-[200px]"
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Install Button - always visible now */}
@@ -209,7 +198,7 @@ export function GamesMenu() {
                         <ExternalLink size={18} />
                         <span className="font-medium">Visit Square Coffee</span>
                     </a>
-                </motion.div>
+                </div>
             )}
 
             <header className="text-center mt-12 mb-10 z-10">
