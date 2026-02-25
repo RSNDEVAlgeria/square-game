@@ -14,9 +14,9 @@ import { SipOrSpill } from '@/scenes/SipOrSpill';
 import { ChessLanding } from '@/scenes/chess/ChessLanding';
 import { Toaster } from '@/components/ui/sonner';
 import CookingGameWrapper from '@/components/CookingGameWrapper';
+import { CinematicLaunchScreen } from '@/scenes/CinematicLaunchScreen';
 
 function App() {
-  // Game state management
   const {
     gameState,
     plate,
@@ -41,11 +41,10 @@ function App() {
 
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [showLaunchScreen, setShowLaunchScreen] = useState(true);
 
-  // Audio management
   const { playSound, initAudio } = useAudio(gameState.soundEnabled);
 
-  // Initialize audio on first interaction
   useEffect(() => {
     const handleFirstInteraction = () => {
       initAudio();
@@ -59,8 +58,6 @@ function App() {
       document.removeEventListener('touchstart', handleFirstInteraction);
     };
   }, [initAudio]);
-
-  // ===== EVENT HANDLERS =====
 
   const handlePlay = useCallback(() => {
     playSound('click');
@@ -144,10 +141,14 @@ function App() {
     addFloatingText(x, y, text, color);
   }, [addFloatingText]);
 
-  // ===== RENDER =====
+  if (showLaunchScreen) {
+    return (
+      <CinematicLaunchScreen onComplete={() => setShowLaunchScreen(false)} />
+    );
+  }
+
   return (
     <div className="w-full h-screen flex items-center justify-center overflow-hidden bg-gray-900">
-      {/* Game Container - Mobile-optimized portrait */}
       <div
         className="relative w-full h-full max-w-md mx-auto overflow-hidden shadow-2xl"
         style={{
@@ -156,10 +157,7 @@ function App() {
         }}
       >
         <Routes>
-          {/* Main Games Menu */}
           <Route path="/" element={<GamesMenu />} />
-          
-          {/* Cooking Game Routes */}
           <Route path="/maingame/*" element={
             <CookingGameWrapper
               gameState={gameState}
@@ -193,24 +191,12 @@ function App() {
               toggleSound={toggleSound}
             />
           } />
-          
-          {/* XO Game */}
           <Route path="/xo" element={<XO onBack={() => {}} />} />
-          
-          {/* Sudoku Game */}
           <Route path="/sudoku" element={<Sudoku onBack={() => {}} />} />
-          
-          {/* Sip or Spill Game */}
           <Route path="/siporspill" element={<SipOrSpill onBack={() => {}} />} />
-          
-          {/* Chess Game */}
           <Route path="/chess" element={<ChessLanding onBack={() => {}} />} />
-          
-          {/* Redirect unknown routes to games menu */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-
-        {/* Toast notifications */}
         <Toaster />
       </div>
     </div>
