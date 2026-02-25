@@ -93,7 +93,7 @@ export function CinematicLaunchScreen({ onComplete }: CinematicLaunchScreenProps
           </div>
 
           {/* Main Content */}
-          <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+          <div className="relative z-10 w-full h-full flex flex-col items-center pt-16">
             
             {/* Logo Animation */}
             <motion.div
@@ -105,7 +105,7 @@ export function CinematicLaunchScreen({ onComplete }: CinematicLaunchScreenProps
                 stiffness: 100,
                 damping: 15
               }}
-              className="mb-8"
+              className="mb-6"
             >
               <motion.div
                 animate={{ 
@@ -167,12 +167,13 @@ export function CinematicLaunchScreen({ onComplete }: CinematicLaunchScreenProps
               }}
             />
 
-            {/* RSN Watermark */}
+            {/* Square Coffee & RSN Watermark - Centered under golden line */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 2, duration: 0.8 }}
-              className="absolute bottom-20 left-0 right-0 flex flex-col items-center gap-2 z-20"
+              className="absolute left-0 right-0 flex flex-col items-center gap-4 z-20"
+              style={{ top: '60%' }}
             >
               <a
                 href="https://rsndev.netlify.app"
@@ -194,15 +195,8 @@ export function CinematicLaunchScreen({ onComplete }: CinematicLaunchScreenProps
                   </span>
                 </div>
               </a>
-            </motion.div>
 
-            {/* Square Coffee Mention */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.8 }}
-              transition={{ delay: 2.5, duration: 1 }}
-              className="absolute bottom-32 left-0 right-0 text-center z-20"
-            >
+              {/* Square Coffee Mention */}
               <a
                 href="https://squarecoffee.shop"
                 target="_blank"
@@ -219,13 +213,7 @@ export function CinematicLaunchScreen({ onComplete }: CinematicLaunchScreenProps
               </a>
             </motion.div>
 
-            {/* Cinematic Letter Box Bars */}
-            <motion.div
-              initial={{ height: "15%" }}
-              animate={{ height: "15%" }}
-              transition={{ duration: 2 }}
-              className="absolute top-0 left-0 right-0 bg-black/40 backdrop-blur-sm"
-            />
+            {/* Cinematic Letter Box Bar (bottom only) */}
             <motion.div
               initial={{ height: "10%" }}
               animate={{ height: "10%" }}
@@ -238,25 +226,25 @@ export function CinematicLaunchScreen({ onComplete }: CinematicLaunchScreenProps
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 0.4, scale: 1 }}
               transition={{ delay: 1, duration: 0.5 }}
-              className="absolute top-24 left-8 w-16 h-16 border-l-2 border-t-2 border-[#D4A574]"
+              className="absolute top-16 left-8 w-16 h-16 border-l-2 border-t-2 border-[#D4A574]"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 0.4, scale: 1 }}
               transition={{ delay: 1.2, duration: 0.5 }}
-              className="absolute top-24 right-8 w-16 h-16 border-r-2 border-t-2 border-[#D4A574]"
+              className="absolute top-16 right-8 w-16 h-16 border-r-2 border-t-2 border-[#D4A574]"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 0.4, scale: 1 }}
               transition={{ delay: 1.4, duration: 0.5 }}
-              className="absolute bottom-32 left-8 w-16 h-16 border-l-2 border-b-2 border-[#D4A574]"
+              className="absolute bottom-8 left-8 w-16 h-16 border-l-2 border-b-2 border-[#D4A574]"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 0.4, scale: 1 }}
               transition={{ delay: 1.6, duration: 0.5 }}
-              className="absolute bottom-32 right-8 w-16 h-16 border-r-2 border-b-2 border-[#D4A574]"
+              className="absolute bottom-8 right-8 w-16 h-16 border-r-2 border-b-2 border-[#D4A574]"
             />
 
             {/* Skip Text */}
