@@ -9,21 +9,11 @@ import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export function GamesMenu() {
+export function GamesMenu({ onInstallClick }: { onInstallClick?: (() => Promise<void>) | null }) {
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language;
-    const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
     const [menuOpen, setMenuOpen] = useState(false);
-
-    useEffect(() => {
-        const handler = (e: any) => {
-            e.preventDefault();
-            setDeferredPrompt(e);
-        };
-        window.addEventListener('beforeinstallprompt', handler);
-        return () => window.removeEventListener('beforeinstallprompt', handler);
-    }, []);
 
     // Set initial direction based on language
     useEffect(() => {
@@ -37,14 +27,10 @@ export function GamesMenu() {
     };
 
     const handleInstall = async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                setDeferredPrompt(null);
-            }
+        if (onInstallClick) {
+            await onInstallClick();
         } else {
-            alert('To install: Open this page in Chrome/Edge, tap the menu icon and select "Install App" or "Add to Home Screen"');
+            alert('To install: Open this page in Chrome/Edge, tap the menu icon and select "Install App"');
         }
     };
 

@@ -16,7 +16,7 @@ import { Toaster } from '@/components/ui/sonner';
 import CookingGameWrapper from '@/components/CookingGameWrapper';
 import { CinematicLaunchScreen } from '@/scenes/CinematicLaunchScreen';
 
-function App() {
+function App({ onInstallClick }: { onInstallClick?: (() => Promise<void>) | null }) {
   const {
     gameState,
     plate,
@@ -157,7 +157,7 @@ function App() {
         }}
       >
         <Routes>
-          <Route path="/" element={<GamesMenu />} />
+          <Route path="/" element={<GamesMenu onInstallClick={onInstallClick} />} />
           <Route path="/maingame/*" element={
             <CookingGameWrapper
               gameState={gameState}

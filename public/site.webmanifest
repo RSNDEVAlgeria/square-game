@@ -6,8 +6,9 @@
     "display": "standalone",
     "background_color": "#FFF8F0",
     "theme_color": "#FFF8F0",
-    "orientation": "portrait",
+    "orientation": "portrait-primary",
     "scope": "/",
+    "prefer_related_applications": false,
     "icons": [
         {
             "src": "/logo.png",
