@@ -384,14 +384,16 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
                 </motion.div>
             )}
 
-            {/* Truth or Dare Choice */}
-            {gameType === 'truth-dare' && isChoosingType && (
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="w-full max-w-md"
-                >
+            {/* Truth or Dare Choice & Card Display */}
+            <AnimatePresence mode="wait">
+                {gameType === 'truth-dare' && isChoosingType ? (
+                    <motion.div
+                        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.9, opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+                        className="w-full max-w-md"
+                    >
                     <div className={`bg-gradient-to-br ${category === 'couples' ? 'from-pink-400 to-purple-400' : 'from-blue-400 to-cyan-400'} rounded-3xl p-8 shadow-2xl min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden text-center`}>
                         <div className="absolute top-0 right-0 text-6xl opacity-20">🎲</div>
                         <div className="absolute bottom-0 left-0 text-6xl opacity-20">✨</div>
@@ -422,18 +424,14 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
                             </motion.button>
                         </div>
                     </div>
-                </motion.div>
-            )}
-
-            {/* Card Display */}
-            <AnimatePresence mode="wait">
-                {currentCard && (
+                    </motion.div>
+                ) : currentCard ? (
                     <motion.div
                         key={currentCard.id}
-                        initial={{ rotateY: 90, opacity: 0 }}
-                        animate={{ rotateY: 0, opacity: 1 }}
-                        exit={{ rotateY: -90, opacity: 0 }}
-                        transition={{ duration: 0.5 }}
+                        initial={{ scale: 0.8, opacity: 0, y: 20 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.8, opacity: 0, y: -20 }}
+                        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                         className="w-full max-w-md"
                     >
                         <div className={`bg-gradient-to-br ${getCardColor()} rounded-3xl p-8 shadow-2xl min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden text-center`}>
@@ -470,7 +468,7 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
                             </div>
                         </div>
                     </motion.div>
-                )}
+                ) : null}
             </AnimatePresence>
 
             {/* Action Buttons */}
