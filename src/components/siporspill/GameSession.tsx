@@ -1,5 +1,5 @@
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, RotateCcw, Users, Coffee, SkipForward } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +21,10 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
     const [skipsRemaining, setSkipsRemaining] = useState(1);
     const [isChoosingType, setIsChoosingType] = useState(gameType === 'truth-dare');
     const [selectedType, setSelectedType] = useState<'truth' | 'dare' | null>(null);
+    const [showRoulette, setShowRoulette] = useState(true);
+    const [rouletteResult, setRouletteResult] = useState<string | null>(null);
+    const [isSpinning, setIsSpinning] = useState(false);
+    const rouletteIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     const getRandomCard = useCallback((forcedType?: 'truth' | 'dare') => {
         let pool: (string | GameItem)[] = [];
@@ -130,6 +134,13 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // Auto-skip roulette if 0 or 1 player
+    useEffect(() => {
+        if (showRoulette && players.length <= 1) {
+            setShowRoulette(false);
+        }
+    }, [showRoulette, players.length]);
+
     const handleSkip = () => {
         if (skipsRemaining > 0) {
             setSkipsRemaining(prev => prev - 1);
@@ -150,8 +161,9 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
     const handleRestart = () => {
         setUsedIndices(new Set());
         setSkipsRemaining(1);
-        setCurrentPlayerIndex(0);
         setSelectedType(null);
+        setShowRoulette(true);
+        setRouletteResult(null);
         if (gameType === 'truth-dare') {
             setIsChoosingType(true);
             setCurrentCard(null);
@@ -159,6 +171,37 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
             setIsChoosingType(false);
             handleNextCard();
         }
+    };
+
+    const startRoulette = () => {
+        if (players.length === 0 || isSpinning) return;
+        
+        setIsSpinning(true);
+        let spinCount = 0;
+        const totalSpins = 20 + Math.floor(Math.random() * 10);
+        
+        rouletteIntervalRef.current = setInterval(() => {
+            setCurrentPlayerIndex(Math.floor(Math.random() * players.length));
+            spinCount++;
+            
+            if (spinCount >= totalSpins) {
+                if (rouletteIntervalRef.current) {
+                    clearInterval(rouletteIntervalRef.current);
+                }
+                const winnerIndex = Math.floor(Math.random() * players.length);
+                setCurrentPlayerIndex(winnerIndex);
+                setRouletteResult(players[winnerIndex]);
+                setIsSpinning(false);
+                
+                setTimeout(() => {
+                    setShowRoulette(false);
+                }, 1500);
+            }
+        }, 100);
+    };
+
+    const skipRoulette = () => {
+        setShowRoulette(false);
     };
 
     const currentPlayer = players.length > 0 ? players[currentPlayerIndex] : "Player";
@@ -229,6 +272,103 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
                     </button>
                 </div>
             </div>
+
+            {/* Roulette Overlay */}
+            <AnimatePresence>
+                {showRoulette && players.length > 0 && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 z-50 flex flex-col items-center justify-center p-6"
+                        style={{ background: getBackground() }}
+                    >
+                        <div className="absolute top-4 left-0 right-0 flex items-center justify-between px-4">
+                            <div></div>
+                            <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
+                                <span className="text-sm font-bold text-[#1B4D3E] whitespace-nowrap">{getTitle()}</span>
+                            </div>
+                            <div></div>
+                        </div>
+
+                        <motion.div
+                            animate={{ 
+                                rotate: isSpinning ? [0, 360] : 0,
+                                scale: isSpinning ? [1, 1.1, 1] : 1
+                            }}
+                            transition={{ 
+                                rotate: { duration: 0.5, repeat: Infinity, ease: "linear" },
+                                scale: { duration: 0.3, repeat: Infinity }
+                            }}
+                            className="text-8xl mb-8"
+                        >
+                            🎰
+                        </motion.div>
+
+                        <h2 className="text-3xl font-bold text-[#1B4D3E] mb-8 text-center">
+                            {t('sipOrSpill.rouletteTitle') || 'Who starts?'}
+                        </h2>
+
+                        <div className="bg-white rounded-3xl shadow-2xl p-8 min-w-[280px] text-center mb-8">
+                            {isSpinning ? (
+                                <motion.div
+                                    key={currentPlayer}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="text-3xl font-bold text-[#1B4D3E]"
+                                >
+                                    {players[currentPlayerIndex]}
+                                </motion.div>
+                            ) : rouletteResult ? (
+                                <motion.div
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    className="text-3xl font-bold text-purple-600"
+                                >
+                                    <div className="text-4xl mb-2">🎉</div>
+                                    {rouletteResult}
+                                    <div className="text-lg text-gray-500 mt-2">
+                                        {t('sipOrSpill.rouletteWinner') || "You're up!"}
+                                    </div>
+                                </motion.div>
+                            ) : (
+                                <div className="text-xl text-gray-500">
+                                    {t('sipOrSpill.roulettePrompt') || 'Press spin to choose!'}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex gap-4">
+                            {!rouletteResult && (
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={startRoulette}
+                                    disabled={isSpinning}
+                                    className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-8 py-4 rounded-2xl font-bold text-xl shadow-lg flex items-center gap-2 disabled:opacity-50"
+                                >
+                                    <span className="text-2xl">🎲</span>
+                                    {t('sipOrSpill.spin') || 'Spin!'}
+                                </motion.button>
+                            )}
+                            
+                            {rouletteResult && (
+                                <motion.button
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={skipRoulette}
+                                    className="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-8 py-4 rounded-2xl font-bold text-xl shadow-lg flex items-center gap-2"
+                                >
+                                    <span className="text-2xl">▶️</span>
+                                    {t('sipOrSpill.startGame') || "Let's Go!"}
+                                </motion.button>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Active Player Indicator */}
             {players.length > 0 && (

@@ -216,6 +216,11 @@
         "skip": "Passer",
         "skipsLeft": "({{count}} restant)",
         "noSkipsLeft": "Plus de Passes",
+        "rouletteTitle": "Qui commence ?",
+        "rouletteWinner": "C'est ton tour !",
+        "roulettePrompt": "Appuie pour choisir !",
+        "spin": "Tourner !",
+        "startGame": "C'est parti !",
         "modes": {
             "truthDare": {
                 "title": "Action ou Vérité",

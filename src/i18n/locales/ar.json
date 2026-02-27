@@ -216,6 +216,11 @@
         "skip": "تخطي",
         "skipsLeft": "({{count}} متبقي)",
         "noSkipsLeft": "لا يوجد تخطيات متبقية",
+        "rouletteTitle": "من يبدأ؟",
+        "rouletteWinner": "دورك!",
+        "roulettePrompt": "اضغط للاختيار!",
+        "spin": "دوّر!",
+        "startGame": "لنبدأ!",
         "modes": {
             "truthDare": {
                 "title": "صراحة أو جرأة",

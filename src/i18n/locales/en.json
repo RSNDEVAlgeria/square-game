@@ -216,6 +216,11 @@
         "skip": "Skip",
         "skipsLeft": "({{count}} left)",
         "noSkipsLeft": "No Skips Left",
+        "rouletteTitle": "Who starts?",
+        "rouletteWinner": "You're up!",
+        "roulettePrompt": "Press spin to choose!",
+        "spin": "Spin!",
+        "startGame": "Let's Go!",
         "modes": {
             "truthDare": {
                 "title": "Truth or Dare",
