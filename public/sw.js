@@ -1,4 +1,4 @@
-const CACHE_NAME = 'square-coffee-v1';
+const CACHE_NAME = 'square-coffee-v2';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -32,6 +32,18 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
+  
+  // Network-first strategy for HTML (always get latest)
+  if (url.pathname === '/' || url.pathname === '/index.html') {
+    event.respondWith(
+      fetch(event.request)
+        .catch(() => caches.match('/index.html'))
+    );
+    return;
+  }
+
+  // Cache-first for static assets
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
