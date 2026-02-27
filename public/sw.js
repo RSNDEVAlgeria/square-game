@@ -1,4 +1,4 @@
-const CACHE_NAME = 'square-coffee-v2';
+const CACHE_NAME = 'square-coffee-v3';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -34,8 +34,8 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   
-  // Network-first strategy for HTML (always get latest)
-  if (url.pathname === '/' || url.pathname === '/index.html') {
+  // Network-first for HTML and manifest (always get latest)
+  if (url.pathname === '/' || url.pathname === '/index.html' || url.pathname === '/site.webmanifest') {
     event.respondWith(
       fetch(event.request)
         .catch(() => caches.match('/index.html'))

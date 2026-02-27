@@ -36,12 +36,15 @@ export function GamesMenu() {
         setMenuOpen(!menuOpen);
     };
 
-    const handleInstall = () => {
+    const handleInstall = async () => {
         if (deferredPrompt) {
             deferredPrompt.prompt();
-            setDeferredPrompt(null);
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                setDeferredPrompt(null);
+            }
         } else {
-            alert('To install: Add to Home Screen from your browser menu (iOS: Share > Add to Home Screen, Android: Menu > Add to Home Screen)');
+            alert('To install: Open this page in Chrome/Edge, tap the menu icon and select "Install App" or "Add to Home Screen"');
         }
     };
 
