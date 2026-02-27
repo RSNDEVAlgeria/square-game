@@ -19,12 +19,14 @@ interface WaiterSelectionProps {
 // Stat icon mapping
 const StatIcon = ({ type }: { type: string }) => {
   switch (type) {
-    case 'speed':
-      return <Zap className="w-3 h-3" />;
     case 'stamina':
       return <Heart className="w-3 h-3" />;
     case 'tips':
       return <Coins className="w-3 h-3" />;
+    case 'combo':
+      return <Zap className="w-3 h-3" />;
+    case 'patience':
+      return <Sparkles className="w-3 h-3" />;
     default:
       return <Sparkles className="w-3 h-3" />;
   }
@@ -114,7 +116,7 @@ export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSel
               {waiter.image ? (
                 <img
                   src={waiter.image}
-                  alt={t(`waiterSelection.waiters.waiter${waiter.id + 1}.name`)}
+                  alt={waiter.name}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -129,7 +131,7 @@ export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSel
               className="font-bold text-base md:text-lg mb-2"
               style={{ color: THEME.textDark }}
             >
-              {t(`waiterSelection.waiters.waiter${waiter.id + 1}.name`)}
+              {waiter.name}
             </h3>
 
             {/* Stats */}
@@ -138,15 +140,22 @@ export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSel
                 className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold"
                 style={{ background: THEME.bgCream, color: THEME.textMedium }}
               >
-                <StatIcon type="speed" />
-                {waiter.stats.speedBonus}
+                <StatIcon type="stamina" />
+                {waiter.staminaDrain < 1 ? '+' : waiter.staminaDrain > 1 ? '-' : ''}{Math.round((1 - waiter.staminaDrain) * 100)}%
               </span>
               <span
                 className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold"
                 style={{ background: THEME.bgCream, color: THEME.textMedium }}
               >
-                <StatIcon type="stamina" />
-                {waiter.stats.staminaBonus}
+                <StatIcon type="tips" />
+                +{Math.round((waiter.tipBonus - 1) * 100)}%
+              </span>
+              <span
+                className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold"
+                style={{ background: THEME.bgCream, color: THEME.textMedium }}
+              >
+                <StatIcon type="combo" />
+                {waiter.comboBarGain > 1 ? '+' : ''}{Math.round((waiter.comboBarGain - 1) * 100)}%
               </span>
             </div>
 
@@ -175,7 +184,7 @@ export function WaiterSelection({ onSelect, onStart, selectedWaiter }: WaiterSel
             className="text-sm font-medium"
             style={{ color: THEME.textMedium }}
           >
-            {t(`waiterSelection.waiters.waiter${selectedWaiter.id + 1}.description`)}
+            {selectedWaiter.description}
           </p>
         </div>
       )}

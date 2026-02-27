@@ -11,16 +11,16 @@ export interface Waiter {
   id: number;
   name: string;
   emoji: string;
-  image?: string;     // Optional image path for real photos
+  image?: string;
   color: string;
-  speed: number;      // Movement/action speed multiplier
-  stamina: number;    // Stamina multiplier
-  tipBonus: number;   // Tip multiplier
   description: string;
-  stats: {
-    speedBonus: string;
-    staminaBonus: string;
-  };
+  // Gameplay modifiers
+  staminaMax: number;          // Max stamina multiplier
+  staminaDrain: number;       // Stamina drain per action (lower = less drain)
+  tipBonus: number;           // Tip multiplier
+  patienceMultiplier: number;  // Customer patience modifier (higher = more patient)
+  comboBarGain: number;       // Combo bar gain multiplier
+  specialAbility: string;     // Unique ability name
 }
 
 // ===== FOOD ITEM TYPES =====

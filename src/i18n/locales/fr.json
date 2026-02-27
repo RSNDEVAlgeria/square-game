@@ -45,12 +45,12 @@
         "back": "Retour",
         "waiters": {
             "waiter1": {
-                "name": "Serveur 1",
-                "description": "Spécialiste du service rapide et efficace"
+                "name": "Alex",
+                "description": "Rapide & Énergique - Construite le combo vite mais s'épuise plus vite"
             },
             "waiter2": {
-                "name": "Serveur 2",
-                "description": "Expérimenté avec un excellent service client"
+                "name": "Giovanni",
+                "description": "Serveur Expérimenté - Gros pourboires & patience mais combo plus lent"
             }
         }
     },

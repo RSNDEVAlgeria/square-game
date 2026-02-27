@@ -55,33 +55,31 @@ export const CONFIG: GameConfig = {
 export const WAITERS: Waiter[] = [
   {
     id: 0,
-    name: 'Waiter 1',
-    emoji: '👨‍🍳',
+    name: 'Alex',
+    emoji: '👨‍🦱',
     image: '/waiters/waiter-1.jpg',
     color: 'from-amber-600 to-amber-800',
-    speed: 1.1,
-    stamina: 1.0,
-    tipBonus: 1.1,
-    description: 'Fast and efficient service specialist',
-    stats: {
-      speedBonus: '+10%',
-      staminaBonus: 'Balanced'
-    }
+    description: 'Fast & Energetic - Builds combo quickly but drains stamina faster',
+    staminaMax: 1.0,        // Base stamina
+    staminaDrain: 1.25,     // +25% stamina drain per action (needs quick breaks)
+    tipBonus: 1.0,         // Base tips
+    patienceMultiplier: 0.85,  // Customers less patient (-15%)
+    comboBarGain: 1.35,    // +35% combo bar gain (rushes faster)
+    specialAbility: 'Fast Hands'
   },
   {
     id: 1,
-    name: 'Waiter 2',
-    emoji: '👨‍🍳',
+    name: 'Giovanni',
+    emoji: '👨‍🦳',
     image: '/waiters/waiter-2.jpg',
     color: 'from-slate-600 to-slate-800',
-    speed: 1.0,
-    stamina: 1.15,
-    tipBonus: 1.2,
-    description: 'Experienced with excellent customer service',
-    stats: {
-      speedBonus: 'Balanced',
-      staminaBonus: '+15%'
-    }
+    description: 'Veteran Server - Great tips & patience but slower combo building',
+    staminaMax: 1.2,       // +20% max stamina
+    staminaDrain: 0.75,    // -25% stamina drain (lasts longer)
+    tipBonus: 1.3,         // +30% better tips
+    patienceMultiplier: 1.2,  // Customers more patient (+20%)
+    comboBarGain: 0.85,    // -15% combo bar gain
+    specialAbility: 'Years of Experience'
   }
 ];
 

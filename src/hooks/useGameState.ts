@@ -115,12 +115,12 @@ export function useGameState() {
   const selectWaiter = useCallback((waiterId: number) => {
     const waiter = WAITERS.find(w => w.id === waiterId) || null;
 
-    // Apply max stamina upgrade
+    // Apply waiter stamina max bonus + shop upgrades
     const staminaLevel = gameState.upgrades['max_stamina'] || 0;
     const staminaUpgrade = SHOP_UPGRADES?.find(u => u.id === 'max_stamina');
     const additionalStamina = (staminaUpgrade?.effect.valuePerLevel || 0) * staminaLevel;
 
-    const maxStamina = (CONFIG.INITIAL_STAMINA * (waiter?.stamina || 1)) + additionalStamina;
+    const maxStamina = (CONFIG.INITIAL_STAMINA * (waiter?.staminaMax || 1)) + additionalStamina;
 
     setGameState(prev => ({
       ...prev,
@@ -159,12 +159,12 @@ export function useGameState() {
   const startGame = useCallback(() => {
     const waiter = gameState.selectedWaiter;
 
-    // Apply max stamina upgrade
+    // Apply waiter stamina max bonus + shop upgrades
     const staminaLevel = gameState.upgrades['max_stamina'] || 0;
     const staminaUpgrade = SHOP_UPGRADES?.find(u => u.id === 'max_stamina');
     const additionalStamina = (staminaUpgrade?.effect.valuePerLevel || 0) * staminaLevel;
 
-    const maxStamina = (CONFIG.INITIAL_STAMINA * (waiter?.stamina || 1)) + additionalStamina;
+    const maxStamina = (CONFIG.INITIAL_STAMINA * (waiter?.staminaMax || 1)) + additionalStamina;
 
     setGameState(prev => ({
       ...createInitialState(),
@@ -316,12 +316,15 @@ export function useGameState() {
 
   // ===== PLATE MANAGEMENT =====
   const addToPlate = useCallback((foodId: string) => {
+    const waiter = gameState.selectedWaiter;
+    const drainMultiplier = waiter?.staminaDrain || 1;
+    
     setPlate(prev => ({ items: [...prev.items, foodId] }));
     // Drain stamina for each action (but not during rush mode - stamina is infinite then)
     if (!gameState.isRushActive) {
       setGameState(prev => ({
         ...prev,
-        stamina: Math.max(0, prev.stamina - CONFIG.STAMINA_DRAIN_PER_ACTION)
+        stamina: Math.max(0, prev.stamina - (CONFIG.STAMINA_DRAIN_PER_ACTION * drainMultiplier))
       }));
     }
   }, []);
@@ -388,14 +391,16 @@ export function useGameState() {
       order.push(randomItem.id);
     }
 
-    // Calculate patience based on difficulty and upgrades
+    // Calculate patience based on difficulty, upgrades, and waiter
+    const waiter = gameState.selectedWaiter;
+    const waiterPatienceMod = waiter?.patienceMultiplier || 1;
     const isSpeedBoost = activePowerUps.some(p => p.type === 'speed_boost');
     const powerUpPatienceMultiplier = isSpeedBoost ? 1.5 : 1.0;
 
     const patienceBase = Math.max(
       CONFIG.CUSTOMER_PATIENCE_MIN,
       gameState.customerPatienceBase * Math.pow(CONFIG.DIFFICULTY_INCREASE_RATE, gameState.customersServed)
-    ) * globalPatienceMultiplier * patienceMultiplier * powerUpPatienceMultiplier;
+    ) * globalPatienceMultiplier * patienceMultiplier * powerUpPatienceMultiplier * waiterPatienceMod;
 
     const patience = patienceBase / customerType.speedMultiplier;
 
@@ -533,8 +538,9 @@ export function useGameState() {
     const staminaRecovery = (recoveryUpgrade?.effect.baseValue || CONFIG.STAMINA_RECOVERY_CORRECT) +
       (recoveryUpgrade?.effect.valuePerLevel || 0) * recoveryLevel;
 
-    // Calculate new combo bar
-    let newComboBar = gameState.comboBar + CONFIG.COMBO_BAR_GAIN_PER_SERVICE;
+    // Calculate new combo bar with waiter bonus
+    const comboBarGainMultiplier = waiter?.comboBarGain || 1;
+    let newComboBar = gameState.comboBar + (CONFIG.COMBO_BAR_GAIN_PER_SERVICE * comboBarGainMultiplier);
     let rushActive = gameState.isRushActive;
     let rushTimer = gameState.rushTimer;
     let rushCooldownTimer = gameState.rushCooldownTimer;

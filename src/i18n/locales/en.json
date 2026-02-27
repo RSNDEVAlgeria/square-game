@@ -45,12 +45,12 @@
         "back": "Back",
         "waiters": {
             "waiter1": {
-                "name": "Waiter 1",
-                "description": "Fast and efficient service specialist"
+                "name": "Alex",
+                "description": "Fast & Energetic - Builds combo quickly but drains stamina faster"
             },
             "waiter2": {
-                "name": "Waiter 2",
-                "description": "Experienced with excellent customer service"
+                "name": "Giovanni",
+                "description": "Veteran Server - Great tips & patience but slower combo building"
             }
         }
     },
