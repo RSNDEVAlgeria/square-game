@@ -1,7 +1,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, RotateCcw, Users, Coffee, SkipForward } from 'lucide-react';
+import { ArrowLeft, RotateCcw, Users, Coffee, SkipForward, Timer, Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { CONTENT, type GameType, type Category, type GameItem } from './GameData';
 
@@ -24,7 +24,11 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
     const [showRoulette, setShowRoulette] = useState(true);
     const [rouletteResult, setRouletteResult] = useState<string | null>(null);
     const [isSpinning, setIsSpinning] = useState(false);
+    const [timerSeconds, setTimerSeconds] = useState<number>(0);
+    const [isTimerRunning, setIsTimerRunning] = useState(false);
+    const [timerStarted, setTimerStarted] = useState(false);
     const rouletteIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const timerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     const getRandomCard = useCallback((forcedType?: 'truth' | 'dare') => {
         let pool: (string | GameItem)[] = [];
@@ -36,7 +40,7 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
             const translatedDares = t('sipOrSpill.content.' + category + '.dares', { returnObjects: true }) as string[];
             
             // Fallback to CONTENT if translations not available
-            const truthDareContent = CONTENT['truth-dare'] as Record<string, { truths: string[], dares: string[] }>;
+            const truthDareContent = CONTENT['truth-dare'] as Record<string, { truths: (string | GameItem)[], dares: (string | GameItem)[] }>;
             const catContent = truthDareContent[category];
             
             if (!catContent) return null;
@@ -65,9 +69,15 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
 
         if (!pool || pool.length === 0) return null;
 
-        // Filter out used cards
+        // Filter out used cards by both key and text content
+        const getItemText = (item: string | GameItem) => {
+            return typeof item === 'string' ? item : item.text;
+        };
+
         const availableIndices = pool.map((_, index) => index).filter(index => {
-            const key = `${gameType}-${category}-${type || 'gen'}-${index}`;
+            const item = pool[index];
+            const text = getItemText(item);
+            const key = `${gameType}-${category}-${type || 'gen'}-${text}`;
             return !usedIndices.has(key);
         });
 
@@ -76,14 +86,17 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
             setUsedIndices(new Set());
             const randomIndex = Math.floor(Math.random() * pool.length);
             const item = pool[randomIndex];
-            return typeof item === 'string' ? { id: `rnd-${Date.now()}`, text: item, type } : { ...item, type };
+            const text = getItemText(item);
+            const key = `${gameType}-${category}-${type || 'gen'}-${text}`;
+            return typeof item === 'string' ? { id: key, text: item, type } : { ...item, type, id: key };
         }
 
         const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
-        const key = `${gameType}-${category}-${type || 'gen'}-${randomIndex}`;
+        const item = pool[randomIndex];
+        const text = getItemText(item);
+        const key = `${gameType}-${category}-${type || 'gen'}-${text}`;
         setUsedIndices(prev => new Set([...prev, key]));
 
-        const item = pool[randomIndex];
         // Normalize item to GameItem
         if (typeof item === 'string') {
             return { id: key, text: item, type };
@@ -103,6 +116,9 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
             setIsChoosingType(true);
             setSelectedType(null);
             setCurrentCard(null);
+            setTimerSeconds(0);
+            setIsTimerRunning(false);
+            setTimerStarted(false);
             return;
         }
 
@@ -123,6 +139,9 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
         const card = getRandomCard(type);
         setCurrentCard(card);
         setIsChoosingType(false);
+        setTimerSeconds(0);
+        setIsTimerRunning(false);
+        setTimerStarted(false);
         // Player stays the same until Next is clicked
     };
 
@@ -141,6 +160,67 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
         }
     }, [showRoulette, players.length]);
 
+    // Timer logic
+    useEffect(() => {
+        if (isTimerRunning && timerSeconds > 0) {
+            timerIntervalRef.current = setInterval(() => {
+                setTimerSeconds(prev => {
+                    if (prev <= 1) {
+                        setIsTimerRunning(false);
+                        if (timerIntervalRef.current) {
+                            clearInterval(timerIntervalRef.current);
+                        }
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+        }
+        return () => {
+            if (timerIntervalRef.current) {
+                clearInterval(timerIntervalRef.current);
+            }
+        };
+    }, [isTimerRunning, timerSeconds]);
+
+    // Parse duration from text (e.g., "for 30 seconds", "for 1 minute")
+    const parseDurationFromText = (text: string): number => {
+        const lowerText = text.toLowerCase();
+        
+        // Check for minutes
+        const minuteMatch = lowerText.match(/(\d+)\s*(minute|min)/);
+        if (minuteMatch) {
+            return parseInt(minuteMatch[1]) * 60;
+        }
+        
+        // Check for seconds
+        const secondMatch = lowerText.match(/(\d+)\s*(second|sec)/);
+        if (secondMatch) {
+            return parseInt(secondMatch[1]);
+        }
+        
+        return 0;
+    };
+
+    // Start timer when card with duration is displayed
+    useEffect(() => {
+        const duration = currentCard?.duration || parseDurationFromText(currentCard?.text || '');
+        if (duration > 0) {
+            setTimerSeconds(duration);
+            setTimerStarted(false);
+            setIsTimerRunning(false);
+        } else {
+            setTimerSeconds(0);
+            setTimerStarted(false);
+            setIsTimerRunning(false);
+        }
+    }, [currentCard?.id, currentCard?.text]);
+
+    const handleStartTimer = () => {
+        setTimerStarted(true);
+        setIsTimerRunning(true);
+    };
+
     const handleSkip = () => {
         if (skipsRemaining > 0) {
             setSkipsRemaining(prev => prev - 1);
@@ -152,6 +232,9 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
                 setIsChoosingType(true);
                 setSelectedType(null);
                 setCurrentCard(null);
+                setTimerSeconds(0);
+                setIsTimerRunning(false);
+                setTimerStarted(false);
             } else {
                 handleNextCard();
             }
@@ -164,6 +247,9 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
         setSelectedType(null);
         setShowRoulette(true);
         setRouletteResult(null);
+        setTimerSeconds(0);
+        setIsTimerRunning(false);
+        setTimerStarted(false);
         if (gameType === 'truth-dare') {
             setIsChoosingType(true);
             setCurrentCard(null);
@@ -250,7 +336,7 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
     };
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-start pt-24 p-6 relative overflow-y-auto no-scrollbar"
+        <div className="w-full h-full flex flex-col items-center justify-start pt-20 p-4 relative overflow-hidden"
             style={{ background: getBackground() }}>
 
             {/* Header */}
@@ -394,7 +480,7 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
                         transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
                         className="w-full max-w-md"
                     >
-                    <div className={`bg-gradient-to-br ${category === 'couples' ? 'from-pink-400 to-purple-400' : 'from-blue-400 to-cyan-400'} rounded-3xl p-8 shadow-2xl min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden text-center`}>
+                    <div className={`bg-gradient-to-br ${category === 'couples' ? 'from-pink-400 to-purple-400' : 'from-blue-400 to-cyan-400'} rounded-3xl p-8 shadow-2xl min-h-[360px] flex flex-col items-center justify-center relative overflow-hidden text-center`}>
                         <div className="absolute top-0 right-0 text-6xl opacity-20">🎲</div>
                         <div className="absolute bottom-0 left-0 text-6xl opacity-20">✨</div>
                         
@@ -434,13 +520,61 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
                         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                         className="w-full max-w-md"
                     >
-                        <div className={`bg-gradient-to-br ${getCardColor()} rounded-3xl p-8 shadow-2xl min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden text-center`}>
+                        <div className={`bg-gradient-to-br ${getCardColor()} rounded-3xl p-8 shadow-2xl min-h-[360px] flex flex-col items-center justify-center relative overflow-hidden text-center`}>
                             {/* Type Badge (Only for Truth/Dare) */}
                             {gameType === 'truth-dare' && (
                                 <div className="absolute top-6 left-6 bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full">
                                     <span className="text-white font-bold text-sm uppercase tracking-wider">
                                         {currentCard.type === 'truth' ? `🤔 ${t('sipOrSpill.truth')}` : `🎯 ${t('sipOrSpill.dare')}`}
                                     </span>
+                                </div>
+                            )}
+
+                            {/* Timer Display */}
+                            {timerSeconds > 0 && (
+                                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+                                    {!timerStarted ? (
+                                        <motion.button
+                                            whileHover={{ scale: 1.1 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            onClick={handleStartTimer}
+                                            className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white flex flex-col items-center justify-center"
+                                        >
+                                            <Play size={32} className="text-white ml-1" />
+                                            <span className="text-white text-xs font-bold mt-1">Start</span>
+                                        </motion.button>
+                                    ) : (
+                                        <div className="relative w-24 h-24">
+                                            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                                                <circle
+                                                    cx="50"
+                                                    cy="50"
+                                                    r="45"
+                                                    fill="none"
+                                                    stroke="rgba(255,255,255,0.3)"
+                                                    strokeWidth="8"
+                                                />
+                                                <circle
+                                                    cx="50"
+                                                    cy="50"
+                                                    r="45"
+                                                    fill="none"
+                                                    stroke="white"
+                                                    strokeWidth="8"
+                                                    strokeLinecap="round"
+                                                    strokeDasharray={283}
+                                                    strokeDashoffset={283 - (283 * timerSeconds / (currentCard?.duration || parseDurationFromText(currentCard?.text || '') || 1))}
+                                                    className="transition-all duration-1000 ease-linear"
+                                                />
+                                            </svg>
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                                <Timer size={20} className="text-white mb-1" />
+                                                <span className="text-white font-bold text-lg">
+                                                    {Math.floor(timerSeconds / 60)}:{(timerSeconds % 60).toString().padStart(2, '0')}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
 
@@ -472,7 +606,7 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
             </AnimatePresence>
 
             {/* Action Buttons */}
-            <div className="mt-8 flex flex-col gap-3 w-full max-w-md px-4">
+            <div className="mt-6 flex flex-col gap-3 w-full max-w-md px-4 pb-4">
                 {!isChoosingType && (
                     <motion.button
                         whileHover={{ scale: 1.05 }}
@@ -497,8 +631,8 @@ export function GameSession({ gameType, category, players, onBack, onChangePlaye
                             : 'bg-gray-200 text-gray-400 border-2 border-gray-300 cursor-not-allowed'
                             }`}
                     >
-                        <SkipForward size={16} />
-                        {skipsRemaining > 0 ? `${t('sipOrSpill.skip')} ${t('sipOrSpill.skipsLeft', { count: skipsRemaining })}` : t('sipOrSpill.noSkipsLeft')}
+                        <Coffee size={24} />
+                        {t('sipOrSpill.next')}
                     </motion.button>
                 )}
             </div>
